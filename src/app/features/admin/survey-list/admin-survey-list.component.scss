@@ -1,0 +1,68 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+// 功能操作區
+.action-bar {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+
+    // 按鈕內部的圖標與文字對齊
+    button,
+    a {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+    }
+}
+
+// 資料表格
+.table-container {
+    overflow-x: auto;
+    margin-bottom: $spacing-lg;
+
+    // 使用全域表格樣式
+    .table {
+        @include table-base;
+
+        // 覆寫特定的寬度或樣式
+        .text-ellipsis {
+            @include text-truncate;
+            max-width: 200px;
+        }
+    }
+}
+
+// 狀態標籤 (使用 styles.scss 定義的 class，這裡不需重複定義，或者微調)
+// 若需要針對此頁面微調，可寫在這裡，但建議直接用全域 class
+
+// 操作按鈕群組
+.action-buttons {
+    display: flex;
+    gap: $spacing-sm;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color $transition-fast;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+}
+
+// 分頁區
+.pagination-wrapper {
+    @include flex-center;
+    margin-top: $spacing-lg;
+}

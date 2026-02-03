@@ -1,0 +1,92 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.step-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: $spacing-xl;
+    background-color: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+}
+
+.form-group {
+    margin-bottom: $spacing-lg;
+}
+
+.label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: $spacing-xs;
+    color: $text-main;
+}
+
+.required-star {
+    color: $error;
+}
+
+.input-field,
+.textarea-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    font-size: $font-size-base;
+
+    &:focus {
+        outline: none;
+        border-color: $main;
+    }
+
+    &.error {
+        border-color: $error;
+    }
+}
+
+.textarea-field {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-lg;
+
+    @include mobile {
+        grid-template-columns: 1fr;
+    }
+}
+
+.char-count {
+    text-align: right;
+    font-size: $font-size-xs;
+    color: $text-muted;
+    margin-top: 4px;
+}
+
+.error-msg,
+.alert-error {
+    color: $error;
+    font-size: $font-size-sm;
+    margin-top: 4px;
+}
+
+.alert-error {
+    background-color: rgba($error, 0.1);
+    padding: $spacing-sm;
+    border-radius: $border-radius-sm;
+    text-align: center;
+    margin-bottom: $spacing-md;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-light;
+}
+
+.btn-main {
+    @include btn-main;
+}

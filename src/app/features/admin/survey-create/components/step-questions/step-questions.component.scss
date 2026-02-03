@@ -1,0 +1,315 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.split-container {
+    display: flex;
+    gap: $spacing-lg;
+    height: calc(100vh - 200px); // 固定高度以支援內部滾動
+
+    @include mobile {
+        flex-direction: column;
+        height: auto;
+    }
+}
+
+.card {
+    background: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+    border: 1px solid $border-light;
+}
+
+// === 左側編輯器 ===
+.editor-panel {
+    flex: 1;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    @include mobile {
+        max-width: 100%;
+    }
+}
+
+.panel-title {
+    font-size: $font-size-lg;
+    font-weight: bold;
+    color: $main;
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1px solid $border-light;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.required {
+    color: $error;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+
+    &:focus {
+        outline: none;
+        border-color: $main;
+    }
+
+    &.input-sm {
+        padding: 0.4rem;
+        font-size: 0.9rem;
+    }
+}
+
+.row-group {
+    display: flex;
+    gap: $spacing-md;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    height: 100%;
+    padding-top: 24px; // 對齊 Input
+}
+
+.divider {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    border-bottom: 1px solid $border-light;
+    margin: $spacing-sm 0;
+    padding-bottom: 4px;
+}
+
+.options-container {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+}
+
+.index-badge {
+    color: $text-muted;
+    font-size: $font-size-sm;
+    width: 20px;
+}
+
+.btn-dashed {
+    width: 100%;
+    border: 1px dashed $border-color;
+    background: none;
+    padding: 8px;
+    color: $text-secondary;
+    cursor: pointer;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    &:hover {
+        border-color: $main;
+        color: $main;
+    }
+}
+
+.form-actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+
+    .full-width {
+        flex: 1;
+    }
+}
+
+// === 右側列表 ===
+.list-panel {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.question-item {
+    border: 1px solid $border-light;
+    border-radius: $border-radius-md;
+    padding: $spacing-md;
+    background: #fff;
+    transition: all 0.2s;
+
+    &:hover {
+        box-shadow: $shadow-sm;
+    }
+
+    &.editing {
+        border-color: $main;
+        background-color: $bg-input;
+    }
+}
+
+.q-header {
+    display: flex;
+    gap: $spacing-md;
+    align-items: flex-start;
+}
+
+.q-number {
+    background: $bg-light;
+    color: $text-secondary;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: $font-size-sm;
+    flex-shrink: 0;
+}
+
+.q-info {
+    flex: 1;
+}
+
+.q-text {
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: $text-main;
+}
+
+.q-tags {
+    display: flex;
+    gap: 8px;
+
+    .tag {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: $bg-light;
+        color: $text-secondary;
+
+        &.required {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+    }
+}
+
+.q-options {
+    margin-top: 8px;
+    padding-left: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .opt-dot {
+        font-size: $font-size-sm;
+        color: $text-muted;
+        background: $bg-light;
+        padding: 2px 8px;
+        border-radius: 12px;
+    }
+}
+
+.q-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: $text-secondary;
+
+    &:hover {
+        color: $main;
+    }
+
+    &.danger:hover {
+        color: $error;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+.panel-footer {
+    margin-top: $spacing-lg;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-light;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-main {
+    @include btn-main;
+    gap: 8px;
+}
+
+.btn-outline {
+    @include btn-base;
+    background: white;
+    border: 1px solid $border-color;
+    gap: 8px;
+
+    &:hover {
+        border-color: $main;
+        color: $main;
+    }
+}
+
+.btn-cancel {
+    @include btn-base;
+    background: $bg-light;
+}
+
+// 捲軸樣式 (來自 mixin)
+.custom-scrollbar {
+    @include custom-scrollbar;
+}

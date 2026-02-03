@@ -1,0 +1,13 @@
+# 使用完整的 Node 環境
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+# 開發模式不需要 build，直接啟動 Server
+CMD ["npm", "start"]

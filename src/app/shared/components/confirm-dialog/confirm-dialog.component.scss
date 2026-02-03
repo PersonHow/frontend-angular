@@ -1,0 +1,102 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// 遮罩層
+.dialog-overlay {
+    @include overlay; // 使用 mixin
+    @include flex-center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+// 彈窗容器
+.dialog-container {
+    background-color: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-lg;
+    min-width: 320px;
+    max-width: 90vw;
+    animation: slideIn 0.2s ease-out;
+    overflow: hidden;
+    border: 1px solid $border-light;
+}
+
+// 彈窗內容區
+.dialog-content {
+    padding: $spacing-xl;
+    text-align: center;
+}
+
+.dialog-title {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $text-main;
+    margin-bottom: $spacing-md;
+}
+
+.dialog-message {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    line-height: 1.6;
+}
+
+// 按鈕區
+.dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+    background-color: $bg-light; // 底部稍微不同色，區分區塊
+    border-top: 1px solid $border-light;
+}
+
+// 按鈕共用樣式
+.btn {
+    @include btn-base;
+    min-width: 100px;
+}
+
+// 取消按鈕
+.btn-cancel {
+    background-color: #fff;
+    border: 1px solid $border-color;
+    color: $text-secondary;
+
+    &:hover {
+        background-color: darken(#fff, 5%);
+        color: $text-main;
+    }
+}
+
+// 確認按鈕樣式 (對應 TS 中的 class)
+.btn-main {
+    @include btn-main; // 使用 mixin
+}
+
+.btn-danger {
+    background-color: $error;
+    color: #fff;
+    &:hover { background-color: darken($error, 10%); }
+}
+
+.btn-warning {
+    background-color: $warning;
+    color: #fff;
+    &:hover { background-color: darken($warning, 10%); }
+}
+
+// 動畫
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

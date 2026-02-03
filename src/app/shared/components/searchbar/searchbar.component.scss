@@ -1,0 +1,99 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.search-bar {
+    @include flex-start;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+    background-color: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    margin-bottom: $spacing-lg;
+    flex-wrap: wrap; // 讓手機版可以換行
+}
+
+.search-fields {
+    display: flex;
+    gap: $spacing-md;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.field-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid $border-color;
+    border-radius: $border-radius-md;
+    font-size: $font-size-base;
+    transition: all $transition-fast ease;
+    background-color: $bg-cream;
+    color: $text-main;
+
+    &:focus {
+        outline: none;
+        border-color: $secondary;
+        background-color: $bg-card;
+    }
+
+    &::placeholder {
+        color: $text-muted;
+    }
+}
+
+select.search-input {
+    cursor: pointer;
+    appearance: none; // 讓不同瀏覽器樣式統一
+    // 可以加一個背景圖當下拉箭頭，這裡先保持簡潔
+}
+
+.search-actions {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+}
+
+.btn-search,
+.btn-reset {
+    @include btn-base; // 使用全域按鈕 Mixin
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 46px; // 與 input 高度對齊
+}
+
+.btn-search {
+    background-color: $main;
+    color: $text-light;
+
+    &:hover {
+        background-color: darken($main, 5%);
+    }
+}
+
+.btn-reset {
+    background-color: $bg-light;
+    color: $text-secondary;
+    border: 1px solid $border-color;
+
+    &:hover {
+        background-color: darken($bg-light, 5%);
+        color: $text-main;
+    }
+}
+
+// 響應式調整
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-actions {
+        justify-content: flex-end;
+    }
+}

@@ -1,0 +1,46 @@
+<form [formGroup]="form" class="step-container">
+    <div class="form-group">
+        <label class="label">問卷名稱 <span class="required-star">*</span></label>
+        <input type="text" formControlName="title" class="input-field"
+            [class.error]="f.title.invalid && f.title.touched" placeholder="請輸入問卷名稱">
+
+        @if (f.title.invalid && f.title.touched) {
+        <div class="error-msg">
+            @if (f.title.errors?.['required']) { 名稱必填 }
+            @if (f.title.errors?.['maxlength']) { 字數不可超過 {{LIMITS.SURVEY_TITLE_MAX_LENGTH}} 字 }
+        </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <label class="label">問卷說明</label>
+        <textarea formControlName="description" class="textarea-field" placeholder="請輸入問卷說明"></textarea>
+        <div class="char-count">
+            {{ f.description.value?.length || 0 }} / {{ LIMITS.SURVEY_DESCRIPTION_MAX_LENGTH }}
+        </div>
+    </div>
+
+    <div class="date-row">
+        <div class="form-group">
+            <label class="label">開始日期 <span class="required-star">*</span></label>
+            <input type="date" formControlName="start_date" class="input-field">
+        </div>
+
+        <div class="form-group">
+            <label class="label">結束日期 <span class="required-star">*</span></label>
+            <input type="date" formControlName="end_date" class="input-field">
+        </div>
+    </div>
+
+    @if (form.errors?.['dateRangeInvalid'] && (f.start_date.touched || f.end_date.touched)) {
+    <div class="alert-error">
+        結束日期必須在開始日期之後
+    </div>
+    }
+
+    <div class="actions">
+        <button type="button" class="btn-main" (click)="onNext()">
+            下一步：題目設計
+        </button>
+    </div>
+</form>

@@ -1,0 +1,119 @@
+<div class="app-container">
+    <app-sidebar mode="admin"></app-sidebar>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+
+            <app-search-bar [fields]="searchFields" (search)="onSearch($event)" (reset)="onReset()">
+            </app-search-bar>
+
+            <div class="action-bar">
+                <button class="btn btn-outline text-error" [disabled]="selectedIds().size === 0"
+                    (click)="openDeleteBatch()">
+                    <lucide-icon [img]="icons.Trash2" [size]="18"></lucide-icon>
+                    刪除選取 ({{ selectedIds().size }})
+                </button>
+
+                <a routerLink="/admin/surveys/create" class="btn btn-primary">
+                    <lucide-icon [img]="icons.Plus" [size]="18"></lucide-icon>
+                    新增問卷
+                </a>
+            </div>
+
+            <div class="card table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50">
+                                <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)">
+                            </th>
+                            <th width="60">編號</th>
+                            <th>名稱</th>
+                            <th width="100">狀態</th>
+                            <th width="120">開始時間</th>
+                            <th width="120">結束時間</th>
+                            <th width="140">操作</th>
+                            <th width="80">結果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (isLoading()) {
+                        <tr>
+                            <td colspan="8" class="text-center p-lg">載入中...</td>
+                        </tr>
+                        } @else if (surveys().length === 0) {
+                        <tr>
+                            <td colspan="8" class="text-center p-lg">目前沒有問卷資料</td>
+                        </tr>
+                        } @else {
+                        @for (survey of surveys(); track survey.id) {
+                        <tr>
+                            <td>
+                                <input type="checkbox" [disabled]="!canDelete(survey)"
+                                    [checked]="selectedIds().has(survey.id)" (change)="toggleSelection(survey.id)">
+                            </td>
+                            <td>{{ survey.id }}</td>
+                            <td class="text-ellipsis" [title]="survey.title">
+                                {{ survey.title }}
+                            </td>
+                            <td>
+                                <span [class.status-active]="survey.status === SurveyStatus.ACTIVE"
+                                    [class.status-not-started]="survey.status === SurveyStatus.NOT_STARTED"
+                                    [class.status-closed]="survey.status === SurveyStatus.CLOSED">
+                                    {{ survey.status === SurveyStatus.NOT_STARTED ? '未開始' :
+                                    survey.status === SurveyStatus.ACTIVE ? '進行中' : '已結束' }}
+                                </span>
+                            </td>
+                            <td>{{ survey.start_date }}</td>
+                            <td>{{ survey.end_date }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (canEdit(survey)) {
+                                    <a [routerLink]="['/admin/surveys', survey.id, 'edit']"
+                                        class="btn-icon text-primary" title="編輯">
+                                        <lucide-icon [img]="icons.Edit" [size]="18"></lucide-icon>
+                                    </a>
+                                    } @else {
+                                    <a [routerLink]="['/admin/surveys', survey.id, 'edit']" class="btn-icon text-muted"
+                                        title="查看">
+                                        <lucide-icon [img]="icons.Eye" [size]="18"></lucide-icon>
+                                    </a>
+                                    }
+
+                                    @if (canDelete(survey)) {
+                                    <button class="btn-icon text-error" (click)="openDeleteSingle(survey)" title="刪除">
+                                        <lucide-icon [img]="icons.Trash2" [size]="18"></lucide-icon>
+                                    </button>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                @if (survey.response_count > 0) {
+                                <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn-link">
+                                    結果
+                                </a>
+                                } @else {
+                                <span class="text-muted">-</span>
+                                }
+                            </td>
+                        </tr>
+                        }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination-wrapper">
+                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" [totalItems]="totalElements()"
+                    [showTotalItems]="true" (pageChange)="onPageChange($event)">
+                </app-pagination>
+            </div>
+
+        </div>
+    </main>
+
+    <app-confirm-dialog [isOpen]="showDeleteDialog()" title="刪除確認" [message]="deleteMessage()" confirmType="danger"
+        confirmText="確認刪除" [showCloseButton]="true" [closeOnOverlay]="true" (confirmEvent)="onConfirmDelete()"
+        (cancelEvent)="showDeleteDialog.set(false)">
+    </app-confirm-dialog>
+</div>

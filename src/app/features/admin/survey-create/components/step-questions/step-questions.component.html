@@ -1,0 +1,128 @@
+<div class="split-container">
+
+    <div class="editor-panel card">
+        <h3 class="panel-title">
+            {{ isEditing() ? '編輯題目' : '新增題目' }}
+        </h3>
+
+        <form [formGroup]="questionForm" (ngSubmit)="saveQuestion()" class="form-content">
+
+            <div class="form-group">
+                <label class="label">題目內容 <span class="required">*</span></label>
+                <input formControlName="question_text" type="text" class="input-field" placeholder="請輸入題目，例如：您最喜歡的食物？">
+                @if (questionForm.get('question_text')?.invalid && questionForm.get('question_text')?.touched) {
+                <span class="error-msg">必填且不可超過 {{LIMITS.QUESTION_TEXT_MAX_LENGTH}} 字</span>
+                }
+            </div>
+
+            <div class="row-group">
+                <div class="form-group flex-1">
+                    <label class="label">類型</label>
+                    <select formControlName="question_type" class="input-field select-field">
+                        <option [value]="QuestionType.SINGLE">單選題</option>
+                        <option [value]="QuestionType.MULTIPLE">多選題</option>
+                        <option [value]="QuestionType.TEXT">簡答題</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="is_required">
+                        <span>必填</span>
+                    </label>
+                </div>
+            </div>
+
+            @if (questionForm.get('question_type')?.value !== QuestionType.TEXT) {
+            <div class="divider">選項設定</div>
+
+            <div formArrayName="options" class="options-container custom-scrollbar">
+                @for (opt of optionsArray.controls; track $index) {
+                <div [formGroupName]="$index" class="option-row">
+                    <span class="index-badge">{{ $index + 1 }}</span>
+                    <input formControlName="option_text" type="text" class="input-field input-sm" placeholder="選項內容">
+
+                    <button type="button" class="btn-icon danger" [disabled]="optionsArray.length <= 2"
+                        (click)="removeOption($index)">
+                        <lucide-icon [img]="icons.Trash2" [size]="16"></lucide-icon>
+                    </button>
+                </div>
+                }
+            </div>
+
+            <button type="button" class="btn-dashed" (click)="addOption()">
+                <lucide-icon [img]="icons.Plus" [size]="16"></lucide-icon> 新增選項
+            </button>
+            }
+
+            <div class="form-actions">
+                @if (isEditing()) {
+                <button type="button" class="btn-cancel" (click)="resetForm()">取消</button>
+                }
+                <button type="submit" class="btn-main full-width">
+                    {{ isEditing() ? '更新題目' : '加入列表' }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="list-panel">
+        <div class="card h-full flex-col">
+            <h3 class="panel-title">題目列表 ({{ questionsList().length }})</h3>
+
+            <div class="list-content custom-scrollbar">
+                @if (questionsList().length === 0) {
+                <div class="empty-state">
+                    <p>目前沒有題目，請從左側新增。</p>
+                </div>
+                } @else {
+                @for (q of questionsList(); track q.tempId; let i = $index) {
+                <div class="question-item" [class.editing]="editingTempId() === q.tempId">
+                    <div class="q-header">
+                        <span class="q-number">{{ i + 1 }}</span>
+                        <div class="q-info">
+                            <h4 class="q-text">{{ q.question_text }}</h4>
+                            <div class="q-tags">
+                                <span class="tag type">{{ q.question_type === QuestionType.SINGLE ? '單選' :
+                                    q.question_type === QuestionType.MULTIPLE ? '多選' : '簡答' }}</span>
+                                @if (q.is_required) { <span class="tag required">必填</span> }
+                            </div>
+                        </div>
+
+                        <div class="q-actions">
+                            <button class="btn-icon" (click)="editQuestion(q)">
+                                <lucide-icon [img]="icons.Edit" [size]="18"></lucide-icon>
+                            </button>
+                            <button class="btn-icon danger" (click)="confirmDelete(q.tempId)">
+                                <lucide-icon [img]="icons.Trash2" [size]="18"></lucide-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (q.question_type !== QuestionType.TEXT) {
+                    <div class="q-options">
+                        @for (opt of q.options; track $index) {
+                        <span class="opt-dot">{{ opt.option_text }}</span>
+                        }
+                    </div>
+                    }
+                </div>
+                }
+                }
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn-outline" (click)="prevStep.emit()">
+                    <lucide-icon [img]="icons.ArrowLeft" [size]="16"></lucide-icon> 上一步
+                </button>
+                <button class="btn-main" (click)="onNext()">
+                    下一步：預覽確認 <lucide-icon [img]="icons.ArrowRight" [size]="16"></lucide-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-confirm-dialog [isOpen]="showDeleteDialog()" title="刪除題目" message="確定要刪除這個題目嗎？此動作無法復原。" confirmType="danger"
+    confirmText="確認刪除" (confirmEvent)="executeDelete()" (cancelEvent)="showDeleteDialog.set(false)">
+</app-confirm-dialog>

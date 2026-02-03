@@ -1,0 +1,40 @@
+<div class="pagination-container">
+    <!-- 總筆數顯示（可選） -->
+    @if (showTotalItems()) {
+    <span class="total-items">共 {{ totalItems() }} 筆</span>
+    }
+
+    <!-- 分頁控制區 -->
+    <div class="pagination-controls">
+        <!-- 上一頁按鈕 -->
+        <button class="nav-btn" [class.disabled]="isFirstPage()" [disabled]="isFirstPage()" (click)="goToPrevious()"
+            aria-label="上一頁">
+            <lucide-icon [img]="icons.chevronLeft" [size]="18"></lucide-icon>
+        </button>
+
+        <!-- 頁碼顯示 -->
+        <span class="page-info">
+            第 <strong>{{ currentPage() }}</strong> 頁 / 共 <strong>{{ totalPages() }}</strong> 頁
+        </span>
+
+        <!-- 下一頁按鈕 -->
+        <button class="nav-btn" [class.disabled]="isLastPage()" [disabled]="isLastPage()" (click)="goToNext()"
+            aria-label="下一頁">
+            <lucide-icon [img]="icons.chevronRight" [size]="18"></lucide-icon>
+        </button>
+    </div>
+
+    <!-- 跳轉功能（可選） -->
+    @if (showJumpTo() && totalPages() > 1) {
+    <div class="jump-to">
+        <span class="jump-label">跳轉到第</span>
+        <select class="page-select" [value]="currentPage()" (change)="onJumpToPageChange($event)">
+            @for (page of pageOptions(); track page) {
+            <option [value]="page" [selected]="page === currentPage()">{{ page }}</option>
+            }
+        </select>
+        <span class="jump-label">頁</span>
+        <button class="jump-btn" (click)="jumpTo()">前往</button>
+    </div>
+    }
+</div>

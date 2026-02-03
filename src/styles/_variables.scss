@@ -1,0 +1,92 @@
+// 全域顏色設定
+
+// === 主題色 ===
+$main:#720026;               // 酒紅色（主色）
+$main-dark:#4f000b;          // 深紅色
+$secondary: #ce4257;         // 玫瑰紅（次要）
+$accent: #ff7f51;            // 橘紅色（強調）
+$accent-light: #ff9b54;      // 淺橘色
+
+
+// === 背景色 ===
+$bg-cream: #faf8f3;          // 米白背景（主要）
+$bg-light: #f5f0e8;          // 淺米色
+$bg-card: #ffffff;           // 卡片背景
+$bg-input: #fff8f0;          // 輸入框背景
+
+// === 文字色彩 ===
+$text-main: #4a4a4a;      // 主要文字
+$text-secondary: #6b6b6b;    // 次要文字
+$text-muted: #999999;        // 輔助文字
+$text-light: #ffffff;        // 亮色文字
+
+// === 狀態色彩 ===
+$success: #4CAF50;           // 成功（綠色）
+$warning: #FF9800;           // 警告（橙色）
+$error: #F44336;             // 錯誤（紅色）
+$info: #2196F3;              // 資訊（藍色）
+
+// === 問卷狀態色彩 ===
+$status-active: #4CAF50;     // 進行中（綠色）
+$status-not-started: #9e9e9e;// 未開始（灰色）
+$status-closed: #9e9e9e;     // 已結束（灰色）
+
+// === 邊框色彩 ===
+$border-color: #e0d5c7;      // 預設邊框
+$border-light: #f0e8dc;      // 淺色邊框
+$border-focus: $main;     // 聚焦邊框
+
+
+// === 陰影 ===
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+// === 字體 ===
+$font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// === 字體大小 ===
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+
+// === 間距 ===
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// === 圓角 ===
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 50%;
+
+
+// === 側邊欄 ===
+$sidebar-width: 60px;
+$sidebar-expanded-width: 180px;
+
+// === 斷點 ===
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// === 動畫時間 ===
+$transition-fast: 0.15s;
+$transition-normal: 0.3s;
+$transition-slow: 0.5s;
+
+// === Z-index 層級 ===
+$z-sidebar: 100;
+$z-modal-backdrop: 200;
+$z-modal: 300;
+$z-toast: 400;

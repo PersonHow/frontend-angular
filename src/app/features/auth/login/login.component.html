@@ -1,0 +1,86 @@
+<div class="login-container">
+    <!-- 左邊放圖片 -->
+    <div class="illustration-section">
+        <div class="illustration-content">
+            <!-- 圖片跟 SVG 的家 -->
+            <div class="illustration-placeholder">
+                <div class="survey-icon">
+                    <h2>動態問卷系統</h2>
+                    <p>歡迎回來</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 右邊是表單 -->
+    <div class="form-section">
+        <div class="form-container">
+            <h1 class="form-title">Login</h1>
+            <p class="form-subtitle">Sign In to Continue</p>
+
+            <!-- 錯誤訊息跳出來 -->
+            @if(errorMessage()){
+            <div class="error-alert">
+                {{errorMessage()}}
+            </div>
+            }
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <!-- Email 的部分 -->
+                <div class="form-group">
+                    <label for="email">e-mail</label>
+                    <input type="email" id="email" formControlName="email" 
+                    placeholder="請輸入電子信箱"    [class.error]="getFieldError('email')" />
+                    @if(getFieldError('email')){
+                    <span class="error-message">{{getFieldError('email') }} </span>
+                    }
+                </div>
+                <!-- 密碼的部分 -->
+                <div class="form-group">
+                    <label for="password">Password(8 - 12 字)</label>
+                    <div class="password-input-wrapper">
+                        <input [type]="showPassword() ? 'text' : 'password' " 
+                        id="password" formControlName="password"
+                        placeholder="請輸入密碼" [class.error]="getFieldError('password')" 
+                        />
+
+                        <button type="button" class="password-toggle" 
+                        (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="showPassword() ? '隱藏密碼' : '顯示密碼' ">
+                        @if(showPassword()){
+                            <span class="icon"></span>
+                        }@else {
+                            <span class="icon"></span>
+                        }
+                        </button>
+                        
+                    </div>
+                    @if(getFieldError('password')){
+                            <span class="error-message">{{ getFieldError('password') }} </span>
+                        }
+                </div>
+                <!-- 登入按鈕的部分 -->
+                <button
+                    type="submit"
+                    class="btn-main"
+                    [disabled]="isSubmitting()">
+                    @if(isSubmitting()){
+                        <span>登入中...</span>
+                    }@else{
+                        <span>Login</span>
+                    }
+                </button>
+
+                <!-- 註冊的部分 -->
+                <div class="form-footer">
+                    <p>沒有帳號嗎？</p>
+                    <a [routerLink]="ROUTES.REGISTER" class="link-main">
+                        創建帳號
+                    </a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

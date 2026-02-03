@@ -1,0 +1,43 @@
+@if(isOpen()){
+    <div class="dialog-overlay" (click)="OnOverlayClick()">
+        <div class="dialog-container" (click)="onDialogClick($event)">
+            <!-- 彈出視窗的部分 -->
+            <div class="dialog-content">
+                <!-- 標題 -->
+                <div class="dialog-title">
+                    {{title()}}
+                </div>
+
+                <!-- 訊息 -->
+                @if(message()){
+                    <div class="dialog-message">
+                        {{message()}}
+                    </div>
+                }
+
+
+            </div>
+            <!-- 按鈕的部分 -->
+            <div class="dialog-actions">
+                <!-- 取消按鈕 -->
+                <button 
+                class="btn btn-cancel"
+                type="button"
+                (click)="OnCancel()"
+                >
+                    {{ cancelText() }}
+                </button>
+            
+                <!-- 確認按鈕 -->
+                <button
+                type="button"
+                [ngClass]="confirmButtonTypes"
+                (click)="OnConfirm()"
+                >
+                    {{ confirmText() }}
+                </button>
+            </div>
+
+        </div>
+    </div>
+}

@@ -1,0 +1,139 @@
+<div class="register-container">
+    <!-- 左邊放圖片 -->
+    <div class="illustration-section">
+        <div class="illustration-content">
+            <div class="illustration-placeholder">
+                <div class="survey-icon">
+                    <h2>動態問卷系統</h2>
+                    <p>建立新帳號</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右邊是表單 -->
+    <div class="form-section">
+        <div class="form-container">
+            <h1 class="form-title">Registration</h1>
+            <p class="form-subtitle">
+                <a [routerLink]="ROUTES.LOGIN" class="link-main">back to login</a>
+            </p>
+
+            <!-- 錯誤訊息跳出來 -->
+            @if(errorMessage()){
+            <div class="error-alert">
+                {{errorMessage()}}
+            </div>
+            }
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <!-- 姓名 -->
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        formControlName="name"
+                        placeholder="測試人員"
+                        [class.error]="getFieldError('name')" 
+                    />
+                    @if(getFieldError('name')){
+                    <span class="error-message">{{getFieldError('name')}}</span>
+                    }
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">信箱</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        formControlName="email"
+                        placeholder="test@mail"
+                        [class.error]="getFieldError('email')" 
+                    />
+                    @if(getFieldError('email')){
+                    <span class="error-message">{{getFieldError('email')}}</span>
+                    }
+                </div>
+
+                <!-- 性別 -->
+                <div class="form-group">
+                    <label>性別</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" formControlName="sex" value="MALE" />
+                            <span>男</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" formControlName="sex" value="FEMALE" />
+                            <span>女</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" formControlName="sex" value="OTHER" />
+                            <span>其他</span>
+                        </label>
+                    </div>
+                    @if(getFieldError('sex')){
+                    <span class="error-message">{{getFieldError('sex')}}</span>
+                    }
+                </div>
+
+                <!-- 密碼 -->
+                <div class="form-group">
+                    <label for="password">密碼(8 - 12 字)</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            [type]="showPassword() ? 'text' : 'password'" 
+                            id="password" 
+                            formControlName="password"
+                            placeholder="12345678"
+                            [class.error]="getFieldError('password')" 
+                        />
+                        <button 
+                            type="button" 
+                            class="password-toggle"
+                            (click)="togglePasswordVisibility()"
+                            [attr.aria-label]="showPassword() ? '隱藏密碼' : '顯示密碼'">
+                            @if(showPassword()){
+                            <span class="icon"></span>
+                            }@else{
+                            <span class="icon"></span>
+                            }
+                        </button>
+                    </div>
+                    @if(getFieldError('password')){
+                    <span class="error-message">{{getFieldError('password')}}</span>
+                    }
+                </div>
+
+                <!-- 手機 -->
+                <div class="form-group">
+                    <label for="phone">手機</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        formControlName="phone"
+                        placeholder="0900111222"
+                        [class.error]="getFieldError('phone')" 
+                    />
+                    @if(getFieldError('phone')){
+                    <span class="error-message">{{getFieldError('phone')}}</span>
+                    }
+                </div>
+
+                <!-- 註冊按鈕 -->
+                <button
+                    type="submit"
+                    class="btn-main"
+                    [disabled]="isSubmitting()">
+                    @if(isSubmitting()){
+                    <span>註冊中...</span>
+                    }@else{
+                    <span>register</span>
+                    }
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

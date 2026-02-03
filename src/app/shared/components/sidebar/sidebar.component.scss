@@ -1,0 +1,81 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background-color: $main; // 使用全域變數
+    @include flex-column; // 使用 Mixin
+    padding: 1.5rem 0.75rem;
+    gap: 1rem;
+    z-index: 1000;
+    box-shadow: $shadow-md;
+}
+
+.sidebar-btn {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    @include flex-center; // 使用 Mixin
+    background-color: $secondary;
+    color: $text-light;
+    border: none;
+    border-radius: $border-radius-lg;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: $shadow-sm;
+    transition: all $transition-normal ease;
+
+    .material-icons {
+        font-size: 2rem;
+        transition: transform $transition-normal ease;
+    }
+
+    .label {
+        position: absolute;
+        left: 80px;
+        background-color: $secondary;
+        color: $text-light;
+        padding: 0.75rem 1.25rem;
+        border-radius: $border-radius-md;
+        white-space: nowrap;
+        font-size: $font-size-base;
+        font-weight: 500;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-10px);
+        transition: all $transition-normal ease;
+        box-shadow: $shadow-md;
+        pointer-events: none;
+        z-index: 1001; // 確保標籤在最上層
+    }
+
+    &:hover {
+        transform: translateX(2px);
+        box-shadow: $shadow-md;
+        background-color: lighten($secondary, 5%);
+
+        .material-icons {
+            transform: scale(1.1);
+        }
+
+        .label {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+    }
+
+    &.active {
+        background-color: $bg-cream;
+        color: $main;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .label {
+            background-color: $main;
+            color: $bg-cream;
+        }
+    }
+}

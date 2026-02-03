@@ -1,0 +1,127 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: $bg-cream;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 80px; // 配合 Sidebar 寬度
+    padding: $spacing-xl;
+
+    @include mobile {
+        margin-left: 0;
+        padding-top: 80px; // 手機版 Sidebar 在上方
+    }
+}
+
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+// === Page Header & Stepper ===
+.page-header {
+    margin-bottom: $spacing-xl;
+    text-align: center;
+}
+
+.page-title {
+    font-size: $font-size-2xl;
+    color: $main;
+    margin-bottom: $spacing-lg;
+    font-weight: bold;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    cursor: pointer; // 允許點擊回去修改
+
+    &.active {
+        .step-circle {
+            background-color: $main;
+            color: #fff;
+            border-color: $main;
+        }
+
+        .step-label {
+            color: $main;
+            font-weight: bold;
+        }
+    }
+
+    // 當前步驟放大一點
+    &.current {
+        .step-circle {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba($main, 0.3);
+        }
+    }
+}
+
+.step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid $text-muted;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.step-label {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    transition: all 0.3s ease;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background-color: $border-color;
+    margin: 0 10px 24px 10px; // 調整位置對齊圓圈
+}
+
+// === Loading Overlay ===
+.loading-overlay {
+    @include overlay; // 使用 mixin
+    @include flex-column-center;
+    color: #fff;
+    z-index: 2000;
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: $spacing-md;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

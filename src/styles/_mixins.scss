@@ -1,0 +1,280 @@
+// ============================================
+// 動態問卷系統 - SCSS Mixins
+// ============================================
+
+@use './variables' as *;
+
+// === Flexbox ===
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-column-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// === 按鈕樣式 ===
+@mixin btn-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-base;
+    font-weight: 500;
+    border-radius: $border-radius-md;
+    border: none;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+    text-decoration: none;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+@mixin btn-main {
+    @include btn-base;
+    background-color: $main;
+    color: $text-light;
+
+    &:hover:not(:disabled) {
+        background-color: darken($main, 8%);
+    }
+
+    &:active:not(:disabled) {
+        background-color: darken($main, 12%);
+    }
+}
+
+@mixin btn-secondary {
+    @include btn-base;
+    background-color: #888;
+    color: $text-light;
+
+    &:hover:not(:disabled) {
+        background-color: #777;
+    }
+}
+
+@mixin btn-outline {
+    @include btn-base;
+    background-color: transparent;
+    color: $main;
+    border: 1px solid $main;
+
+    &:hover:not(:disabled) {
+        background-color: rgba($main, 0.05);
+    }
+}
+
+@mixin btn-link {
+    @include btn-base;
+    background: none;
+    color: $main;
+    padding: $spacing-xs;
+    text-decoration: underline;
+
+    &:hover:not(:disabled) {
+        color: darken($main, 10%);
+    }
+}
+
+// === 輸入框樣式 ===
+@mixin input-base {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-base;
+    font-family: $font-family;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    background-color: $bg-input;
+    color: $text-main;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &::placeholder {
+        color: $text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $main;
+        box-shadow: 0 0 0 3px rgba($main, 0.1);
+    }
+
+    &:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+
+    &.error {
+        border-color: $error;
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba($error, 0.1);
+        }
+    }
+}
+
+// === 卡片樣式 ===
+@mixin card {
+    background-color: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    padding: $spacing-lg;
+}
+
+@mixin card-hover {
+    @include card;
+    transition: box-shadow $transition-fast, transform $transition-fast;
+
+    &:hover {
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+// === 表格樣式 ===
+@mixin table-base {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: $spacing-sm $spacing-md;
+        text-align: left;
+        border-bottom: 1px solid $border-light;
+    }
+
+    th {
+        background-color: $main;
+        color: $text-light;
+        font-weight: 500;
+    }
+
+    tbody tr:hover {
+        background-color: rgba($main, 0.03);
+    }
+}
+
+// === 響應式斷點 ===
+@mixin mobile {
+    @media (max-width: #{$breakpoint-md - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: $breakpoint-lg) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media (min-width: $breakpoint-md) {
+        @content;
+    }
+}
+
+// === 文字截斷 ===
+@mixin text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin text-truncate-lines($lines) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// === 滾動條樣式 ===
+@mixin custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $bg-light;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: darken($border-color, 10%);
+        border-radius: 3px;
+
+        &:hover {
+            background: darken($border-color, 20%);
+        }
+    }
+}
+
+// === 遮罩層 ===
+@mixin overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: $z-modal-backdrop;
+}
+
+// === 狀態標籤 ===
+@mixin status-badge($color) {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color;
+    background-color: rgba($color, 0.1);
+    border-radius: $border-radius-sm;
+}
+
+// === 表單組 ===
+@mixin form-group {
+    margin-bottom: $spacing-md;
+
+    label {
+        display: block;
+        margin-bottom: $spacing-xs;
+        font-weight: 500;
+        color: $text-main;
+    }
+
+    .error-message {
+        margin-top: $spacing-xs;
+        font-size: $font-size-sm;
+        color: $error;
+    }
+}

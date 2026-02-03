@@ -1,0 +1,97 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.pagination-container {
+    @include flex-center;
+    gap: 1.5rem;
+    padding: $spacing-md 0;
+    flex-wrap: wrap;
+}
+
+.total-items {
+    color: $text-muted;
+    font-size: $font-size-sm;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-btn {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border: 2px solid $main;
+    border-radius: $border-radius-md;
+    background-color: transparent;
+    color: $main;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+
+    &:hover:not(.disabled) {
+        background-color: $main;
+        color: $text-light;
+    }
+
+    &:active:not(.disabled) {
+        transform: scale(0.95);
+    }
+
+    &.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        border-color: $border-color;
+        color: $text-muted;
+        background-color: transparent; // 確保 disabled 時背景透明
+    }
+}
+
+.page-info {
+    font-size: $font-size-base;
+    color: $text-main;
+    white-space: nowrap;
+    min-width: 100px;
+    text-align: center;
+
+    strong {
+        color: $main;
+        font-weight: 600;
+        margin: 0 4px;
+    }
+}
+
+.jump-to {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.jump-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+}
+
+.page-select {
+    height: 32px;
+    padding: 0 0.5rem;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    background-color: $bg-card;
+    color: $text-main;
+    font-size: $font-size-sm;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+        border-color: $secondary;
+    }
+
+    &:focus {
+        border-color: $main;
+        box-shadow: 0 0 0 2px rgba($main, 0.1);
+    }
+}

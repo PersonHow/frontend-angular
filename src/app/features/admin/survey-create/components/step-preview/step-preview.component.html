@@ -1,0 +1,74 @@
+<div class="preview-container">
+
+    <div class="card survey-header">
+        <div class="header-top">
+            <h2 class="title">{{ surveyData().title }}</h2>
+            <button class="btn-edit" (click)="editStep.emit(1)" title="編輯基本資料">
+                <lucide-icon [img]="icons.Edit" [size]="18"></lucide-icon>
+            </button>
+        </div>
+
+        <p class="description">{{ surveyData().description || '無詳細說明' }}</p>
+
+        <div class="meta-info">
+            <div class="meta-item">
+                <lucide-icon [img]="icons.Calendar" [size]="16"></lucide-icon>
+                <span>{{ surveyData().start_date }} ~ {{ surveyData().end_date }}</span>
+            </div>
+            <div class="meta-item">
+                <lucide-icon [img]="icons.FileText" [size]="16"></lucide-icon>
+                <span>共 {{ surveyData().questions.length }} 題</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card questions-preview">
+        <div class="section-header">
+            <h3>題目內容</h3>
+            <button class="btn-text" (click)="editStep.emit(2)">返回修改題目</button>
+        </div>
+
+        <div class="questions-list">
+            @for (q of surveyData().questions; track $index) {
+            <div class="question-item">
+                <div class="q-title">
+                    <span class="index">{{ $index + 1 }}.</span>
+                    <span class="text">{{ q.question_text }}</span>
+                    @if (q.is_required) { <span class="required-badge">*</span> }
+                </div>
+
+                <div class="q-body">
+                    @if (q.question_type === QuestionType.SINGLE || q.question_type === QuestionType.MULTIPLE) {
+                    <div class="options-grid">
+                        @for (opt of q.options; track $index) {
+                        <div class="option-item">
+                            <div class="fake-control" [class.radio]="q.question_type === QuestionType.SINGLE"></div>
+                            <span>{{ opt.option_text }}</span>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    @if (q.question_type === QuestionType.TEXT) {
+                    <div class="text-placeholder">
+                        簡答文字輸入區...
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="btn-secondary" (click)="onSave(SurveyStatus.NOT_STARTED)">
+            <lucide-icon [img]="icons.Save" [size]="18"></lucide-icon>
+            僅儲存 (未開始)
+        </button>
+
+        <button class="btn-primary" (click)="onSave(SurveyStatus.ACTIVE)">
+            <lucide-icon [img]="icons.CheckCircle" [size]="18"></lucide-icon>
+            儲存並發佈
+        </button>
+    </div>
+</div>
