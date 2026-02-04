@@ -1,0 +1,90 @@
+<div class="app-container">
+
+    @if (isMember()) {
+    <app-sidebar mode="member"></app-sidebar>
+    }
+
+    <main class="main-content" [class.with-sidebar]="isMember()">
+
+        @if (!isLoggedIn()) {
+        <header class="public-header">
+            <div class="brand">動態問卷系統</div>
+            <a routerLink="/login" class="btn btn-outline btn-sm">
+                <lucide-icon [img]="icons.LogIn" [size]="16"></lucide-icon>
+                會員登入
+            </a>
+        </header>
+        }
+
+        <div class="content-wrapper">
+
+            <div class="page-header">
+                <h1 class="page-title">公開問卷列表</h1>
+                <p class="page-subtitle">歡迎參加我們的問卷調查，您的意見對我們很重要。</p>
+            </div>
+
+            <app-search-bar [fields]="searchFields" (search)="onSearch($event)" (reset)="onReset()">
+            </app-search-bar>
+
+            <div class="card table-container">
+                @if (isLoading()) {
+                <div class="loading-state">載入中...</div>
+                } @else if (surveys().length === 0) {
+                <div class="empty-state">
+                    <lucide-icon [img]="icons.FileText" [size]="48" class="text-muted"></lucide-icon>
+                    <p>目前沒有公開的問卷</p>
+                </div>
+                } @else {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="80">編號</th>
+                            <th>問卷名稱</th>
+                            <th width="100">狀態</th>
+                            <th width="120">開始日期</th>
+                            <th width="120">結束日期</th>
+                            <th width="120">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of surveys(); track item.id) {
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>
+                                <div class="survey-name">{{ item.title }}</div>
+                            </td>
+                            <td>
+                                <span class="status-badge" [ngClass]="statusConfig[item.status].cssClass">
+                                    {{ statusConfig[item.status].label }}
+                                </span>
+                            </td>
+                            <td class="text-muted">{{ item.start_date }}</td>
+                            <td class="text-muted">{{ item.end_date }}</td>
+                            <td>
+                                @if (canFill(item)) {
+                                <a [routerLink]="['/surveys', item.id, 'fill']" class="btn btn-main btn-sm">
+                                    <lucide-icon [img]="icons.PenTool" [size]="14"></lucide-icon>
+                                    填寫
+                                </a>
+                                } @else {
+                                <button class="btn btn-disabled btn-sm" disabled>
+                                    {{ item.status === SurveyStatus.NOT_STARTED ? '未開始' : '已結束' }}
+                                </button>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+            </div>
+
+            <div class="pagination-wrapper">
+                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" 
+                [totalItems]="totalElements()" [showTotalItems]="true" (pageChange)="onPageChange($event)">
+                </app-pagination>
+            </div>
+
+        </div>
+    </main>
+</div>

@@ -76,6 +76,7 @@ export interface CreateSurveyRequest {
     description: string;
     start_date: string;
     end_date: string;
+    status:string;
     questions: CreateQuestionRequest[];
 }
 

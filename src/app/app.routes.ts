@@ -26,12 +26,12 @@ export const routes: Routes = [
     {
         path: "surveys",
         loadComponent: () => import('./features/public/survey-list/survey-list.component')
-            .then(m => m.PublicSurveyListComponent),
+            .then(m => m.SurveyListComponent),
     },
     {
         path: "surveys/:id/fill",
         loadComponent: () => import('./features/public/survey-fill/survey-fill.component')
-            .then(m => m.PublicSurveyFillComponent),
+            .then(m => m.SurveyFillComponent),
     },
     // === 管理員頁面 ===
     {
@@ -53,26 +53,26 @@ export const routes: Routes = [
                 loadComponent: () => import('./features/admin/survey-create/survey-create.component')
                     .then(m => m.SurveyCreateComponent)
             },
-            {
-                path: 'surveys/:id',
-                loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
-                    .then(m => m.SurveyEditComponent)
-            },
-            {
-                path: 'surveys/:id/edit',
-                loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
-                    .then(m => m.SurveyEditComponent)
-            },
-            {
-                path: 'surveys/:id/results',
-                loadComponent: () => import('./features/admin/survey-results/survey-results.component')
-                    .then(m => m.SurveyResultsComponent)
-            },
-            {
-                path: 'responses/:id',
-                loadComponent: () => import('./features/admin/response-detail/response-detail.component')
-                    .then(m => m.ResponseDetailComponent)
-            }
+            // {
+            //     path: 'surveys/:id',
+            //     loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
+            //         .then(m => m.SurveyEditComponent)
+            // },
+            // {
+            //     path: 'surveys/:id/edit',
+            //     loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
+            //         .then(m => m.SurveyEditComponent)
+            // },
+            // {
+            //     path: 'surveys/:id/results',
+            //     loadComponent: () => import('./features/admin/survey-results/survey-results.component')
+            //         .then(m => m.SurveyResultsComponent)
+            // },
+            // {
+            //     path: 'responses/:id',
+            //     loadComponent: () => import('./features/admin/response-detail/response-detail.component')
+            //         .then(m => m.ResponseDetailComponent)
+            // }
         ]
     },
     // === 會員頁面 ===
@@ -85,21 +85,21 @@ export const routes: Routes = [
                 redirectTo: 'responses',
                 pathMatch: 'full'
             },
-            {
-                path: 'responses',
-                loadComponent: () => import('./features/member/response-history/response-history.component')
-                    .then(m => m.ResponseHistoryComponent)
-            },
-            {
-                path: 'responses/:id',
-                loadComponent: () => import('./features/member/response-history/response-history.component')
-                    .then(m => m.ResponseHistoryComponent)
-            },
-            {
-                path: 'profile',
-                loadComponent: () => import('./features/member/profile/profile.component')
-                    .then(m => m.ProfileComponent)
-            }
+            // {
+            //     path: 'responses',
+            //     loadComponent: () => import('./features/member/response-history/response-history.component')
+            //         .then(m => m.ResponseHistoryComponent)
+            // },
+            // {
+            //     path: 'responses/:id',
+            //     loadComponent: () => import('./features/member/response-history/response-history.component')
+            //         .then(m => m.ResponseHistoryComponent)
+            // },
+            // {
+            //     path: 'profile',
+            //     loadComponent: () => import('./features/member/profile/profile.component')
+            //         .then(m => m.ProfileComponent)
+            // }
         ]
     },
 

@@ -20,9 +20,9 @@
 }
 
 .field-wrapper {
-    flex: 1;
-    min-width: 200px;
+    
 }
+
 
 .search-input {
     width: 100%;
@@ -33,15 +33,26 @@
     transition: all $transition-fast ease;
     background-color: $bg-cream;
     color: $text-main;
+    cursor: pointer;
 
     &:focus {
         outline: none;
         border-color: $secondary;
         background-color: $bg-card;
+        box-shadow: 0 0 0 2px rgba($accent, 0.4);
     }
 
     &::placeholder {
         color: $text-muted;
+    }
+
+    &[type='date']{
+        min-width: 100px;
+    }
+
+
+    &[type='text']{
+        min-width:500px;
     }
 }
 

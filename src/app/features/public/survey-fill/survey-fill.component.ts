@@ -18,7 +18,7 @@ import { VALIDATION } from '../../../shared/constants/app.constants';
     templateUrl: './survey-fill.component.html',
     styleUrls: ['./survey-fill.component.scss']
 })
-export class PublicSurveyFillComponent implements OnInit {
+export class SurveyFillComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private apiService = inject(ApiService);

@@ -1,0 +1,154 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.app-container {
+    min-height: 100vh;
+    background-color: $bg-cream;
+    display: flex;
+}
+
+// 根據是否有 Sidebar 調整 Margin
+.main-content {
+    flex: 1;
+    width: 100%;
+    transition: margin-left 0.3s ease;
+
+    // 會員模式：留出 Sidebar 空間
+    &.with-sidebar {
+        margin-left: 80px;
+        padding: $spacing-xl;
+
+        @include mobile {
+            margin-left: 0;
+            padding-top: 80px;
+        }
+    }
+
+    // 訪客模式：居中顯示
+    &:not(.with-sidebar) {
+        margin-left: 0;
+        padding: 0; // Padding 交給 content-wrapper 或 header 處理
+    }
+}
+
+// 訪客 Header
+.public-header {
+    background-color: #fff;
+    padding: $spacing-md $spacing-xl;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: $shadow-sm;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .brand {
+        font-size: $font-size-xl;
+        font-weight: bold;
+        color: $main;
+    }
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: $spacing-xl;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+.page-header {
+    margin-bottom: $spacing-lg;
+    text-align: center;
+}
+
+.page-title {
+    font-size: $font-size-2xl;
+    color: $main;
+    margin-bottom: $spacing-xs;
+}
+
+.page-subtitle {
+    color: $text-secondary;
+}
+
+// 表格樣式
+.table-container {
+    overflow-x: auto;
+    margin-bottom: $spacing-lg;
+    min-height: 400px;
+
+    .table {
+        @include table-base;
+
+        .survey-name {
+            font-weight: 500;
+            color: $text-main;
+        }
+    }
+}
+
+// 狀態標籤
+.status-badge {
+    @include status-badge($text-muted); // 預設樣式
+
+    &.status-active {
+        background-color: rgba($success, 0.1);
+        color: $success;
+    }
+
+    &.status-not-started,
+    &.status-closed {
+        background-color: $bg-light;
+        color: $text-muted;
+    }
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+// 按鈕微調
+.btn {
+    @include btn-base;
+    display: inline-flex;
+    gap: 6px;
+}
+
+.btn-main {
+    @include btn-main;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid $border-color;
+    color: $main;
+
+    &:hover {
+        border-color: $main;
+    }
+}
+
+.btn-disabled {
+    background: $bg-light;
+    color: $text-muted;
+    border: 1px solid transparent;
+    cursor: not-allowed;
+}
+
+.btn-sm {
+    padding: 4px 12px;
+    font-size: $font-size-sm;
+}
+
+.loading-state,
+.empty-state {
+    @include flex-column-center;
+    padding: 60px 0;
+    color: $text-muted;
+    gap: $spacing-md;
+}
