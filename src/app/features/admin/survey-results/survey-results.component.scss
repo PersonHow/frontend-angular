@@ -1,0 +1,119 @@
+// src/app/features/admin/survey-results/survey-results.component.scss
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.results-container {
+    padding: $spacing-lg;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-section {
+    margin-bottom: $spacing-lg;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: $text-secondary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-sm;
+
+    &:hover {
+        color: $main;
+    }
+}
+
+.title-row {
+    @include flex-between; // 使用 mixin 讓標題與按鈕分開
+    flex-wrap: wrap;
+    gap: $spacing-md;
+}
+
+.title-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.page-title {
+    font-size: $font-size-2xl;
+    color: $main;
+    margin: 0;
+
+    .text-muted {
+        color: $text-muted;
+        font-weight: normal;
+    }
+}
+
+.stats-badge {
+    background-color: $bg-light;
+    color: $text-secondary;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: $font-size-sm;
+    font-weight: 500;
+}
+
+.table-wrapper {
+    background: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    min-height: 400px;
+}
+
+.table {
+    @include table-base; // 引用全域表格樣式
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    color: $main;
+    transition: background 0.2s;
+
+    &:hover {
+        background-color: $bg-light;
+    }
+}
+
+.btn-outline {
+    @include btn-base;
+    background: white;
+    border: 1px solid $border-color;
+    color: $text-secondary;
+    gap: 6px;
+
+    &:hover {
+        border-color: $main;
+        color: $main;
+    }
+}
+
+.loading-state,
+.empty-state {
+    @include flex-column-center;
+    padding: 60px 0;
+    color: $text-muted;
+    gap: $spacing-sm;
+}
+
+.pagination-section {
+    margin-top: $spacing-lg;
+    display: flex;
+    justify-content: flex-end;
+}

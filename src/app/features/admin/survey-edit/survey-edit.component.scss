@@ -1,0 +1,240 @@
+@use '../../../../styles/variables' as * ;
+@use '../../../../styles/mixins' as * ;
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    background: $bg-cream;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 80px;
+    padding: $spacing-xl;
+
+    @include mobile {
+        margin-left: 0;
+        padding: $spacing-md;
+    }
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+// ============================================
+// 頁面標題區
+// ============================================
+.page-header {
+    margin-bottom: $spacing-xl;
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: $main;
+        margin: 0 0 $spacing-lg 0;
+
+        @include mobile {
+            font-size: 24px;
+        }
+    }
+}
+
+// ============================================
+// 步驟指示器
+// ============================================
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md;
+    padding: $spacing-lg 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    @include mobile {
+        gap: $spacing-sm;
+        padding: $spacing-md;
+    }
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+
+    &.active {
+        .step-circle {
+            background: $main;
+            color: white;
+            border-color: $main;
+        }
+
+        .step-label {
+            color: $main;
+            font-weight: 600;
+        }
+    }
+
+    &.current {
+        .step-circle {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba($main, 0.15);
+        }
+    }
+
+    &:not(.active) {
+        opacity: 0.5;
+    }
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid $border;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: $text-secondary;
+    transition: all 0.3s ease;
+
+    @include mobile {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+.step-label {
+    font-size: 14px;
+    color: $text-secondary;
+    transition: all 0.3s ease;
+
+    @include mobile {
+        font-size: 12px;
+    }
+}
+
+.step-line {
+    width: 80px;
+    height: 2px;
+    background: $border;
+    flex-shrink: 0;
+
+    @include mobile {
+        width: 40px;
+    }
+}
+
+// ============================================
+// 步驟內容區
+// ============================================
+.step-content {
+    margin-top: $spacing-lg;
+}
+
+// ============================================
+// 載入中卡片
+// ============================================
+.loading-card {
+    @include card;
+    text-align: center;
+    padding: $spacing-2xl;
+
+    .spinner {
+        @include spinner;
+        margin: 0 auto $spacing-md auto;
+    }
+
+    p {
+        color: $text-secondary;
+        font-size: 16px;
+    }
+}
+
+// ============================================
+// 錯誤卡片
+// ============================================
+.error-card {
+    @include card;
+    text-align: center;
+    padding: $spacing-2xl;
+    border: 2px solid $error;
+
+    h3 {
+        color: $error;
+        font-size: 20px;
+        margin: 0 0 $spacing-md 0;
+    }
+
+    p {
+        color: $text-main;
+        margin: 0 0 $spacing-lg 0;
+        font-size: 16px;
+    }
+
+    .btn-main {
+        @include btn-main;
+    }
+}
+
+// ============================================
+// 警告橫幅
+// ============================================
+.warning-banner {
+    @include card;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+    padding: $spacing-md $spacing-lg;
+    margin-top: $spacing-lg;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    strong {
+        font-weight: 600;
+    }
+}
+
+// ============================================
+// 提交中遮罩
+// ============================================
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    .spinner {
+        @include spinner;
+        width: 60px;
+        height: 60px;
+        border-width: 4px;
+        margin-bottom: $spacing-md;
+    }
+
+    p {
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+    }
+}

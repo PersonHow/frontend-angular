@@ -88,13 +88,18 @@
                                 </div>
                             </td>
                             <td>
-                                @if (survey.response_count > 0) {
-                                <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn-link">
-                                    結果
-                                </a>
-                                } @else {
-                                <span class="text-muted">-</span>
-                                }
+                                <div class="flex gap-2"> 
+                                    @if (survey.response_count > 0) {
+                                    <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn-link" title="回覆列表">
+                                        列表
+                                    </a>
+                                    <a [routerLink]="['/admin/surveys', survey.id, 'statistics']" class="btn-link text-main" title="統計圖表">
+                                        <lucide-icon [img]="icons.PieChart" [size]="18"></lucide-icon>
+                                    </a>
+                                    } @else {
+                                    <span class="text-muted">-</span>
+                                    }
+                                </div>
                             </td>
                         </tr>
                         }

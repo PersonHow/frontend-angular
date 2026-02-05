@@ -63,16 +63,21 @@ export const routes: Routes = [
             //     loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
             //         .then(m => m.SurveyEditComponent)
             // },
-            // {
-            //     path: 'surveys/:id/results',
-            //     loadComponent: () => import('./features/admin/survey-results/survey-results.component')
-            //         .then(m => m.SurveyResultsComponent)
-            // },
-            // {
-            //     path: 'responses/:id',
-            //     loadComponent: () => import('./features/admin/response-detail/response-detail.component')
-            //         .then(m => m.ResponseDetailComponent)
-            // }
+            {
+                path: 'surveys/:id/results',
+                loadComponent: () => import('./features/admin/survey-results/survey-results.component')
+                    .then(m => m.SurveyResultsComponent)
+            },
+            {
+                path: 'responses/:id',
+                loadComponent: () => import('./features/admin/response-detail/response-detail.component')
+                    .then(m => m.ResponseDetailComponent)
+            },
+            {
+                path:'surveys/:id/statistics',
+                loadComponent: () => import('./features/admin/survey-statistics/survey-statistics.component')
+                    .then(m => m.SurveyStatisticsComponent)
+            }
         ]
     },
     // === 會員頁面 ===

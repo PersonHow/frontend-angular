@@ -1,0 +1,78 @@
+<div class="results-container">
+
+    <div class="header-section">
+        <div class="breadcrumb">
+            <a routerLink="/admin/surveys" class="back-link">
+                <lucide-icon [img]="icons.ArrowLeft" [size]="16"></lucide-icon>
+                返回問卷列表
+            </a>
+        </div>
+
+        <div class="title-row">
+            <div class="title-info">
+                <h1 class="page-title">
+                    <span class="text-muted">問卷回覆：</span>
+                    {{ surveyTitle() || '載入中...' }}
+                </h1>
+                <div class="stats-badge">
+                    共 {{ totalElements() }} 筆回覆
+                </div>
+            </div>
+
+            <button class="btn btn-outline" (click)="onExport()">
+                <lucide-icon [img]="icons.Download" [size]="16"></lucide-icon>
+                匯出資料
+            </button>
+        </div>
+    </div>
+
+    <div class="card table-wrapper">
+
+        @if (isLoading()) {
+        <div class="loading-state">載入中...</div>
+        } @else {
+
+        @if (responses().length === 0) {
+        <div class="empty-state">
+            <lucide-icon [img]="icons.FileText" [size]="48" class="text-muted"></lucide-icon>
+            <p>目前尚無任何回覆</p>
+        </div>
+        } @else {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="80">編號</th>
+                    <th>填寫者姓名</th>
+                    <th>Email</th>
+                    <th>填寫時間</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of responses(); track item.response_id; let i = $index) {
+                <tr>
+                    <td>{{ (currentPage() - 1) * pageSize() + i + 1 }}</td>
+                    <td class="font-medium">{{ item.respondent_name }}</td>
+                    <td class="text-muted">{{ item.respondent_email || '-' }}</td>
+                    <td>{{ item.submitted_at }}</td>
+                    <td>
+                        <a [routerLink]="['/admin/responses', item.response_id]" class="btn-icon" title="查看詳情">
+                            <lucide-icon [img]="icons.Eye" [size]="20"></lucide-icon>
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        }
+        }
+    </div>
+
+    @if (!isLoading() && responses().length > 0) {
+    <div class="pagination-section">
+        <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" [totalItems]="totalElements()"
+            (pageChange)="onPageChange($event)">
+        </app-pagination>
+    </div>
+    }
+</div>

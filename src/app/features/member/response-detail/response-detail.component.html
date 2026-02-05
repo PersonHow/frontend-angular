@@ -1,0 +1,73 @@
+<div class="detail-container">
+    <div class="content-wrapper">
+        
+        <div class="mb-4">
+            <a routerLink="/member/responses" class="btn-back">
+                <lucide-icon [img]="icons.ArrowLeft" [size]="20"></lucide-icon>
+                返回列表
+            </a>
+        </div>
+
+        @if (isLoading()) {
+            <div class="loading-state">載入中...</div>
+        } 
+        @else if (errorMessage()) {
+            <div class="error-state">
+                <p class="text-error">{{ errorMessage() }}</p>
+                <a routerLink="/member/responses" class="btn btn-outline mt-3">回列表</a>
+            </div>
+        } 
+        @else if (response(); as res) {
+            <div class="card header-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h1 class="survey-title">{{ res.survey_title }}</h1>
+                    <span class="id-badge">#{{ res.response_id }}</span>
+                </div>
+                
+                <p class="survey-desc">{{ res.survey_description }}</p>
+                
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <lucide-icon [img]="icons.Clock" [size]="16"></lucide-icon>
+                        <span class="label">填寫時間：</span>
+                        <span>{{ res.submitted_at | date:'yyyy-MM-dd HH:mm' }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <lucide-icon [img]="icons.User" [size]="16"></lucide-icon>
+                        <span class="label">填寫人：</span>
+                        <span>{{ res.respondent_name }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-list">
+                @for (q of res.answers; track q.question_id; let i = $index) {
+                    <div class="card qa-card">
+                        <div class="q-header">
+                            <span class="q-index">{{ i + 1 }}</span>
+                            <h3 class="q-text">
+                                {{ q.question_text }}
+                                @if (q.question_type === QuestionType.MULTIPLE) {
+                                    <span class="badge-type">多選</span>
+                                }
+                            </h3>
+                        </div>
+
+                        <div class="a-body">
+                            @if (q.question_type === QuestionType.SINGLE || q.question_type === QuestionType.MULTIPLE) {
+                                <div class="answer-box">
+                                    {{ formatOptions(q.selected_options) }}
+                                </div>
+                            }
+                            @else {
+                                <div class="answer-box text-answer">
+                                    {{ q.text_answer || '（未填寫）' }}
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

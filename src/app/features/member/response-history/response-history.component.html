@@ -1,0 +1,66 @@
+<div class="app-container">
+    <app-sidebar mode="member"></app-sidebar>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1 class="page-title">填寫紀錄</h1>
+                <p class="page-subtitle">查看您過去參與過的所有問卷調查。</p>
+            </div>
+
+            <div class="card table-container">
+                @if (isLoading()) {
+                    <div class="loading-state">載入中...</div>
+                } @else if (responses().length === 0) {
+                    <div class="empty-state">
+                        <lucide-icon [img]="icons.FileText" [size]="48" class="text-muted"></lucide-icon>
+                        <p>您尚未填寫過任何問卷</p>
+                        <a routerLink="/surveys" class="btn btn-main mt-3">前往填寫問卷</a>
+                    </div>
+                } @else {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="80">編號</th>
+                                <th>問卷名稱</th>
+                                <th width="180">填寫時間</th>
+                                <th width="100">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of responses(); track item.response_id) {
+                                <tr>
+                                    <td>{{ item.response_id }}</td>
+                                    <td>
+                                        <div class="fw-bold text-main">{{ item.survey_title }}</div>
+                                    </td>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <lucide-icon [img]="icons.Clock" [size]="14"></lucide-icon>
+                                            {{ item.submitted_at | date:'yyyy-MM-dd HH:mm' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a [routerLink]="['/member/responses', item.response_id]" class="btn-icon text-primary" title="查看詳情">
+                                            <lucide-icon [img]="icons.Eye" [size]="18"></lucide-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+
+            <div class="pagination-wrapper">
+                <app-pagination 
+                    [currentPage]="currentPage()" 
+                    [totalPages]="totalPages()" 
+                    [totalItems]="totalElements()" 
+                    [showTotalItems]="true"
+                    (pageChange)="onPageChange($event)">
+                </app-pagination>
+            </div>
+        </div>
+    </main>
+</div>

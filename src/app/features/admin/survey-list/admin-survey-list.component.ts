@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-import { LucideAngularModule, Trash2, Edit, Eye, Plus } from 'lucide-angular';
+import { LucideAngularModule, Trash2, Edit, Eye, Plus, PieChart } from 'lucide-angular';
 
 // 根據您的專案結構引用 Shared Components
 import { SidebarComponent, SearchBarComponent, 
@@ -33,7 +33,7 @@ export class AdminSurveyListComponent implements OnInit {
     private router = inject(Router);
 
     // Icons
-    readonly icons = { Trash2, Edit, Eye, Plus };
+    readonly icons = { Trash2, Edit, Eye, Plus, PieChart };
     readonly SurveyStatus = SurveyStatus; // 供 Template 使用 Enum
 
     // --- 資料狀態 ---

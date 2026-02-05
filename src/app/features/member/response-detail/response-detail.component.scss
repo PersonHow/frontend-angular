@@ -1,0 +1,177 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.detail-container {
+    min-height: 100vh;
+    background-color: $bg-cream;
+    padding: $spacing-xl;
+    display: flex;
+    justify-content: center;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 800px;
+}
+
+// === Navigation ===
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $text-secondary;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $main;
+    }
+}
+
+// === Cards ===
+.card {
+    background: #fff;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    border: 1px solid $border-light;
+
+    @include mobile {
+        padding: $spacing-lg;
+    }
+}
+
+// === Header Card ===
+.header-card {
+    border-top: 4px solid $main;
+
+    .survey-title {
+        font-size: $font-size-2xl;
+        color: $main;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .id-badge {
+        background: $bg-tertiary;
+        color: $text-secondary;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: $font-size-sm;
+        font-family: monospace;
+    }
+
+    .survey-desc {
+        color: $text-secondary;
+        margin-bottom: $spacing-lg;
+        white-space: pre-wrap;
+    }
+}
+
+.meta-grid {
+    display: flex;
+    gap: $spacing-xl;
+    padding-top: $spacing-md;
+    border-top: 1px dashed $border-light;
+    color: $text-muted;
+    font-size: $font-size-sm;
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .label {
+            font-weight: 500;
+        }
+    }
+
+    @include mobile {
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+}
+
+// === Q&A Cards ===
+.qa-card {
+    .q-header {
+        display: flex;
+        gap: $spacing-md;
+        margin-bottom: $spacing-md;
+    }
+
+    .q-index {
+        background: $bg-tertiary;
+        color: $text-main;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: $font-size-sm;
+        flex-shrink: 0;
+    }
+
+    .q-text {
+        font-size: $font-size-lg;
+        font-weight: 500;
+        color: $text-main;
+        margin: 0;
+        flex: 1;
+        line-height: 1.4;
+    }
+
+    .badge-type {
+        font-size: 12px;
+        background: $bg-light;
+        color: $text-muted;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 8px;
+        font-weight: normal;
+        vertical-align: middle;
+    }
+}
+
+.a-body {
+    padding-left: 44px; // Align with text
+
+    @include mobile {
+        padding-left: 0;
+    }
+}
+
+.answer-box {
+    background-color: $bg-light;
+    padding: 12px 16px;
+    border-radius: $border-radius-md;
+    color: $main;
+    font-weight: 500;
+    line-height: 1.5;
+
+    &.text-answer {
+        color: $text-primary;
+        white-space: pre-wrap;
+    }
+}
+
+// === States ===
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 60px 0;
+    color: $text-muted;
+}
+
+.text-error {
+    color: $error;
+    font-size: $font-size-lg;
+}

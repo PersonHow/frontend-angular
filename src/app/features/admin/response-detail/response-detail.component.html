@@ -1,0 +1,102 @@
+<div class="detail-container">
+
+    <div class="header-section">
+        <button class="btn-back" (click)="goBack()">
+            <lucide-icon [img]="icons.ArrowLeft" [size]="18"></lucide-icon>
+            返回列表
+        </button>
+        <h1 class="page-title">回覆詳情</h1>
+    </div>
+
+    @if (isLoading()) {
+    <div class="loading-state">資料載入中...</div>
+    } @else if (errorMessage()) {
+    <div class="error-state">{{ errorMessage() }}</div>
+    } @else {
+
+    <div class="content-wrapper">
+
+        <div class="card info-card">
+            <h3 class="card-title">
+                <lucide-icon [img]="icons.User" [size]="20"></lucide-icon>
+                填寫者資訊
+            </h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">姓名</span>
+                    <span class="value font-medium">{{ response()?.respondent_name }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">填寫時間</span>
+                    <span class="value">
+                        <lucide-icon [img]="icons.Calendar" [size]="14"></lucide-icon>
+                        {{ response()?.submitted_at }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Email</span>
+                    <span class="value">{{ response()?.respondent_email || '未提供' }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">電話</span>
+                    <span class="value">{{ response()?.respondent_phone || '未提供' }}</span>
+                </div>
+
+                @if (response()?.respondent_age) {
+                <div class="info-item">
+                    <span class="label">年齡</span>
+                    <span class="value">{{ response()?.respondent_age }} 歲</span>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="card answers-card">
+            <div class="survey-header">
+                <h2 class="survey-title">{{ response()?.survey_title }}</h2>
+                <p class="survey-desc">{{ response()?.survey_description }}</p>
+            </div>
+
+            <div class="qa-list">
+                @for (answer of response()?.answers; track answer.question_id; let i = $index) {
+                <div class="qa-item">
+                    <div class="q-header">
+                        <span class="q-index">Q{{ i + 1 }}</span>
+                        <span class="q-text">{{ answer.question_text }}</span>
+                        <span class="q-type-badge">
+                            {{ answer.question_type === QuestionType.SINGLE ? '單選' :
+                            answer.question_type === QuestionType.MULTIPLE ? '多選' : '簡答' }}
+                        </span>
+                    </div>
+
+                    <div class="a-body">
+                        @if (answer.question_type !== QuestionType.TEXT) {
+                        @if (answer.selected_options && answer.selected_options.length > 0) {
+                        <div class="selected-tags">
+                            @for (opt of answer.selected_options; track $index) {
+                            <span class="tag">{{ opt }}</span>
+                            }
+                        </div>
+                        } @else {
+                        <span class="text-muted">未作答</span>
+                        }
+                        }
+
+                        @if (answer.question_type === QuestionType.TEXT) {
+                        <div class="text-answer">
+                            {{ answer.text_answer || '未作答' }}
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+    </div>
+    }
+</div>
