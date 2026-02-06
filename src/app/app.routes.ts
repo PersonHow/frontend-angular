@@ -53,16 +53,16 @@ export const routes: Routes = [
                 loadComponent: () => import('./features/admin/survey-create/survey-create.component')
                     .then(m => m.SurveyCreateComponent)
             },
-            // {
-            //     path: 'surveys/:id',
-            //     loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
-            //         .then(m => m.SurveyEditComponent)
-            // },
-            // {
-            //     path: 'surveys/:id/edit',
-            //     loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
-            //         .then(m => m.SurveyEditComponent)
-            // },
+            {
+                path: 'surveys/:id',
+                loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
+                    .then(m => m.SurveyEditComponent)
+            },
+            {
+                path: 'surveys/:id/edit',
+                loadComponent: () => import('./features/admin/survey-edit/survey-edit.component')
+                    .then(m => m.SurveyEditComponent)
+            },
             {
                 path: 'surveys/:id/results',
                 loadComponent: () => import('./features/admin/survey-results/survey-results.component')
@@ -90,21 +90,21 @@ export const routes: Routes = [
                 redirectTo: 'responses',
                 pathMatch: 'full'
             },
-            // {
-            //     path: 'responses',
-            //     loadComponent: () => import('./features/member/response-history/response-history.component')
-            //         .then(m => m.ResponseHistoryComponent)
-            // },
-            // {
-            //     path: 'responses/:id',
-            //     loadComponent: () => import('./features/member/response-history/response-history.component')
-            //         .then(m => m.ResponseHistoryComponent)
-            // },
-            // {
-            //     path: 'profile',
-            //     loadComponent: () => import('./features/member/profile/profile.component')
-            //         .then(m => m.ProfileComponent)
-            // }
+            {
+                path: 'responses',
+                loadComponent: () => import('./features/member/response-history/response-history.component')
+                    .then(m => m.ResponseHistoryComponent)
+            },
+            {
+                path: 'responses/:id',
+                loadComponent: () => import('./features/member/response-history/response-history.component')
+                    .then(m => m.ResponseHistoryComponent)
+            },
+            {
+                path: 'profile',
+                loadComponent: () => import('./features/member/profile/profile.component')
+                    .then(m => m.ProfileComponent)
+            }
         ]
     },
 

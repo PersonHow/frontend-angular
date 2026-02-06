@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ROUTES, VALIDATION, ERROR_MESSAGES } from '../../../shared/constants/app.constants';
-import { validate } from '@angular/forms/signals';
 
 @Component({
     selector: 'app-register',

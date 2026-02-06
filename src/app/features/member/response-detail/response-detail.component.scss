@@ -59,7 +59,7 @@
     }
 
     .id-badge {
-        background: $bg-tertiary;
+        background: $bg-cream;
         color: $text-secondary;
         padding: 4px 8px;
         border-radius: 4px;
@@ -107,7 +107,7 @@
     }
 
     .q-index {
-        background: $bg-tertiary;
+        background: $bg-cream;
         color: $text-main;
         width: 28px;
         height: 28px;
@@ -158,7 +158,7 @@
     line-height: 1.5;
 
     &.text-answer {
-        color: $text-primary;
+        color: $text-main;
         white-space: pre-wrap;
     }
 }

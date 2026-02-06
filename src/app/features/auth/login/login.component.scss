@@ -1,7 +1,7 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
 
-.register-container {
+.login-container {
     display: flex;
     min-height: 100vh;
     background-color: $bg-cream;

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
 import { ERROR_MESSAGES, VALIDATION, ROUTES } from "../../../shared/constants/app.constants";
+import { Role } from "../../../shared/models";
 
 
 @Component({
@@ -78,6 +79,12 @@ export class LoginComponent {
 
         this.authService.login(this.loginForm.value).subscribe({
             next: () => {
+                const user = this.authService.currentUser();
+                if (user?.role === Role.ADMIN) {
+                    this.router.navigate([ROUTES.ADMIN.SURVEYS]);
+                } else {
+                    this.router.navigate([ROUTES.PUBLIC.SURVEYS]);
+                }
                 this.isSubmitting.set(false);
             },
             error: (err) => {

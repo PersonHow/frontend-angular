@@ -125,7 +125,15 @@ export const ERROR_MESSAGES = {
     SERVER_ERROR: '伺服器錯誤，請稍後再試',
     VALIDATION_ERROR: '請檢查輸入的資料是否正確',
     UNKNOWN_ERROR: '發生未知錯誤',
-    REGISTER_FAILED:"註冊失敗，請重新註冊"
+    REGISTER_FAILED:"註冊失敗，請重新註冊",
+    // 輸入相關
+    NAME_REQUIRED: '請輸入姓名',
+    EMAIL_REQUIRED: '請輸入信箱',
+    PASSWORD_REQUIRED: '請輸入密碼',
+    PHONE_REQUIRED: '請輸入電話',
+    SEX_REQUIRED: '請輸入性別',
+
+
 } as const;
 
 // === 成功訊息 ===

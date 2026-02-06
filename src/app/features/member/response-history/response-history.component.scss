@@ -38,7 +38,7 @@
 
     .page-subtitle {
         color: $text-secondary;
-        font-size: $font-size-md;
+        font-size: $font-size-base;
     }
 }
 
@@ -57,7 +57,7 @@
         border-collapse: collapse;
 
         thead {
-            background-color: $bg-tertiary; // 淺灰/奶油色表頭
+            background-color: $bg-cream; // 淺灰/奶油色表頭
 
             th {
                 padding: 16px;
@@ -86,7 +86,7 @@
 
             td {
                 padding: 16px;
-                color: $text-primary;
+                color: $text-main;
                 vertical-align: middle;
             }
         }
@@ -143,8 +143,8 @@
     cursor: pointer;
 
     &:hover {
-        background-color: rgba($primary, 0.1);
-        color: $primary;
+        background-color: rgba($main, 0.1);
+        color: $main;
     }
 
     &.text-primary {

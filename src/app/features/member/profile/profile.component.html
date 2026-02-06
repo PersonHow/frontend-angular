@@ -1,0 +1,138 @@
+<div class="app-container">
+    <app-sidebar mode="member"></app-sidebar>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+
+            <div class="page-header">
+                <h1 class="page-title">會員資料管理</h1>
+                <p class="page-subtitle">Member Profile</p>
+            </div>
+
+            @if (isLoading()) {
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>載入中...</p>
+            </div>
+            } @else {
+
+            <!-- 成功訊息 -->
+            @if (successMessage()) {
+            <div class="alert alert-success">
+                {{ successMessage() }}
+            </div>
+            }
+
+            <!-- 錯誤訊息 -->
+            @if (errorMessage()) {
+            <div class="alert alert-error">
+                {{ errorMessage() }}
+            </div>
+            }
+
+            <div class="card profile-card">
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+                    <!-- 姓名 -->
+                    <div class="form-group">
+                        <label class="label" for="name">
+                            姓名 <span class="required">*</span>
+                        </label>
+                        <input type="text" id="name" formControlName="name" class="input-field"
+                            [class.error]="getFieldError('name')" placeholder="請輸入姓名" />
+                        @if (getFieldError('name')) {
+                        <span class="error-message">{{ getFieldError('name') }}</span>
+                        }
+                    </div>
+
+                    <!-- 信箱（不可修改） -->
+                    <div class="form-group">
+                        <label class="label" for="email">
+                            信箱 <span class="disabled-hint">(不可修改)</span>
+                        </label>
+                        <input type="email" id="email" formControlName="email" class="input-field input-disabled"
+                            readonly />
+                    </div>
+
+                    <!-- 新密碼（選填） -->
+                    <div class="form-group">
+                        <label class="label" for="new_password">
+                            新密碼
+                            <span class="optional-hint">(選填，{{ LIMITS.PASSWORD_MIN_LENGTH }} - {{
+                                LIMITS.PASSWORD_MAX_LENGTH }} 字元)</span>
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input [type]="showPassword() ? 'text' : 'password'" id="new_password"
+                                formControlName="new_password" class="input-field"
+                                [class.error]="getFieldError('new_password')" placeholder="若不修改請留空" />
+                            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
+                                [attr.aria-label]="showPassword() ? '隱藏密碼' : '顯示密碼'">
+                                @if (showPassword()) {
+                                <span class="icon eye-off"></span>
+                                } @else {
+                                <span class="icon eye"></span>
+                                }
+                            </button>
+                        </div>
+                        @if (getFieldError('new_password')) {
+                        <span class="error-message">{{ getFieldError('new_password') }}</span>
+                        }
+                    </div>
+
+                    <!-- 手機 -->
+                    <div class="form-group">
+                        <label class="label" for="phone">
+                            手機 <span class="required">*</span>
+                        </label>
+                        <input type="tel" id="phone" formControlName="phone" class="input-field"
+                            [class.error]="getFieldError('phone')" placeholder="請輸入手機號碼" />
+                        @if (getFieldError('phone')) {
+                        <span class="error-message">{{ getFieldError('phone') }}</span>
+                        }
+                    </div>
+
+                    <!-- 性別 -->
+                    <div class="form-group">
+                        <label class="label">
+                            性別 <span class="required">*</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" formControlName="sex" [value]="AccountSex.MALE" />
+                                <span>男</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" formControlName="sex" [value]="AccountSex.FEMALE" />
+                                <span>女</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" formControlName="sex" [value]="AccountSex.OTHER" />
+                                <span>其他</span>
+                            </label>
+                        </div>
+                        @if (getFieldError('sex')) {
+                        <span class="error-message">{{ getFieldError('sex') }}</span>
+                        }
+                    </div>
+
+                    <!-- 按鈕區 -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isSubmitting()">
+                            取消
+                        </button>
+                        <button type="submit" class="btn-main" [disabled]="isSubmitting() || profileForm.invalid">
+                            @if (isSubmitting()) {
+                            <span>更新中...</span>
+                            } @else {
+                            <span>確定更新</span>
+                            }
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            }
+
+        </div>
+    </main>
+</div>
