@@ -62,6 +62,8 @@ export class SurveyListComponent implements OnInit {
 
     ngOnInit() {
         this.loadData(1);
+        console.log("Survey-List 已被創建");
+        
     }
 
     loadData(page: number) {

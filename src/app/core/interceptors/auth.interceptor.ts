@@ -8,10 +8,10 @@ import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
-    const token = authService.getToken();
-
+    
     // 如果有 Token，則添加到請求頭
-    if (token) {
+    if (authService.hasValidToken()) {
+        const token = authService.getToken();
         const authReq = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${token}`

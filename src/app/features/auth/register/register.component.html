@@ -30,13 +30,8 @@
                 <!-- 姓名 -->
                 <div class="form-group">
                     <label for="name">姓名</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        formControlName="name"
-                        placeholder="測試人員"
-                        [class.error]="getFieldError('name')" 
-                    />
+                    <input type="text" id="name" formControlName="name" placeholder="測試人員"
+                        [class.error]="getFieldError('name')" />
                     @if(getFieldError('name')){
                     <span class="error-message">{{getFieldError('name')}}</span>
                     }
@@ -45,13 +40,8 @@
                 <!-- Email -->
                 <div class="form-group">
                     <label for="email">信箱</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        formControlName="email"
-                        placeholder="test@mail"
-                        [class.error]="getFieldError('email')" 
-                    />
+                    <input type="email" id="email" formControlName="email" placeholder="test@mail"
+                        [class.error]="getFieldError('email')" />
                     @if(getFieldError('email')){
                     <span class="error-message">{{getFieldError('email')}}</span>
                     }
@@ -83,22 +73,15 @@
                 <div class="form-group">
                     <label for="password">密碼(8 - 12 字)</label>
                     <div class="password-input-wrapper">
-                        <input 
-                            [type]="showPassword() ? 'text' : 'password'" 
-                            id="password" 
-                            formControlName="password"
-                            placeholder="12345678"
-                            [class.error]="getFieldError('password')" 
-                        />
-                        <button 
-                            type="button" 
-                            class="password-toggle"
-                            (click)="togglePasswordVisibility()"
+                        <input [type]="showPassword() ? 'text' : 'password'" id="password" formControlName="password"
+                            placeholder="12345678" [class.error]="getFieldError('password')" />
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
                             [attr.aria-label]="showPassword() ? '隱藏密碼' : '顯示密碼'">
                             @if(showPassword()){
-                            <span class="icon"></span>
+                            <lucide-icon [img]="icons.EyeClosed" [size]="14" class="icon"></lucide-icon>
                             }@else{
-                            <span class="icon"></span>
+                            <lucide-icon [img]="icons.Eye" [size]="14" class="icon"></lucide-icon>
+
                             }
                         </button>
                     </div>
@@ -110,23 +93,15 @@
                 <!-- 手機 -->
                 <div class="form-group">
                     <label for="phone">手機</label>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        formControlName="phone"
-                        placeholder="0900111222"
-                        [class.error]="getFieldError('phone')" 
-                    />
+                    <input type="tel" id="phone" formControlName="phone" placeholder="0900111222"
+                        [class.error]="getFieldError('phone')" />
                     @if(getFieldError('phone')){
                     <span class="error-message">{{getFieldError('phone')}}</span>
                     }
                 </div>
 
                 <!-- 註冊按鈕 -->
-                <button
-                    type="submit"
-                    class="btn-main"
-                    [disabled]="isSubmitting()">
+                <button type="submit" class="btn-main" [disabled]="isSubmitting()">
                     @if(isSubmitting()){
                     <span>註冊中...</span>
                     }@else{

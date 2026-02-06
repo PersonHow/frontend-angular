@@ -12,16 +12,12 @@ import {
     SurveyDetail,
     SurveySearchRequest,
     CreateSurveyRequest,
-    UpdateSurveyRequest
-} from '../../shared/models';
-import {
+    UpdateSurveyRequest,
     ResponseListItem,
     ResponseDetail,
     SubmitResponseRequest,
     SubmitResponseResponse,
-    StatisticsResponse
-} from '../../shared/models';
-import {
+    StatisticsResponse,
     MemberProfileResponse,
     UpdateMemberProfileRequest
 } from '../../shared/models';

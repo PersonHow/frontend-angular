@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ROUTES, VALIDATION, ERROR_MESSAGES } from '../../../shared/constants/app.constants';
+import { LucideAngularModule, EyeClosed, Eye } from 'lucide-angular';
 
 @Component({
     selector: 'app-register',
     standalone: true,
-    imports: [ReactiveFormsModule, RouterLink],
+    imports: [ReactiveFormsModule, RouterLink, LucideAngularModule],
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
@@ -18,6 +19,7 @@ export class RegisterComponent {
     showPassword = signal(false);
 
     readonly ROUTES = ROUTES;
+    readonly icons = {EyeClosed, Eye}
 
     constructor(
         private fb: FormBuilder,
