@@ -80,6 +80,8 @@ export class LoginComponent {
         this.authService.login(this.loginForm.value).subscribe({
             next: () => {
                 const user = this.authService.currentUser();
+                console.log(user);
+                
                 if (user?.role === Role.ADMIN) {
                     this.router.navigate([ROUTES.ADMIN.SURVEYS]);
                 } else {

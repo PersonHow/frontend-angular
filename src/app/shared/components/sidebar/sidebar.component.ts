@@ -2,7 +2,7 @@ import { Component, computed, input, inject } from "@angular/core";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
 
-export type SidebarMode = "admin" | "member";
+export type SidebarMode = "ADMIN" | "MEMBER";
 
 interface SidebarItem {
     icon: string,
@@ -27,7 +27,7 @@ export class SidebarComponent {
     private router = inject(Router);
 
     items = computed(() => {
-        return this.mode() === 'admin' ? this.adminItems : this.memberItems;
+        return this.mode() === 'ADMIN' ? this.adminItems : this.memberItems;
     })
 
     private readonly adminItems: SidebarItem[] =

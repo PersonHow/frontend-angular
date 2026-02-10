@@ -54,7 +54,7 @@ export class AuthService {
     register(request: RegisterRequest): Observable<RegisterResponse> {
         return this.http.post<RegisterResponse>(
             `${this.apiUrl}${API_ENDPOINTS.AUTH.REGISTER}`,
-            request
+            request,
         ).pipe(
             catchError(error => this.handleError(error))
         );
@@ -147,7 +147,7 @@ export class AuthService {
             name: response.account_name,
             email: response.account_email,
             phone: response.account_phone,
-            role: response.role,
+            role: response.account_role,
             token: response.token
         };
 

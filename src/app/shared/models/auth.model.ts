@@ -24,7 +24,7 @@ export interface LoginResponse {
     account_name: string,
     account_email: string,
     account_phone: string,
-    role: Role
+    account_role: Role
 }
 
 // 註冊請求
