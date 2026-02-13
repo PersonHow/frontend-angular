@@ -50,10 +50,23 @@ export class StepQuestionsComponent {
     constructor() {
         // 當題目類型改變時，若是簡答題則清空選項，否則預設給兩個選項
         this.questionForm.get('question_type')?.valueChanges.subscribe(type => {
-            this.optionsArray.clear();
+            const currentOptionsLength = this.optionsArray.length;
+
+            if (type === QuestionType.TEXT) {
+                console.log("切換簡答");
+
+                this.optionsArray.clear();
+                return
+            }
+
             if (type === QuestionType.SINGLE || type === QuestionType.MULTIPLE) {
-                this.addOption();
-                this.addOption();
+
+                // 避免單選 -> 多選，選項壞掉
+                if (currentOptionsLength === 0) {
+                    console.log("切換選項");
+                    this.addOption();
+                    this.addOption();
+                }
             }
         });
     }
@@ -76,9 +89,9 @@ export class StepQuestionsComponent {
     // --- Options Helper ---
     get optionsArray() { return this.questionForm.get('options') as FormArray; }
 
-    addOption() {
+    addOption(optionVal?: string) {
         this.optionsArray.push(this.fb.group({
-            option_text: ['', [Validators.required, Validators.maxLength(VALIDATION.OPTION_TEXT_MAX_LENGTH)]]
+            option_text: [optionVal, [Validators.required, Validators.maxLength(VALIDATION.OPTION_TEXT_MAX_LENGTH)]]
         }));
     }
 
@@ -91,13 +104,33 @@ export class StepQuestionsComponent {
     // --- CRUD Actions ---
 
     saveQuestion() {
+        this.questionForm.markAllAsTouched();
+        this.optionsArray.controls.forEach((control) => {
+            control.markAllAsTouched();
+        })
+
         if (this.questionForm.invalid) {
-            this.questionForm.markAllAsTouched();
+            console.log("表單驗證失敗：{}", this.questionForm.errors);
+            console.log("選項狀態：{}", this.optionsArray.value);
             return;
         }
 
         const val = this.questionForm.value;
         const type = val.question_type as QuestionType;
+
+        const currentQuestionText = val.question_text?.trim();
+
+        const isQuestionHad = this.questionsList().some(q => {
+            return q.question_text === currentQuestionText
+                && q.tempId !== (this.isEditing() ? this.editingTempId : '')
+        })
+
+        if (isQuestionHad && !this.isEditing()) {
+            console.log("問題已重複");
+            return
+        }
+
+        const notTEXT = type === QuestionType.SINGLE || type === QuestionType.MULTIPLE;
 
         const newQuestion: QuestionUI = {
             tempId: this.isEditing() ? this.editingTempId()! : crypto.randomUUID(),
@@ -105,13 +138,14 @@ export class StepQuestionsComponent {
             question_type: type,
             is_required: val.is_required ?? false,
             question_order: 0, // 提交前再統一重算
-            options: type === QuestionType.TEXT ? [] : (val.options as any[]).map((opt, idx) => ({
+            options: notTEXT ? (val.options as any[]).map((opt, idx) => ({
                 option_text: opt.option_text,
                 option_order: idx + 1
-            }))
+            })) : []
         };
 
         this.questionsList.update(list => {
+
             if (this.isEditing()) {
                 return list.map(q => q.tempId === newQuestion.tempId ? newQuestion : q);
             }
@@ -125,19 +159,27 @@ export class StepQuestionsComponent {
         this.isEditing.set(true);
         this.editingTempId.set(q.tempId);
 
-        // 清空並回填選項
-        this.optionsArray.clear();
-        q.options.forEach(opt => {
-            this.optionsArray.push(this.fb.group({
-                option_text: [opt.option_text, [Validators.required, Validators.maxLength(VALIDATION.OPTION_TEXT_MAX_LENGTH)]]
-            }));
-        });
-
         this.questionForm.patchValue({
             question_text: q.question_text,
             question_type: q.question_type,
-            is_required: q.is_required
-        });
+            is_required: q.is_required,
+        }, { emitEvent: false });
+
+        // 清空並回填選項
+        this.optionsArray.clear();
+
+        if (q.options.length > 0) {
+            setTimeout(() => {
+                q.options.forEach(opt => {
+                    this.addOption(opt.option_text)
+                    console.log(opt);
+
+                })
+            }, 0)
+
+        }
+
+
     }
 
     // 刪除相關
@@ -160,13 +202,26 @@ export class StepQuestionsComponent {
     resetForm() {
         this.isEditing.set(false);
         this.editingTempId.set(null);
+
+        // emitEvent -> false
+        // 避免觸發 constructor 的 valuesChange 機制
         this.questionForm.reset({
             question_type: QuestionType.SINGLE,
-            is_required: false
-        });
+            is_required: false,
+            question_text: ""
+        },
+            { emitEvent: false }
+        );
+
         this.optionsArray.clear();
-        this.addOption();
-        this.addOption();
+
+        setTimeout(() => {
+            const currentType = this.questionForm.get('question_type')?.value;
+            if (currentType === QuestionType.SINGLE || currentType === QuestionType.MULTIPLE) {
+                this.addOption();
+                this.addOption();
+            }
+        }, 0);
     }
 
     onNext() {

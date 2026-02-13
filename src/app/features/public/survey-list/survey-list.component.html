@@ -1,20 +1,16 @@
 <div class="app-container">
 
-    @if (isMember()) {
+    @if (!isLoggedIn()) {
+    <app-sidebar mode="PUBLIC"></app-sidebar>
+    }
+    @else if(isMember()) {
     <app-sidebar mode="MEMBER"></app-sidebar>
+
     }
 
-    <main class="main-content" [class.with-sidebar]="isMember()">
 
-        @if (!isLoggedIn()) {
-        <header class="public-header">
-            <div class="brand">動態問卷系統</div>
-            <a routerLink="/login" class="btn btn-outline btn-sm">
-                <lucide-icon [img]="icons.LogIn" [size]="16"></lucide-icon>
-                會員登入
-            </a>
-        </header>
-        }
+
+    <main class="main-content" [class.with-sidebar]="isMember()">
 
         <div class="content-wrapper">
 
@@ -80,8 +76,8 @@
             </div>
 
             <div class="pagination-wrapper">
-                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" 
-                [totalItems]="totalElements()" [showTotalItems]="true" (pageChange)="onPageChange($event)">
+                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" [totalItems]="totalElements()"
+                    [showTotalItems]="true" (pageChange)="onPageChange($event)">
                 </app-pagination>
             </div>
 

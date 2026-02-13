@@ -27,7 +27,7 @@ export const API_ENDPOINTS = {
         SURVEY_DETAIL: (id: number) => `/member/surveys/${id}`,
         RESPONSES: '/member/responses',
         RESPONSE_DETAIL: (id: number) => `/member/responses/${id}`,
-        PROFILE: '/member/profile'
+        PROFILE: '/account/profile'
     },
 
     // 公開

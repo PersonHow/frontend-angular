@@ -52,6 +52,8 @@ export class SurveyCreateComponent {
             ...info
         }));
         this.goToStep(2);
+        console.log(this.surveyData());
+        
     }
 
     // Step 2 完成：更新題目列表 -> 去 Step 3
@@ -61,6 +63,8 @@ export class SurveyCreateComponent {
             questions: questions
         }));
         this.goToStep(3);
+        console.log(this.surveyData());
+        
     }
 
     // Step 3 完成：決定狀態 -> 呼叫 API
@@ -72,6 +76,9 @@ export class SurveyCreateComponent {
             ...this.surveyData(),
             status: status
         };
+
+        console.log(this.surveyData());
+        
 
         // 呼叫 API (需確認 ApiService 有 createAdminSurvey 方法)
         // 注意：您之前提供的 api.service.ts 還沒補上 createAdminSurvey，

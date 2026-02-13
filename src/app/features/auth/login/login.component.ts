@@ -81,7 +81,7 @@ export class LoginComponent {
             next: () => {
                 const user = this.authService.currentUser();
                 console.log(user);
-                
+
                 if (user?.role === Role.ADMIN) {
                     this.router.navigate([ROUTES.ADMIN.SURVEYS]);
                 } else {
@@ -94,5 +94,9 @@ export class LoginComponent {
                 this.errorMessage.set(err.message || ERROR_MESSAGES.UNKNOWN_ERROR);
             }
         });
+    }
+
+    backHome(): void {
+        this.router.navigate(['/surveys'])
     }
 }

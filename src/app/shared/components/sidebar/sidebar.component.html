@@ -1,15 +1,20 @@
 <nav class="sidebar">
     @for(item of items(); track item.label){
-        @if(item.route){
-            <a [routerLink]="item.route" class="sidebar-btn" routerLinkActive="active">
-                <span class="material-icons">{{item.icon}}</span>
-                <span class="label">{{item.label}}</span>
-            </a>
-        }@else if (item.action) {
-            <a (click)="item.action()" class="sidebar-btn" >
-            <span class="material-icons">{{item.icon}}</span>
-            <span class="label">{{item.label}}</span>
-        </a>
-        }
+    @if(item.route){
+    <a [routerLink]="item.route" class="sidebar-btn" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.exact || false}">
+        <lucide-icon [img]="item.icon" [size]="32" class="icon"></lucide-icon>
+        <span class="label">{{item.label}}</span>
+    </a>
+    }@else if (item.action) {
+    <a (click)="item.action()" class="sidebar-btn">
+        <lucide-icon [img]="item.icon" [size]="32" class="icon"></lucide-icon>
+        <span class="label">{{item.label}}</span>
+    </a>
+    }@else if(item.text){
+        <div class="sidebar-text">
+            <span class="text">{{item.label}}</span>
+        </div>
+    }
     }
 </nav>

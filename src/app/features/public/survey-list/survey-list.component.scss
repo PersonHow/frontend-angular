@@ -29,26 +29,11 @@
         margin-left: 0;
         padding: 0; // Padding 交給 content-wrapper 或 header 處理
     }
+
 }
 
-// 訪客 Header
-.public-header {
-    background-color: #fff;
-    padding: $spacing-md $spacing-xl;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: $shadow-sm;
-    position: sticky;
-    top: 0;
-    z-index: 100;
 
-    .brand {
-        font-size: $font-size-xl;
-        font-weight: bold;
-        color: $main;
-    }
-}
+
 
 .content-wrapper {
     max-width: 1200px;

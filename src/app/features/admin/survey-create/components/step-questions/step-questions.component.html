@@ -9,7 +9,8 @@
 
             <div class="form-group">
                 <label class="label">題目內容 <span class="required">*</span></label>
-                <input formControlName="question_text" type="text" class="input-field" placeholder="請輸入題目，例如：您最喜歡的食物？">
+                <input formControlName="question_text" type="text" class="input-field" 
+                placeholder="請輸入題目，例如：您最喜歡的食物？">
                 @if (questionForm.get('question_text')?.invalid && questionForm.get('question_text')?.touched) {
                 <span class="error-msg">必填且不可超過 {{LIMITS.QUESTION_TEXT_MAX_LENGTH}} 字</span>
                 }
@@ -37,13 +38,13 @@
             <div class="divider">選項設定</div>
 
             <div formArrayName="options" class="options-container custom-scrollbar">
-                @for (opt of optionsArray.controls; track $index) {
-                <div [formGroupName]="$index" class="option-row">
-                    <span class="index-badge">{{ $index + 1 }}</span>
+                @for (opt of optionsArray.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="option-row">
+                    <span class="index-badge">{{ i + 1 }}</span>
                     <input formControlName="option_text" type="text" class="input-field input-sm" placeholder="選項內容">
 
                     <button type="button" class="btn-icon danger" [disabled]="optionsArray.length <= 2"
-                        (click)="removeOption($index)">
+                        (click)="removeOption(i)">
                         <lucide-icon [img]="icons.Trash2" [size]="16"></lucide-icon>
                     </button>
                 </div>
