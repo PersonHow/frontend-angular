@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LucideAngularModule, ArrowLeft, User, Calendar, Mail, Phone, FileText } from 'lucide-angular';
 
-import { ApiService } from '../../../core/services/api.service';
+import { ResponseService } from '../../../core/services/response.service';
 import { ResponseDetail, QuestionType } from '../../../shared/models';
 
 @Component({
@@ -15,7 +15,7 @@ import { ResponseDetail, QuestionType } from '../../../shared/models';
 })
 export class ResponseDetailComponent implements OnInit {
     private route = inject(ActivatedRoute);
-    private apiService = inject(ApiService);
+    private responseService = inject(ResponseService);
     private location = inject(Location);
 
     // Icons
@@ -38,7 +38,7 @@ export class ResponseDetailComponent implements OnInit {
 
     loadData(id: number) {
         this.isLoading.set(true);
-        this.apiService.getAdminResponseDetail(id).subscribe({
+        this.responseService.getAdminResponseDetail(id).subscribe({
             next: (data) => {
                 this.response.set(data);
                 this.isLoading.set(false);

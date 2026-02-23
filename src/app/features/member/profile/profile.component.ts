@@ -4,8 +4,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Services
-import { ApiService } from '../../../core/services/api.service';
+import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 // Models
 import { MemberProfileResponse, UpdateMemberProfileRequest, AccountSex } from '../../../shared/models';
@@ -29,15 +30,14 @@ import { SidebarComponent } from '../../../shared/components';
 })
 export class ProfileComponent implements OnInit {
     private fb = inject(FormBuilder);
-    private apiService = inject(ApiService);
+    private userService = inject(UserService);
     private authService = inject(AuthService);
+    private notificationService = inject(NotificationService);
     private router = inject(Router);
 
     // State
     isLoading = signal(false);
     isSubmitting = signal(false);
-    errorMessage = signal('');
-    successMessage = signal('');
     showPassword = signal(false);
 
     // Profile Data
@@ -66,9 +66,8 @@ export class ProfileComponent implements OnInit {
     // 載入個人資料
     loadProfile(): void {
         this.isLoading.set(true);
-        this.errorMessage.set('');
 
-        this.apiService.getMemberProfile().subscribe({
+        this.userService.getMemberProfile().subscribe({
             next: (profile) => {
                 this.profileData.set(profile);
 
@@ -83,7 +82,7 @@ export class ProfileComponent implements OnInit {
                 this.isLoading.set(false);
             },
             error: (error) => {
-                this.errorMessage.set(error.message || ERROR_MESSAGES.SERVER_ERROR);
+                this.notificationService.error(error.message || ERROR_MESSAGES.SERVER_ERROR);
                 this.isLoading.set(false);
             }
         });
@@ -121,8 +120,6 @@ export class ProfileComponent implements OnInit {
         }
 
         this.isSubmitting.set(true);
-        this.errorMessage.set('');
-        this.successMessage.set('');
 
         const formValue = this.profileForm.getRawValue();
 
@@ -138,10 +135,10 @@ export class ProfileComponent implements OnInit {
             delete request.new_password;
         }
 
-        this.apiService.updateMemberProfile(request).subscribe({
+        this.userService.updateMemberProfile(request).subscribe({
             next: (response) => {
                 this.profileData.set(response);
-                this.successMessage.set(SUCCESS_MESSAGES.PROFILE_UPDATED);
+                this.notificationService.success(SUCCESS_MESSAGES.PROFILE_UPDATED);
 
                 // 更新 AuthService 中的用戶資料
                 const currentUser = this.authService.currentUser();
@@ -154,18 +151,14 @@ export class ProfileComponent implements OnInit {
                 this.profileForm.patchValue({ new_password: '' });
 
                 this.isSubmitting.set(false);
-
-                // 3 秒後清除成功訊息
-                setTimeout(() => {
-                    this.successMessage.set('');
-                }, 3000);
             },
             error: (error) => {
-                this.errorMessage.set(error.message || ERROR_MESSAGES.SERVER_ERROR);
+                this.notificationService.error(error.message || ERROR_MESSAGES.SERVER_ERROR);
                 this.isSubmitting.set(false);
             }
         });
     }
+
 
     // 取消編輯
     onCancel(): void {

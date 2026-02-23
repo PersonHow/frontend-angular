@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LucideAngularModule, Eye, ArrowLeft, FileText, Download } from 'lucide-angular';
 
-import { ApiService } from '../../../core/services/api.service';
+import { ResponseService } from '../../../core/services/response.service';
 import { ResponseListItem } from '../../../shared/models';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
@@ -18,7 +18,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 })
 export class SurveyResultsComponent implements OnInit {
     private route = inject(ActivatedRoute);
-    private apiService = inject(ApiService);
+    private responseService = inject(ResponseService);
 
     // Icons
     readonly icons = { Eye, ArrowLeft, FileText, Download };
@@ -50,7 +50,7 @@ export class SurveyResultsComponent implements OnInit {
         const apiPage = page - 1;
 
         // ✅ 修正點：使用 getAdminSurveyResponses
-        this.apiService.getAdminSurveyResponses(this.surveyId(), apiPage, this.pageSize()).subscribe({
+        this.responseService.getAdminSurveyResponses(this.surveyId(), apiPage, this.pageSize()).subscribe({
             next: (res) => {
                 this.responses.set(res.content);
                 this.currentPage.set(res.page_number + 1);

@@ -49,7 +49,7 @@
     text-decoration: none;
 
     &:disabled {
-        opacity: 0.6;
+        opacity: 0.2;
         cursor: not-allowed;
     }
 }
@@ -163,8 +163,13 @@
     th,
     td {
         padding: $spacing-sm $spacing-md;
-        text-align: left;
+        text-align: center;
         border-bottom: 1px solid $border-light;
+
+        input[type="checkbox"]{
+            cursor: pointer;
+            scale: 1.5;
+        }
     }
 
     th {

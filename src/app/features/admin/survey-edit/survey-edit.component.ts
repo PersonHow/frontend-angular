@@ -7,7 +7,8 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { SurveyService } from '../../../core/services/survey.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { CreateSurveyRequest, SurveyStatus, CreateQuestionRequest, SurveyDetail, UpdateSurveyRequest } from '../../../shared/models';
 
 // 引入 Shared Components
@@ -34,7 +35,8 @@ import { StepPreviewComponent } from '../survey-create/components/step-preview/s
 export class SurveyEditComponent implements OnInit {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
-    private apiService = inject(ApiService);
+    private surveyService = inject(SurveyService);
+    private notificationService = inject(NotificationService);
 
     // --- 狀態管理 ---
     surveyId = signal<number>(0);
@@ -74,7 +76,7 @@ export class SurveyEditComponent implements OnInit {
         this.errorMessage.set('');
 
         // 呼叫 GET /api/admin/surveys/{id}
-        this.apiService.getAdminSurveyDetail(this.surveyId()).subscribe({
+        this.surveyService.getAdminSurveyDetail(this.surveyId()).subscribe({
             next: (response: SurveyDetail) => {
                 // 轉換後端資料為前端格式
                 const surveyData = this.convertApiToFrontend(response);
@@ -129,7 +131,7 @@ export class SurveyEditComponent implements OnInit {
      */
     onBasicInfoSubmit(info: Partial<CreateSurveyRequest>) {
         if (!this.canEdit()) {
-            alert('此問卷已有回覆，無法編輯');
+            this.notificationService.warning('此問卷已有回覆，無法編輯');
             return;
         }
 
@@ -145,7 +147,7 @@ export class SurveyEditComponent implements OnInit {
      */
     onQuestionsSubmit(questions: CreateQuestionRequest[]) {
         if (!this.canEdit()) {
-            alert('此問卷已有回覆，無法編輯');
+            this.notificationService.warning('此問卷已有回覆，無法編輯');
             return;
         }
 
@@ -161,7 +163,7 @@ export class SurveyEditComponent implements OnInit {
      */
     onFinalSubmit(status: SurveyStatus) {
         if (!this.canEdit()) {
-            alert('此問卷已有回覆，無法編輯');
+            this.notificationService.warning('此問卷已有回覆，無法編輯');
             return;
         }
 
@@ -174,17 +176,17 @@ export class SurveyEditComponent implements OnInit {
         };
 
         // 呼叫 PUT API (更新問卷)
-        this.apiService.updateAdminSurvey(this.surveyId(), finalPayload).subscribe({
+        this.surveyService.updateAdminSurvey(this.surveyId(), finalPayload).subscribe({
             next: () => {
                 this.isLoading.set(false);
                 const msg = status === SurveyStatus.ACTIVE ? '問卷已更新並發佈！' : '問卷已更新！';
-                alert(msg); // 建議改用 Toast
+                this.notificationService.success(msg);
                 this.router.navigate(['/admin/surveys']);
             },
             error: (err) => {
                 this.isLoading.set(false);
                 console.error('Update failed', err);
-                alert(err.error?.message || '更新失敗，請檢查資料或網路連線。');
+                this.notificationService.error(err.error?.message || '更新失敗，請檢查資料或網路連線。');
             }
         });
     }

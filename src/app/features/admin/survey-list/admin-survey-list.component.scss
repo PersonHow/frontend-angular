@@ -44,6 +44,7 @@
 .action-buttons {
     display: flex;
     gap: $spacing-sm;
+    justify-content: center;
 }
 
 .btn-icon {

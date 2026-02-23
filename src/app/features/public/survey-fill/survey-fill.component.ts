@@ -5,8 +5,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule,
     Validators, FormArray, FormControl } from '@angular/forms';
 import { LucideAngularModule, Calendar, User, Phone, Mail, FileText, CheckCircle, AlertCircle } from 'lucide-angular';
 
-import { ApiService } from '../../../core/services/api.service';
+import { SurveyService } from '../../../core/services/survey.service';
+import { ResponseService } from '../../../core/services/response.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { SurveyDetail, QuestionType, SubmitResponseRequest, 
     SubmitAnswerRequest, AccountSex } from '../../../shared/models';
 import { VALIDATION } from '../../../shared/constants/app.constants';
@@ -21,8 +23,10 @@ import { VALIDATION } from '../../../shared/constants/app.constants';
 export class SurveyFillComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
-    private apiService = inject(ApiService);
+    private surveyService = inject(SurveyService);
+    private responseService = inject(ResponseService);
     private authService = inject(AuthService);
+    private notificationService = inject(NotificationService);
     private fb = inject(FormBuilder);
 
     // Icons
@@ -57,7 +61,7 @@ export class SurveyFillComponent implements OnInit {
 
     loadSurvey(id: number) {
         this.isLoading.set(true);
-        this.apiService.getPublicSurveyDetail(id).subscribe({
+        this.surveyService.getPublicSurveyDetail(id).subscribe({
             next: (data) => {
                 this.survey.set(data);
                 this.initForm(data);
@@ -175,6 +179,8 @@ export class SurveyFillComponent implements OnInit {
                 };
             } else if (q.question_type === QuestionType.MULTIPLE) {
                 if(!Array.isArray(rawAnswer) || rawAnswer.length == 0){
+                    console.log("觸發 null");
+                    
                     return null;
                 }
                 return {
@@ -205,18 +211,20 @@ export class SurveyFillComponent implements OnInit {
             response_sex: formVal.userInfo.response_sex,
             answers: submitAnswers
         };
-
+        console.log(payload);
+        console.log(formVal);
+        
         // 3. 呼叫 API
-        this.apiService.submitResponse(this.surveyId(), payload).subscribe({
+        this.responseService.submitResponse(this.surveyId(), payload).subscribe({
             next: () => {
-                alert('問卷提交成功！感謝您的填寫。');
+                this.notificationService.success('問卷提交成功！感謝您的填寫。');
                 this.router.navigate(['/surveys']); // 回到列表頁
             },
             error: (err) => {
                 console.error(err);
                 this.isSubmitting.set(false);
                 // 如果是重複填寫 (400/409)，後端通常會回傳錯誤訊息
-                alert(err.error?.message || '提交失敗，請稍後再試。');
+                this.notificationService.error(err.error?.message || '提交失敗，請稍後再試。');
             }
         });
     }

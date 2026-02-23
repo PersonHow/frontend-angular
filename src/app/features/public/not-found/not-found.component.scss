@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+
+.not-found-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: $bg-cream;
+    padding: $spacing-xl;
+}
+
+.not-found-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: $spacing-md;
+}
+
+.not-found-icon {
+    color: $main;
+    opacity: 0.6;
+}
+
+.not-found-code {
+    font-size: 96px;
+    font-weight: 700;
+    color: $main;
+    line-height: 1;
+    margin: 0;
+}
+
+.not-found-title {
+    font-size: $font-size-2xl;
+    font-weight: 600;
+    color: $text-main;
+    margin: 0;
+}
+
+.not-found-description {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    margin: 0;
+}

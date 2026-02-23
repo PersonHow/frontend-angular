@@ -1,14 +1,14 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
-import { LucideAngularModule, Trash2, Edit, Eye, Plus, PieChart } from 'lucide-angular';
+import { RouterLink } from '@angular/router';
+import { LucideAngularModule, Trash2, Edit, Eye, PieChart } from 'lucide-angular';
 
 // 根據您的專案結構引用 Shared Components
 import { SidebarComponent, SearchBarComponent, 
     PaginationComponent, ConfirmDialogComponent } from '../../../shared/components';
 
 // 引用 Model 與 Service
-import { ApiService } from '../../../core/services/api.service';
+import { SurveyService } from '../../../core/services/survey.service';
 import { SurveyListItem, SurveyStatus, SurveySearchRequest } from '../../../shared/models/survey.model';
 import { SearchField, SearchParams } from '../../../shared/models/search.model';
 import { PageResponse } from '../../../shared/models/common.model';
@@ -29,11 +29,10 @@ import { PageResponse } from '../../../shared/models/common.model';
     styleUrls: ['./admin-survey-list.component.scss']
 })
 export class AdminSurveyListComponent implements OnInit {
-    private apiService = inject(ApiService);
-    private router = inject(Router);
+    private surveyService = inject(SurveyService);
 
     // Icons
-    readonly icons = { Trash2, Edit, Eye, Plus, PieChart };
+    readonly icons = { Trash2, Edit, Eye, PieChart };
     readonly SurveyStatus = SurveyStatus; // 供 Template 使用 Enum
 
     // --- 資料狀態 ---
@@ -95,7 +94,7 @@ export class AdminSurveyListComponent implements OnInit {
             size: 10
         };
 
-        this.apiService.getAdminSurveys(request).subscribe({
+        this.surveyService.getAdminSurveys(request).subscribe({
             next: (res: PageResponse<SurveyListItem>) => {
                 this.surveys.set(res.content);
                 this.totalElements.set(res.total_elements);
@@ -177,7 +176,7 @@ export class AdminSurveyListComponent implements OnInit {
 
         if (id) {
             // 單筆刪除
-            this.apiService.deleteAdminSurvey(id).subscribe({
+            this.surveyService.deleteAdminSurvey(id).subscribe({
                 next: () => {
                     this.loadData(this.currentPage() - 1);
                     this.showDeleteDialog.set(false);
@@ -187,14 +186,23 @@ export class AdminSurveyListComponent implements OnInit {
         } else {
             // 批量刪除 (模擬，因 API 只有單筆刪除)
             const ids = Array.from(this.selectedIds());
-            let completed = 0;
+            let settled = 0;
 
             ids.forEach(itemId => {
-                this.apiService.deleteAdminSurvey(itemId).subscribe(() => {
-                    completed++;
-                    if (completed === ids.length) {
-                        this.loadData(0);
-                        this.showDeleteDialog.set(false);
+                this.surveyService.deleteAdminSurvey(itemId).subscribe({
+                    next: () => {
+                        settled++;
+                        if (settled === ids.length) {
+                            this.loadData(0);
+                            this.showDeleteDialog.set(false);
+                        }
+                    },
+                    error: () => {
+                        settled++;
+                        if (settled === ids.length) {
+                            this.loadData(0);
+                            this.showDeleteDialog.set(false);
+                        }
                     }
                 });
             });

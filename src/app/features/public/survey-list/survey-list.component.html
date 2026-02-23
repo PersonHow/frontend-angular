@@ -45,17 +45,23 @@
                     <tbody>
                         @for (item of surveys(); track item.id) {
                         <tr>
+                        <!-- 編號 -->
                             <td>{{ item.id }}</td>
+                        <!-- 問卷名稱 -->
                             <td>
                                 <div class="survey-name">{{ item.title }}</div>
                             </td>
+                        <!-- 狀態 -->
                             <td>
                                 <span class="status-badge" [ngClass]="statusConfig[item.status].cssClass">
                                     {{ statusConfig[item.status].label }}
                                 </span>
                             </td>
-                            <td class="text-muted">{{ item.start_date }}</td>
-                            <td class="text-muted">{{ item.end_date }}</td>
+                        <!-- 開始日期 -->
+                        <td class="text-muted">{{ item.start_date }}</td>
+                        <!-- 結束日期 -->
+                        <td class="text-muted">{{ item.end_date }}</td>
+                        <!-- 操作 -->
                             <td>
                                 @if (canFill(item)) {
                                 <a [routerLink]="['/surveys', item.id, 'fill']" class="btn btn-main btn-sm">

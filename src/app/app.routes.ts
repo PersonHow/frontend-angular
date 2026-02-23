@@ -54,10 +54,13 @@ export const routes: Routes = [
                 loadComponent: () => import('./features/admin/survey-results/survey-results.component').then(m => m.SurveyResultsComponent)
             },
             {
+                path: 'surveys/:id/statistics',
+                loadComponent: () => import('./features/admin/survey-statistics/survey-statistics.component').then(m => m.SurveyStatisticsComponent)
+            },
+            {
                 path: 'responses/:id',
                 loadComponent: () => import('./features/admin/response-detail/response-detail.component').then(m => m.ResponseDetailComponent)
             }
-            // 提示：statistics 通常會整合在 results 裡面作為一個 Tab，若要獨立頁面則保留
         ]
     },
 
@@ -74,7 +77,7 @@ export const routes: Routes = [
             {
                 // 修正：查看詳情應該指向詳情組件，而非列表組件
                 path: 'responses/:id',
-                loadComponent: () => import('./features/admin/response-detail/response-detail.component').then(m => m.ResponseDetailComponent)
+                loadComponent: () => import('./features/member/response-detail/response-detail.component').then(m => m.ResponseDetailComponent)
             },
             {
                 path: 'profile',
@@ -86,6 +89,6 @@ export const routes: Routes = [
     // === 404 頁面 ===
     {
         path: '**',
-        redirectTo: 'surveys'
+        loadComponent: () => import('./features/public/not-found/not-found.component').then(m => m.NotFoundComponent)
     }
 ];

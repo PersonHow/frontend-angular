@@ -1,7 +1,8 @@
 import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { SurveyService } from '../../../core/services/survey.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { CreateSurveyRequest, SurveyStatus, CreateQuestionRequest } from '../../../shared/models';
 
 // 引入 Shared Components
@@ -27,7 +28,8 @@ import { StepPreviewComponent } from './components/step-preview/step-preview.com
 })
 export class SurveyCreateComponent {
     private router = inject(Router);
-    private apiService = inject(ApiService);
+    private surveyService = inject(SurveyService);
+    private notificationService = inject(NotificationService);
 
     // --- 狀態管理 ---
     currentStep = signal<number>(1);
@@ -80,20 +82,18 @@ export class SurveyCreateComponent {
         console.log(this.surveyData());
         
 
-        // 呼叫 API (需確認 ApiService 有 createAdminSurvey 方法)
-        // 注意：您之前提供的 api.service.ts 還沒補上 createAdminSurvey，
-        // 請記得在 api.service.ts 補上對應的 POST 方法。
-        this.apiService.createAdminSurvey(finalPayload).subscribe({
+        // 呼叫 SurveyService
+        this.surveyService.createAdminSurvey(finalPayload).subscribe({
             next: () => {
                 this.isLoading.set(false);
                 const msg = status === SurveyStatus.ACTIVE ? '問卷已發佈！' : '問卷已暫存！';
-                alert(msg); // 建議改用 Toast
+                this.notificationService.success(msg);
                 this.router.navigate(['/admin/surveys']);
             },
             error: (err) => {
                 this.isLoading.set(false);
                 console.error('Create failed', err);
-                alert(err.error?.message || '建立失敗，請檢查資料或網路連線。');
+                this.notificationService.error(err.error?.message || '建立失敗，請檢查資料或網路連線。');
             }
         });
     }

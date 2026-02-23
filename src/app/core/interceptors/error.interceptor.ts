@@ -7,11 +7,13 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 import { ROUTES, ERROR_MESSAGES, HTTP_STATUS } from '../../shared/constants/app.constants';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const authService = inject(AuthService);
+    const notificationService = inject(NotificationService);
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -57,6 +59,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             }
 
             // 可以在這裡添加 Toast 通知
+            notificationService.error(errorMessage);
             console.error('HTTP Error:', errorMessage, error);
 
             return throwError(() => ({

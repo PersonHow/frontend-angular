@@ -1,0 +1,16 @@
+<div class="toast-container">
+    @for (toast of notificationService.toasts$(); track toast.id) {
+        <div class="toast" [ngClass]="toast.type" @toastAnimation>
+            <div class="toast-content">
+                <i class="icon" [ngClass]="{
+                    'icon-check-circle': toast.type === 'success',
+                    'icon-alert-circle': toast.type === 'error',
+                    'icon-info': toast.type === 'info',
+                    'icon-alert-triangle': toast.type === 'warning'
+                }"></i>
+                <span class="message">{{ toast.message }}</span>
+            </div>
+            <button class="close-btn" (click)="notificationService.remove(toast.id)">×</button>
+        </div>
+    }
+</div>

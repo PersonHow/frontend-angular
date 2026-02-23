@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, FileText, Clock, Eye, Calendar } from 'lucide-angular';
 
-import { ApiService } from '../../../core/services/api.service';
+import { ResponseService } from '../../../core/services/response.service';
 import { PaginationComponent, SidebarComponent } from '../../../shared/components';
 import {ResponseListItem} from '../../../shared/models';
 
@@ -22,7 +22,7 @@ import {ResponseListItem} from '../../../shared/models';
     styleUrl: './response-history.component.scss'
 })
 export class ResponseHistoryComponent implements OnInit {
-    private apiService = inject(ApiService);
+    private responseService = inject(ResponseService);
 
     // Icons
     readonly icons = { FileText, Clock, Eye, Calendar };
@@ -48,7 +48,7 @@ export class ResponseHistoryComponent implements OnInit {
             size: this.pageSize()
         };
 
-        this.apiService.getMemberResponses(params.page, params.size).subscribe({
+        this.responseService.getMemberResponses(params.page, params.size).subscribe({
             next: (res) => {
                 this.responses.set(res.content);
                 this.currentPage.set(res.page_number + 1);

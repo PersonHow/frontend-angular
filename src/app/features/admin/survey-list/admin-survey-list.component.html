@@ -10,7 +10,7 @@
             <div class="action-bar">
                 <button class="btn btn-outline text-error" [disabled]="selectedIds().size === 0"
                     (click)="openDeleteBatch()">
-                    <lucide-icon [img]="icons.Trash2" [size]="18"></lucide-icon>
+                    <lucide-icon [img]="icons.Trash2" [size]="24"></lucide-icon>
                     刪除選取 ({{ selectedIds().size }})
                 </button>
             </div>
@@ -22,12 +22,12 @@
                             <th width="50">
                                 <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)">
                             </th>
-                            <th width="60">編號</th>
+                            <th width="80">編號</th>
                             <th>名稱</th>
                             <th width="100">狀態</th>
                             <th width="120">開始時間</th>
                             <th width="120">結束時間</th>
-                            <th width="140">操作</th>
+                            <th width="120">操作</th>
                             <th width="80">結果</th>
                         </tr>
                     </thead>
@@ -47,10 +47,13 @@
                                 <input type="checkbox" [disabled]="!canDelete(survey)"
                                     [checked]="selectedIds().has(survey.id)" (change)="toggleSelection(survey.id)">
                             </td>
+                        <!-- 問卷 ID -->
                             <td>{{ survey.id }}</td>
+                        <!-- 問卷標題 -->
                             <td class="text-ellipsis" [title]="survey.title">
                                 {{ survey.title }}
                             </td>
+                        <!-- 問卷狀態 -->
                             <td>
                                 <span [class.status-active]="survey.status === SurveyStatus.ACTIVE"
                                     [class.status-not-started]="survey.status === SurveyStatus.NOT_STARTED"
@@ -59,8 +62,11 @@
                                     survey.status === SurveyStatus.ACTIVE ? '進行中' : '已結束' }}
                                 </span>
                             </td>
+                        <!-- 開始日期 -->
                             <td>{{ survey.start_date }}</td>
+                        <!-- 結束日期 -->
                             <td>{{ survey.end_date }}</td>
+                        <!-- 問卷操作 -->
                             <td>
                                 <div class="action-buttons">
                                     @if (canEdit(survey)) {
@@ -82,8 +88,9 @@
                                     }
                                 </div>
                             </td>
+                        <!-- 問卷統計與列表 -->
                             <td>
-                                <div class="flex gap-2"> 
+                                <div class="flex gap-2 action-buttons"> 
                                     @if (survey.response_count > 0) {
                                     <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn-link" title="回覆列表">
                                         列表

@@ -5,7 +5,7 @@ import { LucideAngularModule, ArrowLeft, BarChart, PieChart, FileText, Users } f
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
-import { ApiService } from '../../../core/services/api.service';
+import { ResponseService } from '../../../core/services/response.service';
 import { StatisticsResponse, QuestionType } from '../../../shared/models';
 
 @Component({
@@ -17,7 +17,7 @@ import { StatisticsResponse, QuestionType } from '../../../shared/models';
 })
 export class SurveyStatisticsComponent implements OnInit {
     private route = inject(ActivatedRoute);
-    private apiService = inject(ApiService);
+    private responseService = inject(ResponseService);
     private location = inject(Location);
 
     // Icons
@@ -52,7 +52,7 @@ export class SurveyStatisticsComponent implements OnInit {
 
     loadData(id: number) {
         this.isLoading.set(true);
-        this.apiService.getAdminSurveyStatistics(id).subscribe({
+        this.responseService.getAdminSurveyStatistics(id).subscribe({
             next: (data) => {
                 this.stats.set(data);
                 this.isLoading.set(false);

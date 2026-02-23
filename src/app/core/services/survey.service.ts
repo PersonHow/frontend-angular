@@ -1,32 +1,21 @@
-// ============================================
-// API 服務 - HTTP 請求封裝
-// ============================================
-
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/env';
-import { PageResponse } from '../../shared/models';
-import {
-    SurveyListItem,
-    SurveyDetail,
-    SurveySearchRequest,
-    CreateSurveyRequest,
-    UpdateSurveyRequest,
-    ResponseListItem,
-    ResponseDetail,
-    SubmitResponseRequest,
-    SubmitResponseResponse,
-    StatisticsResponse,
-    MemberProfileResponse,
-    UpdateMemberProfileRequest
+import { 
+    PageResponse, 
+    SurveyListItem, 
+    SurveyDetail, 
+    SurveySearchRequest, 
+    CreateSurveyRequest, 
+    UpdateSurveyRequest
 } from '../../shared/models';
 import { API_ENDPOINTS } from '../../shared/constants/app.constants';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ApiService {
+export class SurveyService {
     private apiUrl = environment.apiUrl;
 
     constructor(private http: HttpClient) { }
@@ -56,10 +45,10 @@ export class ApiService {
     /**
      * 創建問卷（管理員）
      */
-    createAdminSurvey(request:CreateSurveyRequest): Observable<SurveyDetail>{
+    createAdminSurvey(request: CreateSurveyRequest): Observable<SurveyDetail> {
         return this.http.post<SurveyDetail>(
             `${this.apiUrl}${API_ENDPOINTS.ADMIN.CREATE_SURVEY}`, request
-        )
+        );
     }
 
     /**
@@ -78,37 +67,6 @@ export class ApiService {
     deleteAdminSurvey(id: number): Observable<void> {
         return this.http.delete<void>(
             `${this.apiUrl}${API_ENDPOINTS.ADMIN.SURVEY_DETAIL(id)}`
-        );
-    }
-
-    /**
-     * 獲取問卷回覆列表（管理員）
-     */
-    getAdminSurveyResponses(surveyId: number, page = 0, size = 10): Observable<PageResponse<ResponseListItem>> {
-        const params = new HttpParams()
-            .set('page', page.toString())
-            .set('size', size.toString());
-        return this.http.get<PageResponse<ResponseListItem>>(
-            `${this.apiUrl}${API_ENDPOINTS.ADMIN.SURVEY_RESPONSES(surveyId)}`,
-            { params }
-        );
-    }
-
-    /**
-     * 獲取回覆詳情（管理員）
-     */
-    getAdminResponseDetail(id: number): Observable<ResponseDetail> {
-        return this.http.get<ResponseDetail>(
-            `${this.apiUrl}${API_ENDPOINTS.ADMIN.RESPONSE_DETAIL(id)}`
-        );
-    }
-
-    /**
-     * 獲取問卷統計（管理員）
-     */
-    getAdminSurveyStatistics(surveyId: number): Observable<StatisticsResponse> {
-        return this.http.get<StatisticsResponse>(
-            `${this.apiUrl}${API_ENDPOINTS.ADMIN.SURVEY_STATISTICS(surveyId)}`
         );
     }
 
@@ -163,47 +121,6 @@ export class ApiService {
         );
     }
 
-    /**
-     * 獲取我的填寫記錄（會員）
-     */
-    getMemberResponses(page = 0, size = 10): Observable<PageResponse<ResponseListItem>> {
-        const params = new HttpParams()
-            .set('page', page.toString())
-            .set('size', size.toString());
-        return this.http.get<PageResponse<ResponseListItem>>(
-            `${this.apiUrl}${API_ENDPOINTS.MEMBER.RESPONSES}`,
-            { params }
-        );
-    }
-
-    /**
-     * 獲取填寫記錄詳情（會員）
-     */
-    getMemberResponseDetail(id: number): Observable<ResponseDetail> {
-        return this.http.get<ResponseDetail>(
-            `${this.apiUrl}${API_ENDPOINTS.MEMBER.RESPONSE_DETAIL(id)}`
-        );
-    }
-
-    /**
-     * 獲取個人資料（會員）
-     */
-    getMemberProfile(): Observable<MemberProfileResponse> {
-        return this.http.get<MemberProfileResponse>(
-            `${this.apiUrl}${API_ENDPOINTS.MEMBER.PROFILE}`
-        );
-    }
-
-    /**
-     * 更新個人資料（會員）
-     */
-    updateMemberProfile(request: UpdateMemberProfileRequest): Observable<MemberProfileResponse> {
-        return this.http.put<MemberProfileResponse>(
-            `${this.apiUrl}${API_ENDPOINTS.MEMBER.PROFILE}`,
-            request
-        );
-    }
-
     // ==================== 公開 ====================
 
     /**
@@ -223,16 +140,6 @@ export class ApiService {
     getPublicSurveyDetail(id: number): Observable<SurveyDetail> {
         return this.http.get<SurveyDetail>(
             `${this.apiUrl}${API_ENDPOINTS.PUBLIC.SURVEY_DETAIL(id)}`
-        );
-    }
-
-    /**
-     * 提交問卷（公開/會員）
-     */
-    submitResponse(surveyId: number, request: SubmitResponseRequest): Observable<SubmitResponseResponse> {
-        return this.http.post<SubmitResponseResponse>(
-            `${this.apiUrl}${API_ENDPOINTS.PUBLIC.SUBMIT_RESPONSE(surveyId)}`,
-            request
         );
     }
 

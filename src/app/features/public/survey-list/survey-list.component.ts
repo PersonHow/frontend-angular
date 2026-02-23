@@ -7,7 +7,7 @@ import { LucideAngularModule, Search, PenTool, Calendar, FileText, LogIn } from 
 import { SearchBarComponent, PaginationComponent, SidebarComponent } from '../../../shared/components';
 
 // Services & Models
-import { ApiService } from '../../../core/services/api.service';
+import { SurveyService } from '../../../core/services/survey.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { SurveyListItem, SurveyStatus, SurveySearchRequest, SURVEY_STATUS_CONFIG } from '../../../shared/models/survey.model';
 import { SearchField, SearchParams } from '../../../shared/models/search.model';
@@ -28,7 +28,7 @@ import { PageResponse } from '../../../shared/models/common.model';
     styleUrls: ['./survey-list.component.scss']
 })
 export class SurveyListComponent implements OnInit {
-    private apiService = inject(ApiService);
+    private surveyService = inject(SurveyService);
     private authService = inject(AuthService);
 
     // Icons
@@ -76,7 +76,7 @@ export class SurveyListComponent implements OnInit {
             size: this.pageSize()
         };
 
-        this.apiService.getPublicSurveys(request).subscribe({
+        this.surveyService.getPublicSurveys(request).subscribe({
             next: (res) => {
                 this.surveys.set(res.content);
                 this.currentPage.set(res.page_number + 1);
