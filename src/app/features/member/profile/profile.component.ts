@@ -140,12 +140,11 @@ export class ProfileComponent implements OnInit {
                 this.profileData.set(response);
                 this.notificationService.success(SUCCESS_MESSAGES.PROFILE_UPDATED);
 
-                // 更新 AuthService 中的用戶資料
-                const currentUser = this.authService.currentUser();
-                if (currentUser) {
-                    // 這裡可能需要更新 localStorage 中的用戶資料
-                    // 如果 AuthService 有提供更新方法，應該調用它
-                }
+                // 同步更新 AuthService signal 與 localStorage
+                this.authService.updateCurrentUser({
+                    name: response.name,
+                    phone: response.phone
+                });
 
                 // 清空密碼欄位
                 this.profileForm.patchValue({ new_password: '' });

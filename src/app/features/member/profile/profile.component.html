@@ -16,20 +16,6 @@
             </div>
             } @else {
 
-            <!-- 成功訊息 -->
-            @if (successMessage()) {
-            <div class="alert alert-success">
-                {{ successMessage() }}
-            </div>
-            }
-
-            <!-- 錯誤訊息 -->
-            @if (errorMessage()) {
-            <div class="alert alert-error">
-                {{ errorMessage() }}
-            </div>
-            }
-
             <div class="card profile-card">
                 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
 

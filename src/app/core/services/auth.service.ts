@@ -118,6 +118,16 @@ export class AuthService {
         return userRole ? roles.includes(userRole) : false;
     }
 
+// 更新當前用戶資料（name/phone）並同步 localStorage
+    updateCurrentUser(updates: Pick<CurrentUser, 'name' | 'phone'>): void {
+        const current = this.currentUserSignal();
+        if (current) {
+            const updated: CurrentUser = { ...current, ...updates };
+            this.currentUserSignal.set(updated);
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updated));
+        }
+    }
+
 // ============================= 私有方法 =============================
     private loadUserFromStorage(): void {
         try {
