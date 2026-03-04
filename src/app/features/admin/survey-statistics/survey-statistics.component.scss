@@ -5,14 +5,26 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: $spacing-xl;
+    padding-left: 132px;
 
     @include mobile {
         padding: $spacing-md;
+        
     }
 }
 
 .header-section {
-    margin-bottom: $spacing-xl;
+    width: 100px;
+    position: fixed;
+    left: $spacing-xl;
+    top: $spacing-xl;
+    display: grid;
+    grid-template-columns: 100px;
+
+    @include mobile {
+        position: unset;
+        margin-left: 32px;
+    }
 }
 
 .btn-back {
@@ -22,7 +34,7 @@
     padding-left: 0;
     margin-bottom: $spacing-md;
     gap: 4px;
-
+    scale: 1.3;
     &:hover {
         color: $main;
     }

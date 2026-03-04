@@ -48,18 +48,10 @@
 }
 
 .btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
+    @include btn-link;
     transition: background-color $transition-fast;
     display: flex;
     align-items: center;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
 }
 
 // 分頁區

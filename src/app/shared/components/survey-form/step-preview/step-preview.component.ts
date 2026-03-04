@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CreateSurveyRequest, QuestionType, SurveyStatus } from '../../../../../shared/models';
+import { CreateSurveyRequest, QuestionType, SurveyStatus } from '../../../models';
 import { LucideAngularModule, Edit, FileText, Calendar, CheckCircle, Save } from 'lucide-angular';
 
 @Component({
@@ -26,7 +26,6 @@ export class StepPreviewComponent {
     readonly icons = { Edit, FileText, Calendar, CheckCircle, Save };
 
     onSave(status: SurveyStatus) {
-        // 簡單的確認
         if (status === SurveyStatus.ACTIVE) {
             if (!confirm('確定要發佈問卷嗎？發佈後將開放填寫。')) return;
         }

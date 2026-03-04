@@ -1,18 +1,16 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SurveyService } from '../../../core/services/survey.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { CreateSurveyRequest, SurveyStatus, CreateQuestionRequest } from '../../../shared/models';
 
-// 引入 Shared Components
+// Shared Components
 import { SidebarComponent } from '../../../shared/components';
-
-// 子元件 (來自 Shared)
 import { StepInfoComponent, StepQuestionsComponent, StepPreviewComponent } from '../../../shared/components/survey-form';
 
 @Component({
-    selector: 'app-admin-survey-create',
+    selector: 'app-member-survey-create',
     standalone: true,
     imports: [
         CommonModule,
@@ -21,10 +19,10 @@ import { StepInfoComponent, StepQuestionsComponent, StepPreviewComponent } from 
         StepQuestionsComponent,
         StepPreviewComponent
     ],
-    templateUrl: './survey-create.component.html',
-    styleUrls: ['./survey-create.component.scss']
+    templateUrl: './member-survey-create.component.html',
+    styleUrls: ['./member-survey-create.component.scss']
 })
-export class SurveyCreateComponent {
+export class MemberSurveyCreateComponent {
     private router = inject(Router);
     private surveyService = inject(SurveyService);
     private notificationService = inject(NotificationService);
@@ -33,7 +31,6 @@ export class SurveyCreateComponent {
     currentStep = signal<number>(1);
     isLoading = signal<boolean>(false);
 
-    // 問卷暫存資料 (隨時保持最新狀態)
     surveyData = signal<CreateSurveyRequest>({
         title: '',
         description: '',
@@ -45,65 +42,43 @@ export class SurveyCreateComponent {
 
     // --- 事件處理 ---
 
-    // Step 1 完成：更新基本資料 -> 去 Step 2
     onBasicInfoSubmit(info: Partial<CreateSurveyRequest>) {
-        this.surveyData.update(current => ({
-            ...current,
-            ...info
-        }));
+        this.surveyData.update(current => ({ ...current, ...info }));
         this.goToStep(2);
-        console.log(this.surveyData());
-        
     }
 
-    // Step 2 完成：更新題目列表 -> 去 Step 3
     onQuestionsSubmit(questions: CreateQuestionRequest[]) {
-        this.surveyData.update(current => ({
-            ...current,
-            questions: questions
-        }));
+        this.surveyData.update(current => ({ ...current, questions }));
         this.goToStep(3);
-        console.log(this.surveyData());
-        
     }
 
-    // Step 3 完成：決定狀態 -> 呼叫 API
     onFinalSubmit(status: SurveyStatus) {
         this.isLoading.set(true);
 
-        // 準備最終 Payload
         const finalPayload: CreateSurveyRequest = {
             ...this.surveyData(),
-            status: status
+            status
         };
 
-        console.log(this.surveyData());
-        
-
-        // 呼叫 SurveyService
-        this.surveyService.createAdminSurvey(finalPayload).subscribe({
+        this.surveyService.createMemberSurvey(finalPayload).subscribe({
             next: () => {
                 this.isLoading.set(false);
                 const msg = status === SurveyStatus.ACTIVE ? '問卷已發佈！' : '問卷已暫存！';
                 this.notificationService.success(msg);
-                this.router.navigate(['/admin/surveys']);
+                this.router.navigate(['/member/surveys']);
             },
             error: (err) => {
                 this.isLoading.set(false);
-                console.error('Create failed', err);
                 this.notificationService.error(err.error?.message || '建立失敗，請檢查資料或網路連線。');
             }
         });
     }
-
-    // --- 導航輔助 ---
 
     goToStep(step: number) {
         this.currentStep.set(step);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 麵包屑導航點擊 (選用：可限制只能往回點)
     onStepClick(step: number) {
         if (step < this.currentStep()) {
             this.currentStep.set(step);

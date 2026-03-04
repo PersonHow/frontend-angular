@@ -60,7 +60,16 @@ export const routes: Routes = [
             {
                 path: 'responses/:id',
                 loadComponent: () => import('./features/admin/response-detail/response-detail.component').then(m => m.ResponseDetailComponent)
-            }
+            },
+            {
+                path: 'accounts',
+                loadComponent: () => import('./features/admin/account-list/admin-account-list.component').then(m => m.AdminAccountListComponent)
+            },
+            {
+                path: 'accounts/:id',
+                loadComponent: () => import('./features/admin/account-detail/admin-account-detail.component').then(m => m.AdminAccountDetailComponent)
+            },
+            
         ]
     },
 
@@ -69,13 +78,24 @@ export const routes: Routes = [
         path: 'member',
         canActivate: [memberGuard],
         children: [
-            { path: '', redirectTo: 'responses', pathMatch: 'full' },
+            { path: '', redirectTo: 'surveys', pathMatch: 'full' },
+            {
+                path: 'surveys',
+                loadComponent: () => import('./features/member/survey-list/member-survey-list.component').then(m => m.MemberSurveyListComponent)
+            },
+            {
+                path: 'surveys/create',
+                loadComponent: () => import('./features/member/survey-create/member-survey-create.component').then(m => m.MemberSurveyCreateComponent)
+            },
+            {
+                path: 'surveys/:id/edit',
+                loadComponent: () => import('./features/member/survey-edit/member-survey-edit.component').then(m => m.MemberSurveyEditComponent)
+            },
             {
                 path: 'responses',
                 loadComponent: () => import('./features/member/response-history/response-history.component').then(m => m.ResponseHistoryComponent)
             },
             {
-                // 修正：查看詳情應該指向詳情組件，而非列表組件
                 path: 'responses/:id',
                 loadComponent: () => import('./features/member/response-detail/response-detail.component').then(m => m.ResponseDetailComponent)
             },

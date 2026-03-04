@@ -79,7 +79,7 @@ export class SurveyListComponent implements OnInit {
         this.surveyService.getPublicSurveys(request).subscribe({
             next: (res) => {
                 this.surveys.set(res.content);
-                this.currentPage.set(res.page_number + 1);
+                this.currentPage.set(res.page + 1);
                 this.totalPages.set(res.total_pages);
                 this.totalElements.set(res.total_elements);
                 this.isLoading.set(false);

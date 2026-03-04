@@ -1,0 +1,116 @@
+<div class="app-container">
+    <app-sidebar mode="ADMIN"></app-sidebar>
+
+    <main class="main-content with-sidebar">
+        <div class="content-wrapper">
+            
+            <div class="page-header header-with-back">
+                <div>
+                    <h1 class="page-title">會員詳細資訊</h1>
+                    <p class="page-subtitle">檢視會員基本資料與建立的問卷紀錄</p>
+                </div>
+            </div>
+
+            @if (isLoading()) {
+                <div class="loading-state">載入中...</div>
+            } @else if (account(); as data) {
+                
+                <div class="dashboard-stats mb-4">
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper user-bg">
+                            <lucide-icon [img]="icons.User" [size]="24"></lucide-icon>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">會員名稱</span>
+                            <span class="stat-value">{{ data.name }}</span>
+                            <span class="stat-subtext">
+                                性別：{{ data.sex === AccountSex.MALE ? '男性' : (data.sex === AccountSex.FEMALE ? '女性' : '其他') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper mail-bg">
+                            <lucide-icon [img]="icons.Mail" [size]="24"></lucide-icon>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">聯絡資訊</span>
+                            <span class="stat-value text-md">{{ data.email }}</span>
+                            <span class="stat-subtext">手機：{{ data.phone || '未提供' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper role-bg">
+                            <lucide-icon [img]="icons.Calendar" [size]="24"></lucide-icon>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">系統權限</span>
+                            <span class="stat-value mt-1">
+                                <span class="badge" [class.badge-admin]="data.role === Role.ADMIN" [class.badge-member]="data.role === Role.MEMBER">
+                                    {{ data.role === Role.ADMIN ? '管理員' : '一般會員' }}
+                                </span>
+                            </span>
+                            <span class="stat-subtext">登入身份</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper doc-bg">
+                            <lucide-icon [img]="icons.FileText" [size]="24"></lucide-icon>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">建立問卷數</span>
+                            <span class="stat-value num">{{ data.createdSurveys.length }}</span>
+                            <span class="stat-subtext">總計份數</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card table-container">
+                    <h2 class="card-title mb-3">建立的問卷 ({{ data.createdSurveys.length }} 份)</h2>
+                    
+                    @if (data.createdSurveys.length === 0) {
+                        <div class="empty-state">
+                            <lucide-icon [img]="icons.FileText" [size]="48" class="text-muted"></lucide-icon>
+                            <p>此會員尚未建立任何問卷</p>
+                        </div>
+                    } @else {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="80">編號</th>
+                                    <th>問卷名稱</th>
+                                    <th width="100">狀態</th>
+                                    <th width="120">回覆數</th>
+                                    <th width="120">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (survey of data.createdSurveys; track survey.id) {
+                                <tr>
+                                    <td>{{ survey.id }}</td>
+                                    <td>{{ survey.title }}</td>
+                                    <td>
+                                        <span class="status-badge" [ngClass]="statusConfig[survey.status].cssClass">
+                                            {{ statusConfig[survey.status].label }}
+                                        </span>
+                                    </td>
+                                    <td>{{ survey.response_count }} 份</td>
+                                    <td>
+                                        <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn btn-outline btn-sm">
+                                            查看結果
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        </div>
+    </main>
+</div>

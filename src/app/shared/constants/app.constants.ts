@@ -14,6 +14,8 @@ export const API_ENDPOINTS = {
     ADMIN: {
         SURVEYS: '/admin/surveys',
         CREATE_SURVEY:'/admin/surveys/createSurvey',
+        ACCOUNTS:'/admin/accounts',
+        ACCOUNT_DETAIL:(id: number) => `/admin/accounts/${id}`,
         SURVEY_DETAIL: (id: number) => `/admin/surveys/${id}`,
         SURVEY_RESPONSES: (id: number) => `/admin/surveys/${id}/responses`,
         SURVEY_STATISTICS: (id: number) => `/admin/surveys/${id}/statistics`,
@@ -59,6 +61,8 @@ export const ROUTES = {
     MEMBER: {
         HOME: '/member',
         SURVEYS: '/member/surveys',
+        SURVEY_CREATE: '/member/surveys/create',
+        SURVEY_EDIT: (id: number) => `/member/surveys/${id}/edit`,
         RESPONSES: '/member/responses',
         RESPONSE_DETAIL: (id: number) => `/member/responses/${id}`,
         PROFILE: '/member/profile'

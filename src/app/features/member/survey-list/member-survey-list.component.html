@@ -1,5 +1,5 @@
 <div class="app-container">
-    <app-sidebar mode="ADMIN"></app-sidebar>
+    <app-sidebar mode="MEMBER"></app-sidebar>
 
     <main class="main-content">
         <div class="content-wrapper">
@@ -7,77 +7,55 @@
             <app-search-bar [fields]="searchFields" (search)="onSearch($event)" (reset)="onReset()">
             </app-search-bar>
 
-            <div class="action-bar">
-                <button class="btn btn-outline text-error" [disabled]="selectedIds().size === 0"
-                    (click)="openDeleteBatch()">
-                    <lucide-icon [img]="icons.Trash2" [size]="24"></lucide-icon>
-                    刪除選取 ({{ selectedIds().size }})
-                </button>
-            </div>
-
             <div class="card table-container">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="50">
-                                <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll($event)">
-                            </th>
                             <th width="80">編號</th>
                             <th>名稱</th>
                             <th width="100">狀態</th>
                             <th width="120">開始時間</th>
                             <th width="120">結束時間</th>
+                            <th width="80">回覆數</th>
                             <th width="100">操作</th>
-                            <th width="100">結果</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (isLoading()) {
                         <tr>
-                            <td colspan="8" class="text-center p-lg">載入中...</td>
+                            <td colspan="7" class="text-center p-lg">載入中...</td>
                         </tr>
                         } @else if (surveys().length === 0) {
                         <tr>
-                            <td colspan="8" class="text-center p-lg">目前沒有問卷資料</td>
+                            <td colspan="7" class="text-center p-lg">目前沒有問卷資料</td>
                         </tr>
                         } @else {
                         @for (survey of surveys(); track survey.id) {
                         <tr>
-                            <td>
-                                <input type="checkbox" [disabled]="!canDelete(survey)"
-                                    [checked]="selectedIds().has(survey.id)" (change)="toggleSelection(survey.id)">
-                            </td>
-                            <!-- 問卷 ID -->
                             <td>{{ survey.id }}</td>
-                            <!-- 問卷標題 -->
-                            <td class="text-ellipsis" [title]="survey.title">
-                                {{ survey.title }}
-                            </td>
-                            <!-- 問卷狀態 -->
+                            <td class="text-ellipsis" [title]="survey.title">{{ survey.title }}</td>
                             <td>
                                 <span [class.status-active]="survey.status === SurveyStatus.ACTIVE"
                                     [class.status-not-started]="survey.status === SurveyStatus.NOT_STARTED"
                                     [class.status-closed]="survey.status === SurveyStatus.CLOSED">
                                     {{ survey.status === SurveyStatus.NOT_STARTED ? '未開始' :
-                                    survey.status === SurveyStatus.ACTIVE ? '進行中' : '已結束' }}
+                                       survey.status === SurveyStatus.ACTIVE ? '進行中' : '已結束' }}
                                 </span>
                             </td>
-                            <!-- 開始日期 -->
                             <td>{{ survey.start_date }}</td>
-                            <!-- 結束日期 -->
                             <td>{{ survey.end_date }}</td>
-                            <!-- 問卷操作 -->
+                            <td class="text-center">{{ survey.response_count }}</td>
                             <td>
                                 <div class="action-buttons">
                                     @if (canEdit(survey)) {
-                                    <a [routerLink]="['/admin/surveys', survey.id, 'edit']"
+                                    <a [routerLink]="['/member/surveys', survey.id, 'edit']"
                                         class="btn-icon text-primary" title="編輯">
-                                        <lucide-icon [img]="icons.Edit" [size]="24"></lucide-icon>
+                                        <lucide-icon [img]="icons.Edit" [size]="20"></lucide-icon>
                                     </a>
                                     } @else {
-                                    <a [routerLink]="['/admin/surveys', survey.id, 'edit']" class="btn-icon text-muted"
-                                        title="查看">
-                                        <lucide-icon [img]="icons.Eye" [size]="24"></lucide-icon>
+                                    <a [routerLink]="['/member/surveys', survey.id, 'edit']"
+                                        class="btn-icon text-muted" title="查看">
+                                        <lucide-icon [img]="icons.Eye" [size]="20"></lucide-icon>
                                     </a>
                                     }
 
@@ -85,24 +63,6 @@
                                     <button class="btn-icon text-error" (click)="openDeleteSingle(survey)" title="刪除">
                                         <lucide-icon [img]="icons.Trash2" [size]="18"></lucide-icon>
                                     </button>
-                                    }
-                                </div>
-                            </td>
-                            <!-- 問卷統計與列表 -->
-                            <td>
-                                <div class="flex gap-2 action-buttons">
-                                    @if (survey.response_count > 0) {
-                                    <a [routerLink]="['/admin/surveys', survey.id, 'results']" class="btn-link"
-                                        title="回覆列表">
-                                        <!-- 列表 -->
-                                        <lucide-icon [img]="icons.List" [size]="24"></lucide-icon>
-                                    </a>
-                                    <a [routerLink]="['/admin/surveys', survey.id, 'statistics']"
-                                        class="btn-link text-main" title="統計圖表">
-                                        <lucide-icon [img]="icons.PieChart" [size]="24"></lucide-icon>
-                                    </a>
-                                    } @else {
-                                    <span class="text-muted">-</span>
                                     }
                                 </div>
                             </td>

@@ -1,9 +1,9 @@
 import { Component, input, output, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
-import { CreateQuestionRequest, QuestionType } from '../../../../../shared/models';
-import { VALIDATION } from '../../../../../shared/constants/app.constants';
-import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { CreateQuestionRequest, QuestionType } from '../../../models';
+import { VALIDATION } from '../../../constants/app.constants';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LucideAngularModule, Trash2, Edit, Plus, ArrowLeft, ArrowRight } from 'lucide-angular';
 
 // 擴充模型：前端需要 tempId 來操作尚未存入 DB 的題目

@@ -1,8 +1,8 @@
 import { Component, input, output, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { CreateSurveyRequest } from '../../../../../shared/models'; // 請依實際路徑調整
-import { VALIDATION } from '../../../../../shared/constants/app.constants';
+import { CreateSurveyRequest } from '../../../models';
+import { VALIDATION } from '../../../constants/app.constants';
 
 @Component({
     selector: 'app-step-basic-info',

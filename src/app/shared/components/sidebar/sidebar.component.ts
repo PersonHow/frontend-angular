@@ -1,7 +1,8 @@
 import { Component, computed, input, inject } from "@angular/core";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
-import { LayoutList, FilePlus, LogOut, ClipboardClock, LucideAngularModule, CircleUser, LogIn } from "lucide-angular";
+import { TableProperties, FilePlus, LogOut, FolderOpenDot, Users,
+    ClipboardClock, LucideAngularModule, CircleUser, LogIn } from "lucide-angular";
 
 export type SidebarMode = "ADMIN" | "MEMBER" | "PUBLIC";
 
@@ -29,6 +30,8 @@ export class SidebarComponent {
     private authService = inject(AuthService);
     private router = inject(Router);
 
+    private listIcon = TableProperties;
+
     isLoggedIn = this.authService.isLoggedIn;
 
 
@@ -48,17 +51,21 @@ export class SidebarComponent {
                 text: true
             },
             {
-                icon: LayoutList,
-                label: '回列表頁',
+                icon: this.listIcon,
+                label: '問卷列表頁',
                 route: '/admin/surveys',
                 exact: true
-
+            },
+            {
+                icon: Users,
+                label: '會員管理頁',
+                route: '/admin/accounts',
+                exact: true
             },
             {
                 icon: FilePlus,
                 label: '新增問卷',
                 route: '/admin/surveys/create',
-
             },
             {
                 icon: LogOut,
@@ -75,10 +82,21 @@ export class SidebarComponent {
                 text: true
             },
             {
-                icon: LayoutList,
+                icon: this.listIcon,
                 label: '返回列表頁',
                 route: '/surveys',
                 exact: true
+            },
+            {
+                icon: FolderOpenDot,
+                label:'屬於我的問卷',
+                route:'/member/surveys',
+                exact: true
+            },
+            {
+                icon:FilePlus,
+                label:'新增問卷',
+                route:'/member/surveys/create',
             },
             {
                 icon: ClipboardClock,
@@ -103,9 +121,9 @@ export class SidebarComponent {
             text: true
         },
         {
-            icon: LayoutList,
+            icon: this.listIcon,
             label: '回列表頁',
-            route: '/admin/surveys',
+            route: '/surveys',
             exact: true
         },
         {

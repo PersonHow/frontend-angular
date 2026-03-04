@@ -1,0 +1,103 @@
+<div class="app-container">
+    <app-sidebar mode="MEMBER"></app-sidebar>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+
+            <div class="page-header">
+                <h1 class="page-title">編輯問卷</h1>
+
+                <div class="stepper">
+                    <div class="step-item" [class.active]="currentStep() >= 1" [class.current]="currentStep() === 1"
+                        (click)="onStepClick(1)">
+                        <div class="step-circle">1</div>
+                        <span class="step-label">基本資料</span>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item" [class.active]="currentStep() >= 2" [class.current]="currentStep() === 2"
+                        (click)="onStepClick(2)">
+                        <div class="step-circle">2</div>
+                        <span class="step-label">題目設計</span>
+                    </div>
+
+                    <div class="step-line"></div>
+
+                    <div class="step-item" [class.active]="currentStep() >= 3" [class.current]="currentStep() === 3">
+                        <div class="step-circle">3</div>
+                        <span class="step-label">預覽發佈</span>
+                    </div>
+                </div>
+            </div>
+
+            @if (isInitialLoading()) {
+            <div class="loading-card">
+                <div class="spinner"></div>
+                <p>載入問卷資料中...</p>
+            </div>
+            }
+
+            @else if (errorMessage() && isInitialLoading() === false && !canEdit()) {
+            <div class="warning-banner">
+                <strong>⚠️ 注意：</strong> {{ errorMessage() }}
+            </div>
+            <div class="step-content">
+                @switch (currentStep()) {
+                @case (1) {
+                <app-step-basic-info [initialData]="surveyData()" (stepSubmit)="onBasicInfoSubmit($event)">
+                </app-step-basic-info>
+                }
+                @case (2) {
+                <app-step-questions [initialQuestions]="surveyData().questions" (prevStep)="goToStep(1)"
+                    (stepSubmit)="onQuestionsSubmit($event)">
+                </app-step-questions>
+                }
+                @case (3) {
+                <app-step-preview [surveyData]="surveyData()" (editStep)="goToStep($event)"
+                    (submit)="onFinalSubmit($event)">
+                </app-step-preview>
+                }
+                }
+            </div>
+            }
+
+            @else if (errorMessage()) {
+            <div class="error-card">
+                <h3>無法載入問卷</h3>
+                <p>{{ errorMessage() }}</p>
+                <button class="btn-main" (click)="backToList()">返回問卷列表</button>
+            </div>
+            }
+
+            @else {
+            <div class="step-content">
+                @switch (currentStep()) {
+                @case (1) {
+                <app-step-basic-info [initialData]="surveyData()" (stepSubmit)="onBasicInfoSubmit($event)">
+                </app-step-basic-info>
+                }
+                @case (2) {
+                <app-step-questions [initialQuestions]="surveyData().questions" (prevStep)="goToStep(1)"
+                    (stepSubmit)="onQuestionsSubmit($event)">
+                </app-step-questions>
+                }
+                @case (3) {
+                <app-step-preview [surveyData]="surveyData()" (editStep)="goToStep($event)"
+                    (submit)="onFinalSubmit($event)">
+                </app-step-preview>
+                }
+                }
+            </div>
+            }
+
+        </div>
+    </main>
+
+    @if (isLoading()) {
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+        <p>更新中，請稍候...</p>
+    </div>
+    }
+</div>

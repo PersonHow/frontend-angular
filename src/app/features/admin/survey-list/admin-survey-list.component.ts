@@ -1,7 +1,8 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Trash2, Edit, Eye, PieChart } from 'lucide-angular';
+import { LucideAngularModule, Trash2, 
+    Edit, Eye, PieChart, List } from 'lucide-angular';
 
 // 根據您的專案結構引用 Shared Components
 import { SidebarComponent, SearchBarComponent, 
@@ -32,7 +33,7 @@ export class AdminSurveyListComponent implements OnInit {
     private surveyService = inject(SurveyService);
 
     // Icons
-    readonly icons = { Trash2, Edit, Eye, PieChart };
+    readonly icons = { Trash2, Edit, Eye, PieChart, List };
     readonly SurveyStatus = SurveyStatus; // 供 Template 使用 Enum
 
     // --- 資料狀態 ---
@@ -99,7 +100,7 @@ export class AdminSurveyListComponent implements OnInit {
                 this.surveys.set(res.content);
                 this.totalElements.set(res.total_elements);
                 this.totalPages.set(res.total_pages);
-                this.currentPage.set(res.page_number + 1); // 轉為 1-based
+                this.currentPage.set(res.page + 1); // 轉為 1-based
                 this.selectedIds.set(new Set()); // 換頁清空選取
                 this.isLoading.set(false);
             },

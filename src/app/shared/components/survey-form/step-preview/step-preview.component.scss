@@ -1,5 +1,5 @@
-@use '../../../../../../styles/variables' as *;
-@use '../../../../../../styles/mixins' as *;
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
 
 .preview-container {
     max-width: 800px;
@@ -142,8 +142,6 @@
         &.radio {
             border-radius: 50%;
         }
-
-        // Radio style
     }
 }
 
@@ -164,7 +162,7 @@
 .action-bar {
     position: fixed;
     bottom: 0;
-    left: 0; // 如果有 Sidebar 可能需要調整 left: 250px
+    left: 0;
     right: 0;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(5px);
@@ -175,12 +173,9 @@
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     z-index: 100;
 
-    // 配合 Sidebar 調整，假設 Sidebar 寬度約 250px，手機版全寬
     @include tablet {
         left: 250px;
     }
-
-    // 假設您有 tablet mixin，若無可略過
 }
 
 .btn-primary {

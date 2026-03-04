@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../core/services/notification.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { LucideAngularModule, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-angular';
 
 @Component({
   selector: 'app-toast',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.scss',
   animations: [
@@ -23,4 +24,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class ToastComponent {
   notificationService = inject(NotificationService);
+
+  readonly icons = {
+    success: CheckCircle,
+    error: AlertCircle,
+    info: Info,
+    warning: AlertTriangle,
+  };
 }

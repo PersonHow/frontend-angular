@@ -1,0 +1,49 @@
+@use '../../../../styles/variables' as *;
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    max-width:1200px ;
+    position: relative;
+    margin-bottom: 50px;
+    
+    .accountListBar {
+        position: absolute;
+        max-width: 800px;
+        top: 0;
+        right: 0;
+    }
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: $border-radius-sm;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-admin {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.badge-member {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.btn-main {
+    &:hover {
+        scale: 1.1;
+        color: $text-light;
+        background-color: lighten($secondary, 5%);
+        text-decoration: none;
+    }
+}

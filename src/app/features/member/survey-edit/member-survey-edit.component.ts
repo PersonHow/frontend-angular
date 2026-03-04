@@ -1,9 +1,3 @@
-// ============================================
-// 問卷編輯主組件
-// ============================================
-// 路徑：src/app/features/admin/survey-edit/survey-edit.component.ts
-// 功能：管理問卷編輯的三步驟流程、資料載入與更新
-
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,14 +5,12 @@ import { SurveyService } from '../../../core/services/survey.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { CreateSurveyRequest, SurveyStatus, CreateQuestionRequest, SurveyDetail, UpdateSurveyRequest } from '../../../shared/models';
 
-// 引入 Shared Components
+// Shared Components
 import { SidebarComponent } from '../../../shared/components';
-
-// 子元件 (來自 Shared)
 import { StepInfoComponent, StepQuestionsComponent, StepPreviewComponent } from '../../../shared/components/survey-form';
 
 @Component({
-    selector: 'app-admin-survey-edit',
+    selector: 'app-member-survey-edit',
     standalone: true,
     imports: [
         CommonModule,
@@ -27,10 +19,10 @@ import { StepInfoComponent, StepQuestionsComponent, StepPreviewComponent } from 
         StepQuestionsComponent,
         StepPreviewComponent
     ],
-    templateUrl: './survey-edit.component.html',
-    styleUrls: ['./survey-edit.component.scss']
+    templateUrl: './member-survey-edit.component.html',
+    styleUrls: ['./member-survey-edit.component.scss']
 })
-export class SurveyEditComponent implements OnInit {
+export class MemberSurveyEditComponent implements OnInit {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     private surveyService = inject(SurveyService);
@@ -44,7 +36,6 @@ export class SurveyEditComponent implements OnInit {
     errorMessage = signal<string>('');
     canEdit = signal<boolean>(true);
 
-    // 問卷資料 (與 create 使用相同格式)
     surveyData = signal<CreateSurveyRequest>({
         title: '',
         description: '',
@@ -55,7 +46,6 @@ export class SurveyEditComponent implements OnInit {
     });
 
     ngOnInit(): void {
-        // 從路由參數獲取問卷 ID
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.surveyId.set(parseInt(id, 10));
@@ -66,42 +56,27 @@ export class SurveyEditComponent implements OnInit {
         }
     }
 
-    /**
-     * 載入現有問卷資料
-     */
     private loadSurveyData(): void {
         this.isInitialLoading.set(true);
         this.errorMessage.set('');
 
-        // 呼叫 GET /api/admin/surveys/{id}
-        this.surveyService.getAdminSurveyDetail(this.surveyId()).subscribe({
+        this.surveyService.getMemberSurveyDetail(this.surveyId()).subscribe({
             next: (response: SurveyDetail) => {
-                // 轉換後端資料為前端格式
-                const surveyData = this.convertApiToFrontend(response);
-                this.surveyData.set(surveyData);
-
-                // 檢查是否可編輯 (後端應該回傳 can_edit 欄位)
-                // 如果後端沒有回傳，可以根據 response_count 判斷
-                const hasResponses = response.response_count > 0;
-                this.canEdit.set(!hasResponses);
+                this.surveyData.set(this.convertApiToFrontend(response));
+                this.canEdit.set(response.response_count === 0);
 
                 if (!this.canEdit()) {
                     this.errorMessage.set('此問卷已有回覆，無法編輯');
                 }
-
                 this.isInitialLoading.set(false);
             },
             error: (err) => {
-                console.error('載入問卷失敗：', err);
                 this.errorMessage.set(err.error?.message || '載入問卷失敗');
                 this.isInitialLoading.set(false);
             }
         });
     }
 
-    /**
-     * 轉換 API 資料為前端格式 (SurveyDetail -> CreateSurveyRequest)
-     */
     private convertApiToFrontend(apiData: SurveyDetail): CreateSurveyRequest {
         return {
             title: apiData.title,
@@ -122,43 +97,24 @@ export class SurveyEditComponent implements OnInit {
         };
     }
 
-    // --- 事件處理 (與 create 相同邏輯) ---
-
-    /**
-     * Step 1 完成：更新基本資料 -> 去 Step 2
-     */
     onBasicInfoSubmit(info: Partial<CreateSurveyRequest>) {
         if (!this.canEdit()) {
             this.notificationService.warning('此問卷已有回覆，無法編輯');
             return;
         }
-
-        this.surveyData.update(current => ({
-            ...current,
-            ...info
-        }));
+        this.surveyData.update(current => ({ ...current, ...info }));
         this.goToStep(2);
     }
 
-    /**
-     * Step 2 完成：更新題目列表 -> 去 Step 3
-     */
     onQuestionsSubmit(questions: CreateQuestionRequest[]) {
         if (!this.canEdit()) {
             this.notificationService.warning('此問卷已有回覆，無法編輯');
             return;
         }
-
-        this.surveyData.update(current => ({
-            ...current,
-            questions: questions
-        }));
+        this.surveyData.update(current => ({ ...current, questions }));
         this.goToStep(3);
     }
 
-    /**
-     * Step 3 完成：決定狀態 -> 呼叫 UPDATE API
-     */
     onFinalSubmit(status: SurveyStatus) {
         if (!this.canEdit()) {
             this.notificationService.warning('此問卷已有回覆，無法編輯');
@@ -167,53 +123,37 @@ export class SurveyEditComponent implements OnInit {
 
         this.isLoading.set(true);
 
-        // 準備最終 Payload
         const finalPayload: UpdateSurveyRequest = {
             ...this.surveyData(),
-            status: status
+            status
         };
 
-        // 呼叫 PUT API (更新問卷)
-        this.surveyService.updateAdminSurvey(this.surveyId(), finalPayload).subscribe({
+        this.surveyService.updateMemberSurvey(this.surveyId(), finalPayload).subscribe({
             next: () => {
                 this.isLoading.set(false);
                 const msg = status === SurveyStatus.ACTIVE ? '問卷已更新並發佈！' : '問卷已更新！';
                 this.notificationService.success(msg);
-                this.router.navigate(['/admin/surveys']);
+                this.router.navigate(['/member/surveys']);
             },
             error: (err) => {
                 this.isLoading.set(false);
-                console.error('Update failed', err);
                 this.notificationService.error(err.error?.message || '更新失敗，請檢查資料或網路連線。');
             }
         });
     }
-
-    // --- 導航輔助 ---
 
     goToStep(step: number) {
         this.currentStep.set(step);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 麵包屑導航點擊 (選用：可限制只能往回點)
     onStepClick(step: number) {
         if (step < this.currentStep()) {
             this.currentStep.set(step);
         }
     }
 
-    /**
-     * 取消編輯
-     */
-    cancelEdit(): void {
-        if (confirm('確定要取消編輯嗎？未儲存的變更將會遺失。')) {
-            this.router.navigate(['/admin/surveys']);
-        }
-    }
-
-    // 返回列表
-    backToList(): void{
-        this.router.navigate(['/admin/surveys']);
+    backToList(): void {
+        this.router.navigate(['/member/surveys']);
     }
 }

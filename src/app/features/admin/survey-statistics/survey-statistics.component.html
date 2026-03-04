@@ -1,15 +1,15 @@
-<div class="stats-container">
-
-    <div class="header-section">
-        <button class="btn-back" (click)="goBack()">
-            <lucide-icon [img]="icons.ArrowLeft" [size]="18"></lucide-icon>
-            返回
-        </button>
-        <div class="title-group">
-            <h1 class="page-title">問卷統計分析</h1>
-            <h2 class="survey-title">{{ stats()?.survey_title }}</h2>
-        </div>
+<div class="header-section">
+    <button class="btn-back" (click)="goBack()">
+        <lucide-icon [img]="icons.ArrowLeft" [size]="18"></lucide-icon>
+        返回
+    </button>
+    <div class="title-group">
+        <h1 class="page-title">問卷統計分析</h1>
+        <h2 class="survey-title">{{ stats()?.survey_title }}</h2>
     </div>
+</div>
+
+<div class="stats-container">
 
     @if (isLoading()) {
     <div class="loading-state">數據分析中...</div>

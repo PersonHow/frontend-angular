@@ -1,0 +1,145 @@
+@use '../../../../styles/variables' as *;
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-with-back {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .btn-outline {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+/* 🌟 儀表板卡片排版 🌟 */
+.dashboard-stats {
+    display: grid;
+    // 自動適應寬度，在大螢幕會排成 4 列，小螢幕自動折行
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border-radius: $border-radius-lg;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $shadow-md;
+    }
+
+    /* 圓形 Icon 容器 */
+    .stat-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        /* 各卡片專屬主題色 */
+        &.user-bg {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        &.mail-bg {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        &.role-bg {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        &.doc-bg {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+    }
+
+    .stat-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: $text-muted; // 若無此變數可改用 #6c757d
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: $main;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &.num {
+                font-size: 1.75rem;
+                font-weight: 700;
+            }
+
+            &.text-md {
+                font-size: 1rem;
+            }
+        }
+
+        .stat-subtext {
+            font-size: 0.8rem;
+            color: #9e9e9e;
+            margin-top: 0.3rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+    }
+}
+
+.mb-4 {
+    margin-bottom: 2rem;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+// Badge Styles (維持不變)
+.badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: $border-radius-sm;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.badge-admin {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.badge-member {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}

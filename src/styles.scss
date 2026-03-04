@@ -482,3 +482,9 @@ select {
     @include flex-start;
     gap: $spacing-sm;
 }
+
+
+// === lucide icon ===
+lucide-icon{
+    display: flex;
+}

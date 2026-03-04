@@ -99,6 +99,10 @@
     &:hover:not(:disabled) {
         color: darken($main, 10%);
     }
+
+    &:hover {
+        background-color: $accent-light-hover;
+    }
 }
 
 // === 輸入框樣式 ===

@@ -53,7 +53,7 @@ export class SurveyResultsComponent implements OnInit {
         this.responseService.getAdminSurveyResponses(this.surveyId(), apiPage, this.pageSize()).subscribe({
             next: (res) => {
                 this.responses.set(res.content);
-                this.currentPage.set(res.page_number + 1);
+                this.currentPage.set(res.page + 1);
                 this.totalPages.set(res.total_pages);
                 this.totalElements.set(res.total_elements);
 

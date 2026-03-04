@@ -2,12 +2,7 @@
     @for (toast of notificationService.toasts$(); track toast.id) {
         <div class="toast" [ngClass]="toast.type" @toastAnimation>
             <div class="toast-content">
-                <i class="icon" [ngClass]="{
-                    'icon-check-circle': toast.type === 'success',
-                    'icon-alert-circle': toast.type === 'error',
-                    'icon-info': toast.type === 'info',
-                    'icon-alert-triangle': toast.type === 'warning'
-                }"></i>
+                <lucide-icon [img]="icons[toast.type]" [size]="20" class="icon"></lucide-icon>
                 <span class="message">{{ toast.message }}</span>
             </div>
             <button class="close-btn" (click)="notificationService.remove(toast.id)">×</button>

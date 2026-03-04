@@ -1,0 +1,72 @@
+<div class="app-container">
+    <app-sidebar mode="ADMIN"></app-sidebar>
+
+    <main class="main-content with-sidebar">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1 class="page-title">會員管理</h1>
+                <p class="page-subtitle">檢視與管理系統中的所有註冊會員。</p>
+                <div class="accountListBar">
+                <app-search-bar [fields]="searchFields" (search)="onSearch($event)" (reset)="onReset()">
+                </app-search-bar>
+            </div>
+            </div>
+            
+
+            <div class="card table-container">
+                @if (isLoading()) {
+                <div class="loading-state">載入中...</div>
+                } @else if (accounts().length === 0) {
+                <div class="empty-state">
+                    <lucide-icon [img]="icons.Users" [size]="48" class="text-muted"></lucide-icon>
+                    <p>目前沒有任何會員資料</p>
+                </div>
+                } @else {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="80">ID</th>
+                            <th>姓名</th>
+                            <th>信箱</th>
+                            <th>手機號碼</th>
+                            <th width="100">角色</th>
+                            <th width="180">註冊時間</th>
+                            <th width="120">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of accounts(); track item.id) {
+                        @if(item.role === Role.MEMBER){
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td class="fw-bold">{{ item.name }}</td>
+                            <td class="text-muted">{{ item.email }}</td>
+                            <td>{{ item.phone || '-' }}</td>
+                            <td>
+                                <span class="badge" [class.badge-member]="item.role === Role.MEMBER">
+                                    {{ item.role}}
+                                </span>
+                            </td>
+                            <td class="text-muted">{{ item.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+                            <td>
+                                <a [routerLink]="['/admin/accounts', item.id]" class="btn btn-main btn-sm">
+                                    查看詳情
+                                </a>
+                            </td>
+                        </tr>
+                        }
+
+                        }
+                    </tbody>
+                </table>
+                }
+            </div>
+
+            <div class="pagination-wrapper">
+                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                    [totalItems]="totalElements()-1" [showTotalItems]="true" (pageChange)="onPageChange($event)">
+                </app-pagination>
+            </div>
+        </div>
+    </main>
+</div>
