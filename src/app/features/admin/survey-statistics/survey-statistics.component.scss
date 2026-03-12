@@ -170,14 +170,17 @@
 
     .data-row {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         padding: 8px 0;
         border-bottom: 1px solid $bg-light;
         font-size: $font-size-sm;
-
+        position: relative;
+        
         .opt-text {
             color: $text-main;
             font-weight: 500;
+            position: absolute;
+            left: 0;
         }
 
         .opt-count {
@@ -188,6 +191,8 @@
             color: $text-muted;
             width: 60px;
             text-align: right;
+            position: absolute;
+            right: 0;
         }
     }
 }
