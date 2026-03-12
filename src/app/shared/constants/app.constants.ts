@@ -36,6 +36,7 @@ export const API_ENDPOINTS = {
     PUBLIC: {
         SURVEYS: '/public/surveys',
         SURVEY_DETAIL: (id: number) => `/public/surveys/${id}`,
+        SURVEY_STATISTICS: (id: number) => `/public/surveys/${id}/statistics`,
         SUBMIT_RESPONSE: (id: number) => `/public/surveys/${id}/responses`
     }
 } as const;

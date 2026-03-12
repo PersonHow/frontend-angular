@@ -29,6 +29,10 @@ export const routes: Routes = [
         path: "surveys/:id/fill",
         loadComponent: () => import('./features/public/survey-fill/survey-fill.component').then(m => m.SurveyFillComponent),
     },
+    {
+        path: "surveys/:id/statistics",
+        loadComponent: () => import('./features/public/survey-statistics/survey-statistics.component').then(m => m.PublicSurveyStatisticsComponent),
+    },
 
     // === 管理員後台 ===
     {

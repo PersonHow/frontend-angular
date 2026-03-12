@@ -40,6 +40,7 @@
                             <th width="120">開始日期</th>
                             <th width="120">結束日期</th>
                             <th width="120">操作</th>
+                            <th width="80">統計</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,6 +73,16 @@
                                 <button class="btn btn-disabled btn-sm" disabled>
                                     {{ item.status === SurveyStatus.NOT_STARTED ? '未開始' : '已結束' }}
                                 </button>
+                                }
+                            </td>
+                        <!-- 統計圖 -->
+                            <td>
+                                @if (item.response_count > 0) {
+                                <a [routerLink]="['/surveys', item.id, 'statistics']" class="btn-link text-main" title="統計圖表">
+                                    <lucide-icon [img]="icons.PieChart" [size]="22"></lucide-icon>
+                                </a>
+                                } @else {
+                                <span class="text-muted">-</span>
                                 }
                             </td>
                         </tr>

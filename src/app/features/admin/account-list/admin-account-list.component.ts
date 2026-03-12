@@ -86,4 +86,6 @@ export class AdminAccountListComponent {
     onPageChange(page: number) {
         this.loadData(page);
     }
+
 }
+

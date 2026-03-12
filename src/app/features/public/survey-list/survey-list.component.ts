@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Search, PenTool, Calendar, FileText, LogIn } from 'lucide-angular';
+import { LucideAngularModule, Search, PenTool, Calendar, FileText, LogIn, PieChart } from 'lucide-angular';
 
 // Shared Components
 import { SearchBarComponent, PaginationComponent, SidebarComponent } from '../../../shared/components';
@@ -32,7 +32,7 @@ export class SurveyListComponent implements OnInit {
     private authService = inject(AuthService);
 
     // Icons
-    readonly icons = { Search, PenTool, Calendar, FileText, LogIn };
+    readonly icons = { Search, PenTool, Calendar, FileText, LogIn, PieChart };
     readonly SurveyStatus = SurveyStatus;
     readonly statusConfig = SURVEY_STATUS_CONFIG;
 

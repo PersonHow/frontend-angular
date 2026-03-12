@@ -1,0 +1,222 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.stats-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: $spacing-xl;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+.header-section {
+    padding: $spacing-xl $spacing-xl $spacing-sm $spacing-xl;
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-lg;
+
+    @include mobile {
+        padding: $spacing-md;
+    }
+}
+
+.btn-back {
+    @include btn-base;
+    background: transparent;
+    color: $text-secondary;
+    padding-left: 0;
+    gap: 4px;
+    flex-shrink: 0;
+    &:hover {
+        color: $main;
+    }
+}
+
+.title-group {
+    .page-title {
+        font-size: $font-size-sm;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+
+    .survey-title {
+        font-size: $font-size-2xl;
+        color: $main;
+        font-weight: bold;
+        margin: 0;
+    }
+}
+
+.summary-card {
+    background: white;
+    padding: $spacing-lg;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    margin-bottom: $spacing-xl;
+    border-left: 5px solid $main;
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing-lg;
+    }
+
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba($main, 0.1);
+        color: $main;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stat-info {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+            font-size: $font-size-sm;
+            color: $text-secondary;
+        }
+
+        .value {
+            font-size: $font-size-2xl;
+            font-weight: bold;
+            color: $text-main;
+        }
+    }
+}
+
+.questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+}
+
+.card {
+    background: $bg-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    border: 1px solid $border-light;
+}
+
+.q-header {
+    background: $bg-light;
+    padding: $spacing-md $spacing-lg;
+    display: flex;
+    gap: $spacing-md;
+    align-items: flex-start;
+    border-bottom: 1px solid $border-light;
+
+    .q-index {
+        background: $main;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+
+    .q-info {
+        flex: 1;
+
+        .q-text {
+            font-size: $font-size-lg;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .q-type {
+            font-size: $font-size-xs;
+            color: $text-muted;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid $border-color;
+        }
+    }
+}
+
+.q-body {
+    padding: $spacing-lg;
+}
+
+.chart-wrapper {
+    max-width: 400px;
+    margin: 0 auto $spacing-lg auto;
+}
+
+.data-table {
+    border-top: 1px dashed $border-color;
+    padding-top: $spacing-md;
+
+    .data-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid $bg-light;
+        font-size: $font-size-sm;
+
+        .opt-text {
+            color: $text-main;
+            font-weight: 500;
+        }
+
+        .opt-count {
+            color: $main;
+        }
+
+        .opt-percent {
+            color: $text-muted;
+            width: 60px;
+            text-align: right;
+        }
+    }
+}
+
+.text-answers-list {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .text-item {
+        background: $bg-input;
+        padding: 10px;
+        border-radius: $border-radius-md;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+
+        .ans-content {
+            color: $text-main;
+            line-height: 1.5;
+        }
+    }
+}
+
+.no-data {
+    text-align: center;
+    color: $text-muted;
+    padding: $spacing-lg;
+    font-style: italic;
+}
+
+.loading-state,
+.error-state {
+    @include flex-column-center;
+    padding: 60px;
+    color: $text-muted;
+}

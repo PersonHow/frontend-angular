@@ -53,6 +53,15 @@ export class ResponseService {
         );
     }
 
+    /**
+     * 獲取問卷統計（公開）
+     */
+    getPublicSurveyStatistics(surveyId: number): Observable<StatisticsResponse> {
+        return this.http.get<StatisticsResponse>(
+            `${this.apiUrl}${API_ENDPOINTS.PUBLIC.SURVEY_STATISTICS(surveyId)}`
+        );
+    }
+
     // ==================== 會員 - 回覆管理 ====================
 
     /**

@@ -1,0 +1,106 @@
+<div class="app-container">
+
+    @if (!isLoggedIn()) {
+    <app-sidebar mode="PUBLIC"></app-sidebar>
+    } @else if (isMember()) {
+    <app-sidebar mode="MEMBER"></app-sidebar>
+    }
+
+    <main class="main-content" [class.with-sidebar]="isMember()">
+
+        <div class="header-section">
+            <button class="btn-back" (click)="goBack()">
+                <lucide-icon [img]="icons.ArrowLeft" [size]="18"></lucide-icon>
+                返回
+            </button>
+            <div class="title-group">
+                <h1 class="page-title">問卷統計分析</h1>
+                <h2 class="survey-title">{{ stats()?.survey_title }}</h2>
+            </div>
+        </div>
+
+        <div class="stats-container">
+
+            @if (isLoading()) {
+            <div class="loading-state">數據分析中...</div>
+            } @else if (errorMessage()) {
+            <div class="error-state">{{ errorMessage() }}</div>
+            } @else {
+
+            <div class="summary-card">
+                <div class="stat-item">
+                    <div class="icon-circle">
+                        <lucide-icon [img]="icons.Users" [size]="24"></lucide-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="label">總填寫人數</span>
+                        <span class="value">{{ stats()?.total_responses }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-list">
+                @for (q of stats()?.question_statistics; track q.question_id; let i = $index) {
+                <div class="card question-card">
+
+                    <div class="q-header">
+                        <span class="q-index">Q{{ i + 1 }}</span>
+                        <div class="q-info">
+                            <h3 class="q-text">{{ q.question_text }}</h3>
+                            <span class="q-type">
+                                {{ q.question_type === QuestionType.SINGLE ? '單選題' :
+                                q.question_type === QuestionType.MULTIPLE ? '多選題' : '簡答題' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="q-body">
+
+                        @if (q.question_type !== QuestionType.TEXT) {
+                        <div class="chart-wrapper">
+                            @if (stats()?.total_responses === 0) {
+                            <p class="no-data">尚無數據</p>
+                            } @else {
+                            <canvas baseChart [data]="getChartData(q)" [type]="pieChartType"
+                                [options]="pieChartOptions">
+                            </canvas>
+                            }
+                        </div>
+
+                        <div class="data-table">
+                            @for (opt of q.option_statistics; track opt.option_text) {
+                            <div class="data-row">
+                                <span class="opt-text">{{ opt.option_text }}</span>
+                                <span class="opt-count">{{ opt.count }} 人</span>
+                                <span class="opt-percent">
+                                    ({{ (opt.count / (stats()?.total_responses || 1) * 100) | number:'1.1-1' }}%)
+                                </span>
+                            </div>
+                            }
+                        </div>
+                        }
+
+                        @if (q.question_type === QuestionType.TEXT) {
+                        <div class="text-answers-list">
+                            @if (!q.text_answers || q.text_answers.length === 0) {
+                            <p class="no-data">尚無回答</p>
+                            } @else {
+                            @for (ans of q.text_answers; track $index) {
+                            <div class="text-item">
+                                <lucide-icon [img]="icons.FileText" [size]="16" class="text-muted"></lucide-icon>
+                                <span class="ans-content">{{ ans }}</span>
+                            </div>
+                            }
+                            }
+                        </div>
+                        }
+
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+    </main>
+</div>
