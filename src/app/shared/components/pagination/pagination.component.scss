@@ -66,11 +66,31 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .jump-label {
     font-size: $font-size-sm;
     color: $text-secondary;
+    white-space: nowrap;
+}
+
+.jump-btn{
+    @include btn-main;
+    height: 32px;
+    padding: 0 1rem;
+    border: 1px solid $main;
+    font-size: $font-size-sm;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: $main;
+        color: $text-light; // 或者 white
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
 }
 
 .page-select {
@@ -85,6 +105,7 @@
     cursor: pointer;
     outline: none;
     transition: border-color 0.2s ease;
+    min-width: 50px;
 
     &:hover {
         border-color: $secondary;

@@ -70,7 +70,7 @@ export class AuthService {
 
     // 取得 token 
     getToken(): string | null {
-        return localStorage.getItem(STORAGE_KEYS.TOKEN);
+        return sessionStorage.getItem(STORAGE_KEYS.TOKEN);
     }
 
     // 檢查 token 期效
@@ -118,21 +118,21 @@ export class AuthService {
         return userRole ? roles.includes(userRole) : false;
     }
 
-// 更新當前用戶資料（name/phone）並同步 localStorage
+// 更新當前用戶資料（name/phone）並同步 sessionStorage
     updateCurrentUser(updates: Pick<CurrentUser, 'name' | 'phone'>): void {
         const current = this.currentUserSignal();
         if (current) {
             const updated: CurrentUser = { ...current, ...updates };
             this.currentUserSignal.set(updated);
-            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updated));
+            sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updated));
         }
     }
 
 // ============================= 私有方法 =============================
     private loadUserFromStorage(): void {
         try {
-            const userJSON = localStorage.getItem(STORAGE_KEYS.USER);
-            const TOKEN = localStorage.getItem(STORAGE_KEYS.TOKEN);
+            const userJSON = sessionStorage.getItem(STORAGE_KEYS.USER);
+            const TOKEN = sessionStorage.getItem(STORAGE_KEYS.TOKEN);
 
             if (userJSON && TOKEN && this.hasValidToken()) {
                 const user = JSON.parse(userJSON) as CurrentUser;
@@ -146,8 +146,8 @@ export class AuthService {
     }
 
     private cleanUserData(): void {
-        localStorage.removeItem(STORAGE_KEYS.USER);
-        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        sessionStorage.removeItem(STORAGE_KEYS.USER);
+        sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
         this.currentUserSignal.set(null);
     }
 
@@ -161,8 +161,8 @@ export class AuthService {
             token: response.token
         };
 
-        localStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+        sessionStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+        sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
         this.currentUserSignal.set(user);
     }
