@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, input, output, signal, computed } from "@angular/core";
+import { Component, input, output, computed } from "@angular/core";
 import { LucideAngularModule } from "lucide-angular";
 
 @Component({
@@ -13,7 +13,8 @@ import { LucideAngularModule } from "lucide-angular";
 export class ConfirmDialogComponent {
     isOpen = input<boolean>(false);
 
-    title = input<string>('確認操作');
+    // 命名為 dialogTitle，避免與原生 title 屬性衝突（會在 host 元素上出現瀏覽器 tooltip）
+    dialogTitle = input<string>('確認操作');
 
     message = input<string>('');
 
@@ -22,8 +23,6 @@ export class ConfirmDialogComponent {
     cancelText = input<string>('取消');
 
     confirmType = input<'main' | 'danger' | 'warning'>('main');
-
-    showCloseButton = input<boolean>(false);
 
     closeOnOverlay = input<boolean>(false);
 
@@ -34,7 +33,7 @@ export class ConfirmDialogComponent {
     confirmButtonTypes = computed(() => {
         const type = this.confirmType();
         return {
-            'btn-confirm': true,
+            'btn': true,
             'btn-main': type === 'main',
             'btn-warning': type === 'warning',
             'btn-danger': type === 'danger'

@@ -8,7 +8,9 @@
             }
 
             @if(field.type === 'date'){
-            <input type="date" [formControlName]="field.name" class="search-input">
+            <input type="date" [formControlName]="field.name" class="search-input"
+                   [min]="field.name === 'endDate' ? searchForm.get('startDate')?.value : null"
+                   [max]="field.name === 'startDate' ? searchForm.get('endDate')?.value : null">
             }
 
             @if(field.type === 'select' && field.options){

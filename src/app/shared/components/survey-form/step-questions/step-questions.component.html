@@ -124,6 +124,6 @@
     </div>
 </div>
 
-<app-confirm-dialog [isOpen]="showDeleteDialog()" title="刪除題目" message="確定要刪除這個題目嗎？此動作無法復原。" confirmType="danger"
+<app-confirm-dialog [isOpen]="showDeleteDialog()" dialogTitle="刪除題目" message="確定要刪除這個題目嗎？此動作無法復原。" confirmType="danger"
     confirmText="確認刪除" (confirmEvent)="executeDelete()" (cancelEvent)="showDeleteDialog.set(false)">
 </app-confirm-dialog>

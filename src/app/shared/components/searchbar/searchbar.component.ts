@@ -43,6 +43,14 @@ export class SearchBarComponent {
     }
 
     onSearch(): void {
+        const formValue = this.searchForm.value;
+        if (formValue['startDate'] && formValue['endDate']) {
+            if (new Date(formValue['startDate']) > new Date(formValue['endDate'])) {
+                alert('開始時間不得晚於結束時間');
+                return;
+            }
+        }
+
         if (this.searchForm.valid) {
             const params = this.getSearchParams();
             this.search.emit(params);
