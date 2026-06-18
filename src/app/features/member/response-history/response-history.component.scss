@@ -9,8 +9,7 @@
 
 .main-content {
     flex: 1;
-    margin: 0px 200px; // Sidebar 寬度
-    transition: margin-left 0.3s ease;
+    margin-left: 80px;
     padding: $spacing-xl;
 
     @include mobile {
@@ -42,122 +41,32 @@
     }
 }
 
-// === Table Card ===
+// === Table ===
 .table-container {
-    background: #fff;
-    border-radius: $border-radius-lg;
-    box-shadow: $shadow-sm;
-    overflow: hidden; // 讓圓角生效
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
+    overflow-x: auto;
+    margin-bottom: $spacing-lg;
 
     .table {
-        width: 100%;
-        border-collapse: collapse;
-
-        thead {
-            background-color: $bg-cream; // 淺灰/奶油色表頭
-
-            th {
-                padding: 16px;
-                text-align: left;
-                font-weight: 600;
-                color: $text-main;
-                font-size: $font-size-sm;
-                border-bottom: 2px solid $border-light;
-                white-space: nowrap;
-            }
-        }
-
-        tbody {
-            tr {
-                border-bottom: 1px solid $border-light;
-                transition: background-color 0.2s;
-
-                &:hover {
-                    background-color: $bg-light;
-                }
-
-                &:last-child {
-                    border-bottom: none;
-                }
-            }
-
-            td {
-                padding: 16px;
-                color: $text-main;
-                vertical-align: middle;
-            }
+        .text-ellipsis {
+            @include text-truncate;
+            max-width: 200px;
         }
     }
 }
 
-// === States ===
-.loading-state {
-    flex: 1;
+.action-buttons {
     display: flex;
-    align-items: center;
+    gap: $spacing-sm;
     justify-content: center;
-    color: $text-muted;
-    font-size: $font-size-lg;
-}
-
-.empty-state {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 0;
-    color: $text-muted;
-    gap: $spacing-md;
-
-    p {
-        font-size: $font-size-lg;
-        margin: 0;
-    }
-
-    .btn-main {
-        @include btn-main;
-        text-decoration: none;
-        padding: 8px 24px;
-    }
-}
-
-// === Elements ===
-.text-main {
-    color: $main;
 }
 
 .btn-icon {
-    display: inline-flex;
+    @include btn-link;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: $border-radius-md;
-    transition: all 0.2s;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-        background-color: rgba($main, 0.1);
-        color: $main;
-    }
-
-    &.text-primary {
-        color: $text-secondary; // 預設灰色
-
-        &:hover {
-            color: $main; // hover 變主色
-        }
-    }
 }
 
 .pagination-wrapper {
+    @include flex-center;
     margin-top: $spacing-lg;
-    display: flex;
-    justify-content: flex-end;
 }

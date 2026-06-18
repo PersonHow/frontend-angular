@@ -1,0 +1,10 @@
+node_modules
+dist
+.angular
+.git
+.vscode
+.editorconfig
+.DS_Store
+*.log
+Dockerfile.dev
+README.md

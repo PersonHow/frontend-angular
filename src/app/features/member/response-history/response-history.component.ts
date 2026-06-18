@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, FileText, Clock, Eye, Calendar } from 'lucide-angular';
+import { LucideAngularModule, Eye } from 'lucide-angular';
 
 import { ResponseService } from '../../../core/services/response.service';
 import { PaginationComponent, SidebarComponent } from '../../../shared/components';
@@ -25,7 +25,7 @@ export class ResponseHistoryComponent implements OnInit {
     private responseService = inject(ResponseService);
 
     // Icons
-    readonly icons = { FileText, Clock, Eye, Calendar };
+    readonly icons = { Eye };
 
     // 狀態
     responses = signal<ResponseListItem[]>([]);
