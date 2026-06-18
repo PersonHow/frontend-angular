@@ -34,11 +34,38 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="80">編號</th>
+                            <th width="80" class="sortable" (click)="toggleSort('id')">
+                                <div class="flex items-center gap-1">
+                                    編號
+                                    @if (sortColumn() === 'id') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
                             <th>問卷名稱</th>
                             <th width="100">狀態</th>
-                            <th width="120">開始日期</th>
-                            <th width="120">結束日期</th>
+                            <th width="120" class="sortable" (click)="toggleSort('startDate')">
+                                <div class="flex items-center gap-1">
+                                    開始日期
+                                    @if (sortColumn() === 'startDate') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
+                            <th width="120" class="sortable" (click)="toggleSort('endDate')">
+                                <div class="flex items-center gap-1">
+                                    結束日期
+                                    @if (sortColumn() === 'endDate') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
                             <th width="120">操作</th>
                             <th width="80">統計</th>
                         </tr>

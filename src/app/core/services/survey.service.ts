@@ -170,6 +170,11 @@ export class SurveyService {
             if (params.size !== undefined) {
                 httpParams = httpParams.set('size', params.size.toString());
             }
+            if (params.sortBy) {
+                httpParams = httpParams.set('sortBy', params.sortBy);
+                const direction = params.sortDirection || 'desc';
+                httpParams = httpParams.set('sortDirection', direction);
+            }
         }
 
         return httpParams;

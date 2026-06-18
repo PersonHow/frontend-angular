@@ -2,7 +2,7 @@ import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, Trash2, 
-    Edit, Eye, PieChart, List } from 'lucide-angular';
+    Edit, Eye, PieChart, List, ArrowUp, ArrowDown } from 'lucide-angular';
 
 // 根據您的專案結構引用 Shared Components
 import { SidebarComponent, SearchBarComponent, 
@@ -33,7 +33,7 @@ export class AdminSurveyListComponent implements OnInit {
     private surveyService = inject(SurveyService);
 
     // Icons
-    readonly icons = { Trash2, Edit, Eye, PieChart, List };
+    readonly icons = { Trash2, Edit, Eye, PieChart, List, ArrowUp, ArrowDown };
     readonly SurveyStatus = SurveyStatus; // 供 Template 使用 Enum
 
     // --- 資料狀態 ---
@@ -44,6 +44,10 @@ export class AdminSurveyListComponent implements OnInit {
     currentPage = signal(1);
     totalElements = signal(0);
     totalPages = signal(0);
+
+    // --- 排序狀態 ---
+    sortColumn = signal<string>('id');
+    sortDirection = signal<'asc' | 'desc'>('desc');
 
     // --- 搜尋狀態 (定義欄位) ---
     searchFields: SearchField[] = [
@@ -85,6 +89,11 @@ export class AdminSurveyListComponent implements OnInit {
         return survey.status === SurveyStatus.NOT_STARTED && survey.response_count === 0;
     }
 
+    // 已結束的問卷只能觀看；進行中的問卷不提供任何操作
+    canView(survey: SurveyListItem): boolean {
+        return survey.status === SurveyStatus.CLOSED;
+    }
+
     // --- API 資料載入 ---
     loadData(pageIndex: number = 0): void {
         this.isLoading.set(true);
@@ -92,7 +101,9 @@ export class AdminSurveyListComponent implements OnInit {
         const request: SurveySearchRequest = {
             ...this.currentSearchRequest,
             page: pageIndex,
-            size: 10
+            size: 10,
+            sortBy: this.sortColumn(),
+            sortDirection: this.sortDirection()
         };
 
         this.surveyService.getAdminSurveys(request).subscribe({
@@ -130,6 +141,17 @@ export class AdminSurveyListComponent implements OnInit {
     // --- 事件處理：分頁 ---
     onPageChange(page: number): void {
         this.loadData(page - 1); // 轉回 0-based 給 API
+    }
+
+    // --- 事件處理：排序 ---
+    toggleSort(column: string): void {
+        if (this.sortColumn() === column) {
+            this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
+        } else {
+            this.sortColumn.set(column);
+            this.sortDirection.set('desc');
+        }
+        this.loadData(0);
     }
 
     // --- 事件處理：選取 ---

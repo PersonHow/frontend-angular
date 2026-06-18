@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Search, PenTool, Calendar, FileText, LogIn, PieChart } from 'lucide-angular';
+import { LucideAngularModule, Search, PenTool, Calendar, FileText, LogIn, PieChart, ArrowUp, ArrowDown } from 'lucide-angular';
 
 // Shared Components
 import { SearchBarComponent, PaginationComponent, SidebarComponent } from '../../../shared/components';
@@ -32,7 +32,7 @@ export class SurveyListComponent implements OnInit {
     private authService = inject(AuthService);
 
     // Icons
-    readonly icons = { Search, PenTool, Calendar, FileText, LogIn, PieChart };
+    readonly icons = { Search, PenTool, Calendar, FileText, LogIn, PieChart, ArrowUp, ArrowDown };
     readonly SurveyStatus = SurveyStatus;
     readonly statusConfig = SURVEY_STATUS_CONFIG;
 
@@ -49,6 +49,10 @@ export class SurveyListComponent implements OnInit {
     totalPages = signal(0);
     totalElements = signal(0);
     pageSize = signal(10);
+
+    // 排序狀態
+    sortColumn = signal<string>('id');
+    sortDirection = signal<'asc' | 'desc'>('desc');
 
     // 搜尋欄位設定
     searchFields: SearchField[] = [
@@ -73,7 +77,9 @@ export class SurveyListComponent implements OnInit {
         const request: SurveySearchRequest = {
             ...this.currentSearch(),
             page: apiPage,
-            size: this.pageSize()
+            size: this.pageSize(),
+            sortBy: this.sortColumn(),
+            sortDirection: this.sortDirection()
         };
 
         this.surveyService.getPublicSurveys(request).subscribe({
@@ -108,6 +114,16 @@ export class SurveyListComponent implements OnInit {
 
     onPageChange(page: number) {
         this.loadData(page);
+    }
+
+    toggleSort(column: string) {
+        if (this.sortColumn() === column) {
+            this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
+        } else {
+            this.sortColumn.set(column);
+            this.sortDirection.set('desc'); // 預設切換到新欄位時使用降序
+        }
+        this.loadData(1);
     }
 
     // 輔助方法：判斷是否可以填寫

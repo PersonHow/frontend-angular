@@ -30,6 +30,15 @@
     .table {
         @include table-base;
 
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        }
+
         .text-ellipsis {
             @include text-truncate;
             max-width: 200px;

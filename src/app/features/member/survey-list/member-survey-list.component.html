@@ -11,11 +11,38 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="80">編號</th>
+                            <th width="80" class="sortable" (click)="toggleSort('id')">
+                                <div class="flex items-center gap-1">
+                                    編號
+                                    @if (sortColumn() === 'id') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
                             <th>名稱</th>
                             <th width="100">狀態</th>
-                            <th width="120">開始時間</th>
-                            <th width="120">結束時間</th>
+                            <th width="120" class="sortable" (click)="toggleSort('startDate')">
+                                <div class="flex items-center gap-1">
+                                    開始時間
+                                    @if (sortColumn() === 'startDate') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
+                            <th width="120" class="sortable" (click)="toggleSort('endDate')">
+                                <div class="flex items-center gap-1">
+                                    結束時間
+                                    @if (sortColumn() === 'endDate') {
+                                        <lucide-icon [img]="sortDirection() === 'asc' ? icons.ArrowUp : icons.ArrowDown" [size]="16"></lucide-icon>
+                                    } @else {
+                                        <lucide-icon [img]="icons.ArrowDown" [size]="16" class="text-transparent"></lucide-icon>
+                                    }
+                                </div>
+                            </th>
                             <th width="80">回覆數</th>
                             <th width="100">操作</th>
                         </tr>
@@ -52,11 +79,13 @@
                                         class="btn-icon text-primary" title="編輯">
                                         <lucide-icon [img]="icons.Edit" [size]="20"></lucide-icon>
                                     </a>
-                                    } @else {
+                                    } @else if (canView(survey)) {
                                     <a [routerLink]="['/member/surveys', survey.id, 'edit']"
                                         class="btn-icon text-muted" title="查看">
                                         <lucide-icon [img]="icons.Eye" [size]="20"></lucide-icon>
                                     </a>
+                                    } @else {
+                                    <span class="text-muted">-</span>
                                     }
 
                                     @if (canDelete(survey)) {
@@ -82,8 +111,8 @@
         </div>
     </main>
 
-    <app-confirm-dialog [isOpen]="showDeleteDialog()" title="刪除確認" [message]="deleteMessage()" confirmType="danger"
-        confirmText="確認刪除" [showCloseButton]="true" [closeOnOverlay]="true" (confirmEvent)="onConfirmDelete()"
+    <app-confirm-dialog [isOpen]="showDeleteDialog()" dialogTitle="刪除確認" [message]="deleteMessage()" confirmType="danger"
+        confirmText="確認刪除" [closeOnOverlay]="true" (confirmEvent)="onConfirmDelete()"
         (cancelEvent)="showDeleteDialog.set(false)">
     </app-confirm-dialog>
 </div>

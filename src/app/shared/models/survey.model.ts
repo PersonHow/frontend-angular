@@ -35,6 +35,8 @@ export interface SurveySearchRequest {
     end_date?: string;
     page?: number;
     size?: number;
+    sortBy?: string;
+    sortDirection?: 'asc' | 'desc';
 }
 
 // === 選項 ===

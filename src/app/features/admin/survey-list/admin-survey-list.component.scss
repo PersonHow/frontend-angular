@@ -29,6 +29,15 @@
     .table {
         @include table-base;
 
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        }
+
         // 覆寫特定的寬度或樣式
         .text-ellipsis {
             @include text-truncate;

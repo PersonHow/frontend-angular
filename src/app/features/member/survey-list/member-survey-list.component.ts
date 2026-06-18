@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Trash2, Edit, Eye } from 'lucide-angular';
+import { LucideAngularModule, Trash2, Edit, Eye, ArrowUp, ArrowDown } from 'lucide-angular';
 
 import { SidebarComponent, SearchBarComponent,
     PaginationComponent, ConfirmDialogComponent } from '../../../shared/components';
@@ -29,7 +29,7 @@ import { PageResponse } from '../../../shared/models/common.model';
 export class MemberSurveyListComponent implements OnInit {
     private surveyService = inject(SurveyService);
 
-    readonly icons = { Trash2, Edit, Eye };
+    readonly icons = { Trash2, Edit, Eye, ArrowUp, ArrowDown };
     readonly SurveyStatus = SurveyStatus;
 
     // --- 資料狀態 ---
@@ -40,6 +40,10 @@ export class MemberSurveyListComponent implements OnInit {
     currentPage = signal(1);
     totalElements = signal(0);
     totalPages = signal(0);
+
+    // --- 排序狀態 ---
+    sortColumn = signal<string>('id');
+    sortDirection = signal<'asc' | 'desc'>('desc');
 
     // --- 搜尋狀態 ---
     searchFields: SearchField[] = [
@@ -67,13 +71,20 @@ export class MemberSurveyListComponent implements OnInit {
         return survey.status === SurveyStatus.NOT_STARTED && survey.response_count === 0;
     }
 
+    // 已結束的問卷只能觀看；進行中的問卷不提供任何操作
+    canView(survey: SurveyListItem): boolean {
+        return survey.status === SurveyStatus.CLOSED;
+    }
+
     loadData(pageIndex: number = 0): void {
         this.isLoading.set(true);
 
         const request: SurveySearchRequest = {
             ...this.currentSearchRequest,
             page: pageIndex,
-            size: 10
+            size: 10,
+            sortBy: this.sortColumn(),
+            sortDirection: this.sortDirection()
         };
 
         this.surveyService.getMemberSurveys(request).subscribe({
@@ -106,6 +117,16 @@ export class MemberSurveyListComponent implements OnInit {
 
     onPageChange(page: number): void {
         this.loadData(page - 1);
+    }
+
+    toggleSort(column: string): void {
+        if (this.sortColumn() === column) {
+            this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
+        } else {
+            this.sortColumn.set(column);
+            this.sortDirection.set('desc');
+        }
+        this.loadData(0);
     }
 
     openDeleteSingle(survey: SurveyListItem): void {
