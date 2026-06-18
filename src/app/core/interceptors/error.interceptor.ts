@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
-import { ROUTES, ERROR_MESSAGES, HTTP_STATUS } from '../../shared/constants/app.constants';
+import { ROUTES, ERROR_MESSAGES, HTTP_STATUS, API_ENDPOINTS } from '../../shared/constants/app.constants';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
@@ -26,9 +26,16 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 // 伺服器錯誤
                 switch (error.status) {
                     case HTTP_STATUS.UNAUTHORIZED:
-                        errorMessage = ERROR_MESSAGES.UNAUTHORIZED;
-                        // 清除用戶數據並跳轉到登入頁
-                        authService.logout();
+                        if (req.url.endsWith(API_ENDPOINTS.AUTH.LOGIN) || req.url.endsWith(API_ENDPOINTS.AUTH.REGISTER)) {
+                            // 登入／註冊失敗：顯示後端訊息（例如「帳號或密碼錯誤」），不登出也不跳轉
+                            // 注意：refresh 的 401 屬於真的過期，會走 else 分支登出
+                            errorMessage = error.error?.message || ERROR_MESSAGES.UNAUTHORIZED;
+                        } else {
+                            // 已登入後 Token 失效或過期：清除用戶數據並跳轉到登入頁
+                            errorMessage = ERROR_MESSAGES.UNAUTHORIZED;
+                            authService.logout();
+                            router.navigate([ROUTES.LOGIN]);
+                        }
                         break;
 
                     case HTTP_STATUS.FORBIDDEN:
