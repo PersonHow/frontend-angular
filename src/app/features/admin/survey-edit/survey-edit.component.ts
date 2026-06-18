@@ -80,13 +80,17 @@ export class SurveyEditComponent implements OnInit {
                 const surveyData = this.convertApiToFrontend(response);
                 this.surveyData.set(surveyData);
 
-                // 檢查是否可編輯 (後端應該回傳 can_edit 欄位)
-                // 如果後端沒有回傳，可以根據 response_count 判斷
-                const hasResponses = response.response_count > 0;
-                this.canEdit.set(!hasResponses);
+                // 與後端 validateCanModify 一致：只有「未開始」且「無回覆」才能編輯
+                this.canEdit.set(
+                    response.status === SurveyStatus.NOT_STARTED && response.response_count === 0
+                );
 
                 if (!this.canEdit()) {
-                    this.errorMessage.set('此問卷已有回覆，無法編輯');
+                    this.errorMessage.set(
+                        response.status !== SurveyStatus.NOT_STARTED
+                            ? '問卷已發布，僅可檢視內容'
+                            : '此問卷已有回覆，無法編輯'
+                    );
                 }
 
                 this.isInitialLoading.set(false);

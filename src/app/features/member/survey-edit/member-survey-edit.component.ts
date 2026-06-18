@@ -63,10 +63,17 @@ export class MemberSurveyEditComponent implements OnInit {
         this.surveyService.getMemberSurveyDetail(this.surveyId()).subscribe({
             next: (response: SurveyDetail) => {
                 this.surveyData.set(this.convertApiToFrontend(response));
-                this.canEdit.set(response.response_count === 0);
+                // 與後端 validateCanModify 一致：只有「未開始」且「無回覆」才能編輯
+                this.canEdit.set(
+                    response.status === SurveyStatus.NOT_STARTED && response.response_count === 0
+                );
 
                 if (!this.canEdit()) {
-                    this.errorMessage.set('此問卷已有回覆，無法編輯');
+                    this.errorMessage.set(
+                        response.status !== SurveyStatus.NOT_STARTED
+                            ? '問卷已發布，僅可檢視內容'
+                            : '此問卷已有回覆，無法編輯'
+                    );
                 }
                 this.isInitialLoading.set(false);
             },
