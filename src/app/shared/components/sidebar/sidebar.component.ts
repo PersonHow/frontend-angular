@@ -1,6 +1,7 @@
 import { Component, computed, input, inject } from "@angular/core";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
+import { SessionTimerComponent } from "../session-timer/session-timer.component";
 import { TableProperties, FilePlus, LogOut, FolderOpenDot, Users,
     ClipboardClock, LucideAngularModule, CircleUser, LogIn } from "lucide-angular";
 
@@ -19,7 +20,7 @@ interface SidebarItem {
 @Component({
     selector: 'app-sidebar',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, LucideAngularModule],
+    imports: [RouterLink, RouterLinkActive, LucideAngularModule, SessionTimerComponent],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss'
 })

@@ -5,6 +5,7 @@ import {
     CurrentUser,
     LoginRequest,
     LoginResponse,
+    RefreshTokenResponse,
     RegisterRequest,
     RegisterResponse,
     Role,
@@ -14,7 +15,7 @@ import {
 import { API_ENDPOINTS, ROUTES, STORAGE_KEYS } from "../../shared/constants/app.constants";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { catchError, Observable, tap, throwError } from "rxjs";
+import { Observable, tap } from "rxjs";
 
 
 @Injectable({
@@ -25,6 +26,10 @@ export class AuthService {
     private apiUrl = environment.apiUrl;
 
     private currentUserSignal = signal<CurrentUser | null>(null);
+
+    // 憑證到期時間（epoch ms），供畫面顯示倒數
+    private tokenExpiresAtSignal = signal<number | null>(null);
+    readonly tokenExpiresAt = this.tokenExpiresAtSignal.asReadonly();
 
     readonly currentUser = this.currentUserSignal.asReadonly();
     readonly isLoggedIn = computed(() => this.currentUserSignal() !== null);
@@ -45,8 +50,7 @@ export class AuthService {
             `${this.apiUrl}${API_ENDPOINTS.AUTH.LOGIN}`,
             request
         ).pipe(
-            tap(response => this.handleLoginSuccess(response)),
-            catchError(error => this.handleError(error))
+            tap(response => this.handleLoginSuccess(response))
         );
     }
 
@@ -55,8 +59,6 @@ export class AuthService {
         return this.http.post<RegisterResponse>(
             `${this.apiUrl}${API_ENDPOINTS.AUTH.REGISTER}`,
             request,
-        ).pipe(
-            catchError(error => this.handleError(error))
         );
     }
 
@@ -68,26 +70,50 @@ export class AuthService {
 
 // ============================= Token 方法 =============================
 
-    // 取得 token 
+    // 取得 token
     getToken(): string | null {
         return sessionStorage.getItem(STORAGE_KEYS.TOKEN);
     }
 
     // 檢查 token 期效
     hasValidToken(): boolean {
+        const expiry = this.getTokenExpiry();
+        return expiry !== null && Date.now() < expiry;
+    }
+
+    // 以仍有效的舊憑證換發新憑證，延長登入時間
+    refreshToken(): Observable<RefreshTokenResponse> {
+        return this.http.post<RefreshTokenResponse>(
+            `${this.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
+            {}
+        ).pipe(
+            tap(response => {
+                sessionStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+                this.tokenExpiresAtSignal.set(response.expires_at);
+
+                const current = this.currentUserSignal();
+                if (current) {
+                    const updated: CurrentUser = { ...current, token: response.token };
+                    this.currentUserSignal.set(updated);
+                    sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updated));
+                }
+            })
+        );
+    }
+
+    // 從 JWT payload 解析到期時間（epoch ms）
+    private getTokenExpiry(): number | null {
         const token = this.getToken();
         if (!token) {
-            return false;
+            return null;
         }
 
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            const expiry = payload.exp * 1000;
-            return Date.now() < expiry;
+            return payload.exp * 1000;
         } catch {
-            return false;
+            return null;
         }
-
     }
 
 // ============================= 角色方法 =============================
@@ -107,11 +133,6 @@ export class AuthService {
         }
     }
 
-    // 檢查使用者有沒有指定角色
-    hasRole(role: Role): boolean{
-        return this.currentUserSignal()?.role === role
-    }
-    
     // 檢查使用者有沒有任一種角色
     hasAnyRole(roles: Role[]): boolean{
         const userRole = this.currentUserSignal()?.role;
@@ -137,6 +158,7 @@ export class AuthService {
             if (userJSON && TOKEN && this.hasValidToken()) {
                 const user = JSON.parse(userJSON) as CurrentUser;
                 this.currentUserSignal.set(user);
+                this.tokenExpiresAtSignal.set(this.getTokenExpiry());
             } else {
                 this.cleanUserData();
             }
@@ -149,6 +171,7 @@ export class AuthService {
         sessionStorage.removeItem(STORAGE_KEYS.USER);
         sessionStorage.removeItem(STORAGE_KEYS.TOKEN);
         this.currentUserSignal.set(null);
+        this.tokenExpiresAtSignal.set(null);
     }
 
     private handleLoginSuccess(response: LoginResponse): void{
@@ -165,13 +188,6 @@ export class AuthService {
         sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
         this.currentUserSignal.set(user);
-    }
-
-    private handleError(error: any): Observable<never> {
-        
-        if( error.status === 401){
-            this.cleanUserData()
-        }
-        return throwError(() => error);
+        this.tokenExpiresAtSignal.set(response.expires_at ?? this.getTokenExpiry());
     }
 }

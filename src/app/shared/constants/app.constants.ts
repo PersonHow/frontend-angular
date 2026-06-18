@@ -7,7 +7,8 @@ export const API_ENDPOINTS = {
     // 認證
     AUTH: {
         LOGIN: '/auth/login',
-        REGISTER: '/auth/register'
+        REGISTER: '/auth/register',
+        REFRESH: '/auth/refresh'
     },
 
     // 管理員 - 問卷管理
@@ -73,23 +74,20 @@ export const ROUTES = {
     PUBLIC: {
         HOME: '/',
         SURVEYS: '/surveys',
-        SURVEY_FILL: (id: number) => `/surveys/${id}/fill`,
-        SURVEY_CONFIRM: (id: number) => `/surveys/${id}/confirm`
+        SURVEY_FILL: (id: number) => `/surveys/${id}/fill`
     }
 } as const;
 
 // === 本地存儲鍵 ===
 export const STORAGE_KEYS = {
     TOKEN: 'survey_token',
-    USER: 'survey_user',
-    REMEMBER_EMAIL: 'survey_remember_email'
+    USER: 'survey_user'
 } as const;
 
 // === 分頁配置 ===
 export const PAGINATION = {
     DEFAULT_PAGE: 0,
-    DEFAULT_SIZE: 10,
-    PAGE_SIZE_OPTIONS: [5, 10, 20, 50]
+    DEFAULT_SIZE: 10
 } as const;
 
 // === 驗證規則 ===

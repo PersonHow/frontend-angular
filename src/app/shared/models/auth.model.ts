@@ -20,11 +20,18 @@ export interface LoginRequest {
 // 登入響應
 export interface LoginResponse {
     token: string,
+    expires_at: number,
     account_id: number,
     account_name: string,
     account_email: string,
     account_phone: string,
     account_role: Role
+}
+
+// 刷新憑證回應
+export interface RefreshTokenResponse {
+    token: string,
+    expires_at: number
 }
 
 // 註冊請求

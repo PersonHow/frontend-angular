@@ -1,0 +1,11 @@
+@if (remainingMs() !== null) {
+<div class="session-timer" [class.warning]="isExpiringSoon()">
+    <div class="timer-display" title="登入憑證剩餘有效時間">
+        <lucide-icon [img]="icons.TimerReset" [size]="16" class="icon"></lucide-icon>
+        <span class="time">{{ remainingLabel() }}</span>
+    </div>
+    <button class="refresh-btn" type="button" (click)="refresh()" [disabled]="isRefreshing()" title="延長登入時間">
+        <lucide-icon [img]="icons.RefreshCw" [size]="14" [class.spinning]="isRefreshing()"></lucide-icon>
+    </button>
+</div>
+}

@@ -1,0 +1,68 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// 放在 sidebar（flex-column）內時固定貼底
+:host {
+    margin-top: auto;
+}
+
+.session-timer {
+    width: 64px;
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-sm 0;
+    border-radius: $border-radius-md;
+    background-color: rgba($main, 0.08);
+    color: $main;
+
+    &.warning {
+        background-color: rgba($error, 0.12);
+        color: $error;
+
+        .refresh-btn {
+            background-color: $error;
+        }
+    }
+}
+
+.timer-display {
+    @include flex-center;
+    gap: $spacing-xs;
+
+    .time {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.refresh-btn {
+    @include flex-center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background-color: $main;
+    color: $text-light;
+    cursor: pointer;
+    transition: background-color $transition-fast ease;
+
+    &:hover:not(:disabled) {
+        background-color: lighten($main, 8%);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .spinning {
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
